@@ -4,6 +4,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -249,13 +250,18 @@ header a {
                 iframe.style.display = 'block';
     
                 // Check if the iframe has been loaded before
-                if (!iframeLoaded[selectedPosition]) {
-                    // If not loaded before, set the flag to true and reload the iframe
-                    iframeLoaded[selectedPosition] = true;
-                    iframe.src = iframe.src; // This line will reload the iframe
-                }
+                if (!iframeLoaded[selectedPosition] && selectedPosition !== "home") {
+                // If not loaded before and not "Home", set the flag to true and reload the iframe
+                iframeLoaded[selectedPosition] = true;
+                iframe.src = iframe.src; // This line will reload the iframe
             }
         }
+    }
+        // Check if the selected position is "Home" and reload the iframe
+        if (selectedPosition === "home") {
+        const homeIframe = document.getElementById("homeIframe");
+        homeIframe.src = homeIframe.src;
+    }
     });
     
     // Simulate a change event on page load to show the first iframe by default
