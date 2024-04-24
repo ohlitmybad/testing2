@@ -22,7 +22,24 @@
 	<style>
 
  
+.manage-account {
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 40px;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    height: auto; /* Maintain aspect ratio */
+    display: flex;
+    margin:  auto; 
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-right: 10px; /* Add margin to the right of the select element */
 
+ 
+}
 
 
 .centered-image {
@@ -139,17 +156,22 @@ header a {
     <select id="positionSelect">
       <option value="home">Home</option>
         <option value="goalkeeper">Radars</option>
-        <option value="centreback">Plots</option>
+        <option value="centreback">Plots (Top 7)</option>
+        <option value="centreback1">Plots (Other)</option>
+        <option value="teams">Teams</option>
+        <option value="fullback3">Indexes</option>
 	<option value="fullback5">Rank (Top 5)</option>
 	<option value="fullback6">Rank (Top 7)</option>
+    <option value="fullback7">Rank (Other)</option>
         <option value="fullback">Search</option>
-       <option value="fullback3">Indexes</option>
-	           <option value="teams">Teams</option>
 	           <option value="fullback4">AI (Beta)</option>
 	            <option value="fullback2">Guide</option>
         <option value="fullback1">Manage Account</option>
 
     </select>
+    <button class="btn btn-primary manage-account">Manage Account</button> 
+
+    
     
 </header>
 
@@ -168,16 +190,23 @@ header a {
    
     <iframe id="centrebackIframe" src="https://datamb.football/proplotgk24/index.html"></iframe>
 
+    <iframe id="centreback1Iframe" src="https://datamb.football/proplotgk24/index.html"></iframe>
+
+    <iframe id="teamsIframe" src="https://datamb.football/proteamradar/index.html"></iframe>
+
+    <iframe id="fullback3Iframe" src="https://datamb.football/proindex/index.html"></iframe>	
+
+
     <iframe id="fullback5Iframe" src="https://datamb.football/rank/index.html"></iframe>
 	  
 	<iframe id="fullback6Iframe" src="https://datamb.football/rank7/index.html"></iframe>	
 
-  
+    <iframe id="fullback7Iframe" src="https://datamb.football/rank7/index.html"></iframe>	
+
+
     <iframe id="fullbackIframe" src="https://datamb.football/prosearchnew/index.html"></iframe>
 
-    <iframe id="fullback3Iframe" src="https://datamb.football/proindex/index.html"></iframe>	
 	
-    <iframe id="teamsIframe" src="https://datamb.football/proteamradar/index.html"></iframe>
 
     <iframe id="fullback4Iframe" src="https://datamb.football/chat/index.html"></iframe>
   
@@ -189,6 +218,8 @@ header a {
     const positionSelect = document.getElementById('positionSelect');
     const iframes = document.getElementsByTagName('iframe');
     const darkModeBtn = document.querySelector('.dark-mode-btn');
+    const manageAccountBtn = document.querySelector('.manage-account');
+
     
     // Flag to track whether the iframe has been loaded before for each position
     const iframeLoaded = {
@@ -229,6 +260,14 @@ header a {
     
     // Simulate a change event on page load to show the first iframe by default
     positionSelect.dispatchEvent(new Event('change'));
+
+    manageAccountBtn.addEventListener('click', function () {
+        // Set the value of the position select to "fullback1" (Manage Account)
+        positionSelect.value = 'fullback1';
+        // Trigger the change event to update the iframe
+        positionSelect.dispatchEvent(new Event('change'));
+    });
+    
 
 </script>
 
