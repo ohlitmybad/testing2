@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7862,6 +7863,7 @@ const metricColumnMap = {
 
 
 
+const parsedData = parseCSV(csvData);
 
 function displaySelectedPlayer() {
   document.getElementById('spinner').style.display = 'block';
@@ -7869,28 +7871,58 @@ function displaySelectedPlayer() {
   const selectedIndex = playerSelect.selectedIndex;
   const selectedPlayerName = playerSelect.options[selectedIndex].value;
   const selectedPlayerPosition = playerSelect.options[selectedIndex].textContent.split(', ')[1]; // Extract position
+  const selectedPlayerTeam = playerSelect.options[selectedIndex].textContent.split(', ')[3]; // Extract team
   const selectedPlayer = {
     player: selectedPlayerName,
+    team: selectedPlayerTeam,
     position: selectedPlayerPosition // Include position in the selectedPlayer object
   };
-  displayPlayerRankings(selectedPlayer);
+
+  // Filter the selected player based on name, team, and position
+  const matchingPlayers = parsedData.filter(p =>
+    p.player === selectedPlayer.player &&
+    p.position === selectedPlayer.position
+  );
+
+  // If there is exactly one matching player, display their rankings
+  if (matchingPlayers.length === 1) {
+    displayPlayerRankings(matchingPlayers[0]);
+  } else if (matchingPlayers.length > 1) {
+    // If there are multiple matching players, prompt the user to select one
+    const selectionPrompt = `Multiple players found with the same name (${selectedPlayer.player}) and position (${selectedPlayer.position}). Please choose one by entering its index : \n\n`;
+    const playerOptions = matchingPlayers.map((player, index) => `${index + 1}. ${player.player}, Team: ${player.team}, Position: ${player.position}`).join('\n');
+    const userInput = window.prompt(selectionPrompt + playerOptions);
+
+    // Convert user input to number
+    const userChoice = parseInt(userInput);
+
+    // Validate user input and display corresponding player's rankings
+    if (!isNaN(userChoice) && userChoice >= 1 && userChoice <= matchingPlayers.length) {
+      displayPlayerRankings(matchingPlayers[userChoice - 1]);
+    }
+  }
+
   document.getElementById('spinner').style.display = 'none';
-    
 }
 
 
+
 function displayPlayerRankings(player) {
-    const parsedData = parseCSV(csvData);
-    const selectedPlayer = parsedData.find(p => p.player === player.player && p.position === player.position);
-    const ageSelect = document.getElementById('ageSelect');
-    const selectedAge = parseInt(ageSelect.value);
-    const filteredData = parsedData.filter(p => p.league === selectedPlayer.league && (!selectedAge || p.age <= selectedAge));
-    const toggleMetrics = document.getElementById('toggleMetrics').checked; // Check if toggle is toggled
-    const getMetricValueFunction = toggleMetrics ? updateCurrentMetricValue : getCurrentMetricValue;
+    // Filter the data based on player name, position, and team
+    const selectedPlayer = parsedData.find(p => 
+        p.player === player.player && 
+        p.position === player.position &&
+        p.team === player.team
+    );
 
-
-
+        const ageSelect = document.getElementById('ageSelect');
+        const selectedAge = parseInt(ageSelect.value);
+        const filteredData = parsedData.filter(p => p.league === selectedPlayer.league && (!selectedAge || p.age <= selectedAge));
+        const toggleMetrics = document.getElementById('toggleMetrics').checked;
+        const getMetricValueFunction = toggleMetrics ? updateCurrentMetricValue : getCurrentMetricValue;
     
+
+  
     const samePositionAndLeagueActions = calculateRankForMetric(filteredData, 'defActions', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league);
     const samePositionAndLeagueDuels = calculateRankForMetric(filteredData, 'defDuels', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league);
     const samePositionAndLeagueActionsWithMinutes = calculateRankForMetric(filteredData, 'defActions', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league, p => ({...p, defActions: Math.round(p.defActions * p.minutes / 90)}));
