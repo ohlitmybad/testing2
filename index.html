@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,6 +164,7 @@ cursor: pointer;
       background-color: rgb(213, 213, 213);
       border: 1px solid #fff;
       border-radius: 20px;
+      cursor: pointer;
       height: 17.1px;
       width: 546px;
       margin-bottom: 5px;
@@ -291,7 +295,6 @@ h1 {
   white-space: nowrap; /* Prevent line breaks */
 }
 
-
 .hover-content {
     position: absolute;
     top: -3.5px; /* Adjust the top value according to your preference */
@@ -303,11 +306,11 @@ h1 {
     z-index: 1000;
 }
 
-.rank-bar:hover .hover-content {
-    display: block;
-}
-
-
+  .rank-bar:hover .hover-content,
+    .rank-bar.active .hover-content {
+      display: block;
+    }
+  
   </style>
 </head>
 
@@ -365,143 +368,7 @@ h1 {
 <div id="results"></div>
 
 <script>
-
-      // Function to handle spinner display
-      function showSpinner() {
-        spinner.style.display = 'block';
-      }
-
-      // Function to handle spinner hiding
-      function hideSpinner() {
-        spinner.style.display = 'none';
-      }
-
-      document.addEventListener("DOMContentLoaded", function() {
-    var selectElement = document.getElementById("sectionSelect");
-    var options = {
-        "samePositionAndLeague": "vs League and Position, per 90",
-        "samePositionAndLeagueWithMinutes": "vs League and Position",
-        "league": "vs League, per 90",
-        "leagueWithMinutes": "vs League",
-    };
-
-    // Function to add options to the select element
-    function addOption(key, value) {
-        var option = document.createElement("option");
-        option.value = key;
-        option.text = value;
-        selectElement.add(option);
-    }
-
-    // Populate the select element with options based on your criteria
-    function populateOptions(usePer90) {
-        selectElement.innerHTML = ""; // Clear existing options
-
-        if (usePer90) {
-            addOption("samePositionAndLeague", options["samePositionAndLeague"]);
-            addOption("league", options["league"]);
-        } else {
-            addOption("samePositionAndLeagueWithMinutes", options["samePositionAndLeagueWithMinutes"]);
-            addOption("leagueWithMinutes", options["leagueWithMinutes"]);
-        }
-    }
-
-    populateOptions(true); // Initially populate with per 90 options
-
-    // Keep track of the original selected value
-    var originalSelectedValue = selectElement.value;
-
-    // Toggle button functionality
-    var toggleMetrics = document.getElementById("toggleMetrics");
-    toggleMetrics.addEventListener("change", function() {
-        // Show spinner
-        showSpinner();
-
-        // Get the current selected value
-        var selectedValue = selectElement.value;
-
-        // Update the original selected value
-        originalSelectedValue = selectedValue;
-
-        // Determine whether the selected metric should be per 90 or not based on the toggle state
-        var usePer90 = toggleMetrics.checked;
-
-        // Repopulate options based on toggle state
-        populateOptions(usePer90);
-
-        // Update the selected value to its equivalent based on the toggle state
-        if (usePer90) {
-            selectedValue = selectedValue.replace("WithMinutes", "");
-        } else {
-            if (!selectedValue.endsWith("WithMinutes")) {
-                selectedValue += "WithMinutes";
-            }
-        }
-
-        // Set the selected value
-        selectElement.value = selectedValue;
-
-        // Simulate long computation with setTimeout
-        setTimeout(() => {
-            // Hide spinner
-            hideSpinner();
-        }, 1000); // Adjust the timeout value as needed
-    });
-});
-
-
-  
-function getCurrentMetricValue(parsedData, selectedPlayer, metric) {
-    const columnName = metricColumnMap[metric]; // Get the corresponding column name
-
-    // List of columns to exclude from multiplication
-    const excludedColumns = [
-        'defActions', 'defDuels', 'pAdjSlidingTackles', 'pAdjInterceptions',
-        'averagePassLength', 'xG', 'xA', 'cleanSheets', 'xGAgainst', 'preventedGoals', 'exits',
-        'defensiveDuelsWonPercentage', 'aerialDuelsWonPercentage', 'shotsOnTargetPercentage',
-        'goalConversionPercentage', 'accurateCrossesPercentage', 'successfulDribblesPercentage',
-        'offensiveDuelsWonPercentage', 'accuratePassesPercentage', 'accurateForwardPassesPercentage',
-        'accurateShortMediumPassesPercentage', 'accurateLongPassesPercentage',
-        'accuratePassesToFinalThirdPercentage', 'accuratePassesToPenaltyAreaPercentage',
-        'accurateThroughPassesPercentage', 'accurateProgressivePassesPercentage'
-    ];
-
-    const decimalColumns = ['xG', 'xA', 'xGAgainst', 'preventedGoals'];
-
-
-    // Find player data
-    const playerData = parsedData.find(p => 
-        p.player === selectedPlayer.player && 
-        p.position === selectedPlayer.position && 
-        p.league === selectedPlayer.league
-    );
-
-    let value = playerData[columnName];
-
-    if (decimalColumns.includes(columnName)) {
-        return (value * playerData['minutes'] / 90).toFixed(2);
-    }
-    else if (excludedColumns.includes(columnName)) {
-        return playerData[columnName];
-    }
-    else {
-    return Math.round(value * playerData['minutes'] / 90);}
-}
-
-
-function updateCurrentMetricValue(parsedData, selectedPlayer, metric) {
-    const columnName = metricColumnMap[metric]; // Get the corresponding column name
-
-    
-    const playerData = parsedData.find(p => p.player === selectedPlayer.player && p.position === selectedPlayer.position && p.league === selectedPlayer.league);
-
-
-
-    // Return the metric value without modification
-    return playerData[columnName];
-}
-
-
+(function(_0x3d367c,_0x25010b){var _0xd45683=_0xc534,_0x3563ec=_0x3d367c();while(!![]){try{var _0x437257=-parseInt(_0xd45683(0x20a))/0x1+parseInt(_0xd45683(0x1fa))/0x2*(parseInt(_0xd45683(0x221))/0x3)+parseInt(_0xd45683(0x1f7))/0x4*(parseInt(_0xd45683(0x200))/0x5)+-parseInt(_0xd45683(0x205))/0x6+-parseInt(_0xd45683(0x1fb))/0x7*(parseInt(_0xd45683(0x211))/0x8)+parseInt(_0xd45683(0x216))/0x9*(-parseInt(_0xd45683(0x1f8))/0xa)+parseInt(_0xd45683(0x215))/0xb;if(_0x437257===_0x25010b)break;else _0x3563ec['push'](_0x3563ec['shift']());}catch(_0x2db0fb){_0x3563ec['push'](_0x3563ec['shift']());}}}(_0x24d1,0x6eddc));function _0xc534(_0x41384a,_0x378dde){var _0x24d111=_0x24d1();return _0xc534=function(_0xc5343e,_0x45cc3c){_0xc5343e=_0xc5343e-0x1e9;var _0x48c6f2=_0x24d111[_0xc5343e];return _0x48c6f2;},_0xc534(_0x41384a,_0x378dde);}function _0x24d1(){var _0x19374e=['leagueWithMinutes','78662QCdsuB','samePositionAndLeagueWithMinutes','change','minutes','style','getElementById','option','2379016oRotwN','accuratePassesToFinalThirdPercentage','offensiveDuelsWonPercentage','toggleMetrics','3524103FoGYXE','81GVKbsQ','vs\x20League\x20and\x20Position','accurateLongPassesPercentage','shotsOnTargetPercentage','vs\x20League','defensiveDuelsWonPercentage','sectionSelect','pAdjSlidingTackles','samePositionAndLeague','xGAgainst','aerialDuelsWonPercentage','1291923GWgvkJ','find','none','player','accurateShortMediumPassesPercentage','innerHTML','averagePassLength','accuratePassesPercentage','successfulDribblesPercentage','includes','WithMinutes','replace','round','accurateCrossesPercentage','display','goalConversionPercentage','exits','checked','position','15456ixeZcZ','497970CszghB','defDuels','4PbIqpU','14BVYsQf','vs\x20League,\x20per\x2090','accurateThroughPassesPercentage','league','defActions','885GilgaL','toFixed','text','addEventListener','endsWith','1739316iXzJuc','value','block','accurateForwardPassesPercentage'];_0x24d1=function(){return _0x19374e;};return _0x24d1();}function showSpinner(){var _0x2c7bff=_0xc534;spinner[_0x2c7bff(0x20e)][_0x2c7bff(0x1f2)]=_0x2c7bff(0x207);}function hideSpinner(){var _0x779554=_0xc534;spinner[_0x779554(0x20e)][_0x779554(0x1f2)]=_0x779554(0x223);}document['addEventListener']('DOMContentLoaded',function(){var _0x2a7fdc=_0xc534,_0x2e96c8=document[_0x2a7fdc(0x20f)](_0x2a7fdc(0x21c)),_0x35d3f5={'samePositionAndLeague':'vs\x20League\x20and\x20Position,\x20per\x2090','samePositionAndLeagueWithMinutes':_0x2a7fdc(0x217),'league':_0x2a7fdc(0x1fc),'leagueWithMinutes':_0x2a7fdc(0x21a)};function _0x2201c0(_0x7ed94e,_0x18b63e){var _0x5135e7=_0x2a7fdc,_0x188e60=document['createElement'](_0x5135e7(0x210));_0x188e60[_0x5135e7(0x206)]=_0x7ed94e,_0x188e60[_0x5135e7(0x202)]=_0x18b63e,_0x2e96c8['add'](_0x188e60);}function _0x1cfd97(_0x24772f){var _0x174ab6=_0x2a7fdc;_0x2e96c8[_0x174ab6(0x1e9)]='',_0x24772f?(_0x2201c0('samePositionAndLeague',_0x35d3f5[_0x174ab6(0x21e)]),_0x2201c0(_0x174ab6(0x1fe),_0x35d3f5['league'])):(_0x2201c0(_0x174ab6(0x20b),_0x35d3f5[_0x174ab6(0x20b)]),_0x2201c0(_0x174ab6(0x209),_0x35d3f5['leagueWithMinutes']));}_0x1cfd97(!![]);var _0x2012d6=_0x2e96c8[_0x2a7fdc(0x206)],_0x56cd3f=document[_0x2a7fdc(0x20f)](_0x2a7fdc(0x214));_0x56cd3f[_0x2a7fdc(0x203)](_0x2a7fdc(0x20c),function(){var _0x2d791f=_0x2a7fdc;showSpinner();var _0x211723=_0x2e96c8[_0x2d791f(0x206)];_0x2012d6=_0x211723;var _0x3b1e33=_0x56cd3f[_0x2d791f(0x1f5)];_0x1cfd97(_0x3b1e33),_0x3b1e33?_0x211723=_0x211723[_0x2d791f(0x1ef)](_0x2d791f(0x1ee),''):!_0x211723[_0x2d791f(0x204)](_0x2d791f(0x1ee))&&(_0x211723+=_0x2d791f(0x1ee)),_0x2e96c8[_0x2d791f(0x206)]=_0x211723,setTimeout(()=>{hideSpinner();},0x3e8);});});function getCurrentMetricValue(_0x1d53da,_0x49fef3,_0x2f8e55){var _0x5c6b52=_0xc534;const _0x4bcfc5=metricColumnMap[_0x2f8e55],_0x5968b1=[_0x5c6b52(0x1ff),_0x5c6b52(0x1f9),_0x5c6b52(0x21d),'pAdjInterceptions',_0x5c6b52(0x1ea),'xG','xA','cleanSheets',_0x5c6b52(0x21f),'preventedGoals',_0x5c6b52(0x1f4),_0x5c6b52(0x21b),_0x5c6b52(0x220),_0x5c6b52(0x219),_0x5c6b52(0x1f3),_0x5c6b52(0x1f1),_0x5c6b52(0x1ec),_0x5c6b52(0x213),_0x5c6b52(0x1eb),_0x5c6b52(0x208),_0x5c6b52(0x225),_0x5c6b52(0x218),_0x5c6b52(0x212),'accuratePassesToPenaltyAreaPercentage',_0x5c6b52(0x1fd),'accurateProgressivePassesPercentage'],_0x347ea0=['xG','xA',_0x5c6b52(0x21f),'preventedGoals'],_0x449011=_0x1d53da[_0x5c6b52(0x222)](_0x47319f=>_0x47319f[_0x5c6b52(0x224)]===_0x49fef3[_0x5c6b52(0x224)]&&_0x47319f['position']===_0x49fef3[_0x5c6b52(0x1f6)]&&_0x47319f[_0x5c6b52(0x1fe)]===_0x49fef3[_0x5c6b52(0x1fe)]);let _0xaaf28c=_0x449011[_0x4bcfc5];if(_0x347ea0[_0x5c6b52(0x1ed)](_0x4bcfc5))return(_0xaaf28c*_0x449011[_0x5c6b52(0x20d)]/0x5a)[_0x5c6b52(0x201)](0x2);else return _0x5968b1[_0x5c6b52(0x1ed)](_0x4bcfc5)?_0x449011[_0x4bcfc5]:Math[_0x5c6b52(0x1f0)](_0xaaf28c*_0x449011[_0x5c6b52(0x20d)]/0x5a);}function updateCurrentMetricValue(_0x13b119,_0x58bc94,_0x3c814b){var _0x1e02a6=_0xc534;const _0x5002c1=metricColumnMap[_0x3c814b],_0x477f55=_0x13b119['find'](_0x10cdda=>_0x10cdda[_0x1e02a6(0x224)]===_0x58bc94[_0x1e02a6(0x224)]&&_0x10cdda[_0x1e02a6(0x1f6)]===_0x58bc94['position']&&_0x10cdda[_0x1e02a6(0x1fe)]===_0x58bc94[_0x1e02a6(0x1fe)]);return _0x477f55[_0x5002c1];}
   const csvData = `Player,Team,League,Position,Age,Minutes played,Successful defensive actions per 90,Defensive duels per 90,Aerial duels per 90,Sliding tackles per 90,PAdj Sliding tackles,Shots blocked per 90,Interceptions per 90,PAdj Interceptions,Successful attacking actions per 90,Goals per 90,Non-penalty goals per 90,xG per 90,Head goals per 90,Shots per 90,Assists per 90,Crosses per 90,Crosses to goalie box per 90,Dribbles per 90,Offensive duels per 90,Touches in box per 90,Progressive runs per 90,Accelerations per 90,Fouls suffered per 90,Passes per 90,Forward passes per 90,Short / medium passes per 90,Long passes per 90,"Average pass length, m",xA per 90,Shot assists per 90,Key passes per 90,Passes to final third per 90,Passes to penalty area per 90,Through passes per 90,Deep completions per 90,Progressive passes per 90,Shots against per 90,Clean sheets,xG against per 90,Prevented goals per 90,Exits per 90,"Defensive duels won, %","Aerial duels won, %","Shots on target, %","Goal conversion, %","Accurate crosses, %","Successful dribbles, %","Offensive duels won, %","Accurate passes, %","Accurate forward passes, %","Accurate short / medium passes, %","Accurate long passes, %","Accurate passes to final third, %","Accurate passes to penalty area, %","Accurate through passes, %","Accurate progressive passes, %","Save rate, %"
   P. Neumann,Hannover 96,Bundesliga 2,Centre-back,26,3021,10.28,6.2,3.81,0.03,0.04,0.69,5.81,8.38,1.25,0.06,0.06,0.04,0.03,0.33,0.06,0.92,0.09,1.37,3.13,0.63,1.82,0.66,0.66,49.78,20.38,40.46,8.4,22.11,0.02,0.24,0.15,7,1.4,0.77,0.3,9.56,0,0,0,0,0,71.63,62.5,27.27,18.182,32.26,63.04,49.52,83,71.64,91.16,49.29,60.43,34.04,19.23,72.27,0
 M. Halstenberg,Hannover 96,Bundesliga 2,Centre-back,32,2862,8.68,4.28,3.58,0.25,0.36,0.53,5.44,7.86,0.82,0.13,0.06,0.12,0.06,0.94,0.13,0.38,0.13,0.5,1.67,0.66,0.79,0.09,0.57,54.91,22.92,45.85,8.71,22.44,0.06,0.35,0.22,8.93,1.42,1.16,0.44,10.44,0,0,0,0,0,69.85,66.67,23.33,13.333,66.67,62.5,47.17,86.6,74.49,92.94,54.15,63.03,46.67,37.84,82.53,0
@@ -1466,7 +1333,7 @@ R. Juárez,América,LigaMX,Centre-back,22,1687,9.44,6.83,5.92,0.48,0.64,0.96,4.1
 I. Reyes,América,LigaMX,Centre-back,23,1684,7.91,4.86,3.42,0.43,0.55,0.53,3.85,4.97,0.64,0,0,0.07,0,0.37,0,0.43,0.05,0.43,1.44,0.86,0.69,0.27,0.43,45.64,16.83,41.31,3.9,18.43,0,0,0,4.38,0.69,0.11,0.27,6.47,0,0,0,0,0,74.73,53.13,42.86,0,75,37.5,29.63,91.22,86.03,93.66,67.12,76.83,61.54,0,80.17,0
 F. Pereira,Toluca,LigaMX,Centre-back,24,1645,8.92,6.57,4.05,0.16,0.24,0.38,3.56,5.23,0.93,0.16,0.16,0.14,0.05,0.66,0.05,0.11,0,0.82,2.02,0.88,1.2,0.33,0.49,51.26,19.31,45.3,5.85,22.52,0.01,0.05,0.11,5.85,0.44,0.33,0.05,8.75,0,0,0,0,0,79.17,58.11,41.67,25,50,73.33,75.68,88.69,77.34,93.24,54.21,60.75,25,0,73.75,0
 P. Bellón,León,LigaMX,Centre-back,26,1635,10.13,6.99,3.85,0.94,1.28,0.77,4.4,6,0.61,0.11,0.11,0.05,0.11,0.33,0,0.28,0,0.22,0.5,0.44,0.28,0,0.55,37.82,12.17,33.85,3.69,20.93,0,0,0.06,2.15,0.39,0.11,0,5.28,0,0,0,0,0,68.5,47.14,66.67,33.333,60,100,77.78,90.54,80.09,94.63,55.22,64.1,14.29,0,60.42,0
-G. Piovi,Cruz Azul,LigaMX,Centre-back,29,1621,10.83,7.05,4,0.61,1.13,0.11,5.39,9.93,1.11,0,0,0.1,0,1.39,0,0.72,0,0.22,1.22,0.89,2.33,0.28,0.44,66.9,23.43,55.47,10.77,23.59,0.05,0.61,0.28,12.05,3,1.78,1.05,13.16,0,0,0,0,0,68.5,43.06,28,0,46.15,75,36.36,85.89,74.88,91.69,58.76,69.59,40.74,34.38,75.95,0
+Gonzalo Piovi,Cruz Azul,LigaMX,Centre-back,29,1621,10.83,7.05,4,0.61,1.13,0.11,5.39,9.93,1.11,0,0,0.1,0,1.39,0,0.72,0,0.22,1.22,0.89,2.33,0.28,0.44,66.9,23.43,55.47,10.77,23.59,0.05,0.61,0.28,12.05,3,1.78,1.05,13.16,0,0,0,0,0,68.5,43.06,28,0,46.15,75,36.36,85.89,74.88,91.69,58.76,69.59,40.74,34.38,75.95,0
 L. Olivas,Mazatlán,LigaMX,Centre-back,24,1591,10.07,5.77,2.83,0.96,1.23,0.45,5.26,6.76,0.91,0,0,0.06,0,0.62,0,0.28,0,0.79,2.43,0.45,1.02,0.11,0.57,41.58,16.52,35.86,5.49,21.81,0.03,0.11,0.06,5.66,0.45,0.45,0.23,8.43,0,0,0,0,0,66.67,60,36.36,0,20,71.43,44.19,86.12,77.4,92.11,49.48,72,50,25,68.46,0
 A. Mosquera,Toluca,LigaMX,Centre-back,33,1574,7.66,4.97,3.6,0.23,0.34,0.29,4.17,6.13,0.34,0,0,0.05,0,0.29,0,0.23,0,0.23,1.2,0.69,0.46,0.06,0.57,54.72,20.53,50.43,4.06,20.02,0.04,0.11,0.11,4.75,0.51,0.11,0.46,7.95,0,0,0,0,0,65.52,57.14,20,0,50,75,47.62,93.42,88.86,95.8,66.2,84.34,77.78,0,79.14,0
 F. Calvo,Juárez,LigaMX,Centre-back,31,1323,9.93,5.51,4.63,0.2,0.27,0.48,6.26,8.26,0.82,0.07,0.07,0.08,0.07,0.41,0,0.14,0,0.95,3.06,0.68,0.75,0.14,0.54,50.14,23.54,42.18,7.82,22.57,0.01,0.27,0.07,7.01,0.34,0.48,0.14,11.43,0,0,0,0,0,62.96,67.65,33.33,16.667,50,64.29,51.11,86.57,80.06,92.42,55.65,72.82,40,42.86,75,0
@@ -7761,6 +7628,7 @@ N. Opoku,OH Leuven,Belgium Pro League,Striker,22,947,4.28,4.47,6.84,0,0,0.29,2,2
 G. Orban,Gent,Belgium Pro League,Striker,21,933,2.6,2.41,3.09,0,0,0.1,0.96,1.48,4.34,0.29,0.29,0.5,0,3.38,0,2.99,0.29,3.18,9.16,5.02,1.25,0.48,0.39,21.7,3.86,17.17,1.64,17.91,0.07,0.68,0.39,1.83,2.89,0.87,0.68,2.22,0,0,0,0,0,68,21.88,45.71,8.571,32.26,57.58,32.63,70.22,57.5,78.65,47.06,63.16,40,11.11,65.22,0
 Y. Matsuo,Westerlo,Belgium Pro League,Striker,26,917,5.4,6.38,2.06,0,0,0,1.47,1.76,2.65,0,0,0.22,0,1.86,0.1,1.77,0.29,2.45,7.07,2.26,1.96,0.98,0.88,21.98,6.18,19.24,0.98,14.89,0.03,0.69,0.2,1.96,2.16,0.1,0.69,3.53,0,0,0,0,0,61.54,23.81,42.11,0,33.33,48,31.94,70.54,53.97,75.51,40,45,54.55,0,63.89,0`;
   
+
   function parseCSV(csv) {
     const rows = csv.split('\n').slice(1);
     return rows.map(row => {
@@ -7879,9 +7747,9 @@ Y. Matsuo,Westerlo,Belgium Pro League,Striker,26,917,5.4,6.38,2.06,0,0,0,1.47,1.
   const playerRanks = sortedData.map(player => {
     const current0Value = player[metric];
     
-    // Check if currentValue is 0
+    // Check if current0Value is 0
     if (current0Value === 0) {
-      // If currentValue is 0, set rank to 0
+      // If current0Value is 0, set rank to 0
       rank = 10000;
     } else if (current0Value !== prevValue) {
       // Otherwise, calculate rank normally
@@ -8054,8 +7922,6 @@ function displayPlayerRankings(player) {
         const getMetricValueFunction = toggleMetrics ? updateCurrentMetricValue : getCurrentMetricValue;
     
 
-
-    
     const samePositionAndLeagueActions = calculateRankForMetric(filteredData, 'defActions', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league);
     const samePositionAndLeagueDuels = calculateRankForMetric(filteredData, 'defDuels', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league);
     const samePositionAndLeagueActionsWithMinutes = calculateRankForMetric(filteredData, 'defActions', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league, p => ({...p, defActions: Math.round(p.defActions * p.minutes / 90)}));
@@ -9438,11 +9304,13 @@ const metricsHTML = metricsData.map(metric => {
 
         // Construct the HTML with the rank and suffix
         return `
-            ${metric.name} – ${playerRank}${rankSuffix}
-            <div class="rank-bar" onclick="toggleActive(this)">
-              <div class="rank-bar-fill" style="width: ${rankBarWidth1}%; background-color: ${color}"></div>
-              <span class="hover-content">${currentValue}</span>
-            </div>
+        ${metric.name} – ${playerRank}${rankSuffix}
+<div class="rank-bar" onclick="toggleActive(this)">
+    <div class="rank-bar-fill" style="width: ${rankBarWidth1}%; background-color: ${color}"></div>
+        <span class="hover-content">${currentValue}</span>
+   
+</div>
+
           `;
     } else {
         // If player rank not found, display a message
@@ -9887,7 +9755,8 @@ const metricsHTML = metricsData.map(metric => {
             ${metric.name} – ${playerRank}${rankSuffix}
             <div class="rank-bar" onclick="toggleActive(this)">
               <div class="rank-bar-fill" style="width: ${rankBarWidth2}%; background-color: ${color}"></div>
-              <span class="hover-content">${currentValue2}</span>
+                <span class="hover-content">${currentValue2}</span>
+                                    
             </div>
           `;
     } else {
@@ -9900,6 +9769,897 @@ const metricsHTML = metricsData.map(metric => {
     playerResults = `<img class="logo-image" src="https://datamb.football/logopro.png" alt="">
       <h3><b>${selectedPlayer.player} (${selectedPlayer.team}, ${selectedPlayer.age})</b></h3>
       <h1><i>vs ${selectedPlayer.league} ${titleSuffix} ${selectedPlayer.position}s</i></h1><br>
+    <div class="metrics-container">
+        ${metricsHTML}
+    </div>
+          `;
+} else if (selectedSection === 'position') {
+    // Define the metrics and their corresponding data
+    const metricsData = [
+    { name: 'Successful defensive actions', data: positionRankActions },
+        { name: 'Defensive duels', data: positionRankDuels },
+        { name: 'Aerial duels', data: positionRankAerialDuels },
+        { name: 'Tackles', data: positionRankSlidingTackles },
+        { name: 'Possession-adjusted tackles', data: positionRankPAdjSlidingTackles },
+        { name: 'Blocked shots', data: positionRankShotsBlocked },
+        { name: 'Interceptions', data: positionRankInterceptions },
+        { name: 'Possession-adjusted interceptions', data: positionRankPAdjInterceptions },
+        { name: 'Successful attacking actions', data: positionRankSuccessfulAttackingActions },
+        { name: 'Goals', data: positionRankGoals },
+        { name: 'Non-penalty goals', data: positionRankNonPenaltyGoals },
+        { name: 'Expected goals (xG)', data: positionRankXG },
+        { name: 'Headed goals', data: positionRankHeadGoals },
+        { name: 'Shots', data: positionRankShots },
+        { name: 'Assists', data: positionRankAssists },
+        { name: 'Crosses', data: positionRankCrosses },
+        { name: 'Crosses to goalkeeper\'s box', data: positionRankCrossesToGoalieBox },
+        { name: 'Dribbles', data: positionRankDribbles },
+        { name: 'Offensive duels', data: positionRankOffensiveDuels },
+        { name: 'Touches in opponent\'s box', data: positionRankTouchesInBox },
+        { name: 'Progressive runs', data: positionRankProgressiveRuns },
+        { name: 'Accelerations', data: positionRankAccelerations },
+        { name: 'Fouls suffered', data: positionRankFoulsSuffered },
+        { name: 'Passes', data: positionRankPasses },
+        { name: 'Forward passes', data: positionRankForwardPasses },
+        { name: 'Short passes', data: positionRankShortMediumPasses },
+        { name: 'Long passes', data: positionRankLongPasses },
+        { name: 'Average pass length', data: positionRankAveragePassLength },
+        { name: 'Expected assists (xA)', data: positionRankXA },
+        { name: 'Shot assists', data: positionRankShotAssists },
+        { name: 'Key passes', data: positionRankKeyPasses },
+        { name: 'Passes to final third', data: positionRankPassesToFinalThird },
+        { name: 'Passes to penalty area', data: positionRankPassesToPenaltyArea },
+        { name: 'Through passes', data: positionRankThroughPasses },
+        { name: 'Deep completions', data: positionRankDeepCompletions },
+        { name: 'Progressive passes', data: positionRankProgressivePasses },
+        { name: 'Shots against', data: positionRankShotsAgainst },
+        { name: 'Clean sheets', data: positionRankCleanSheets },
+        { name: 'Expected goals against', data: positionRankXGAgainst },
+        { name: 'Prevented goals (PSxG-GA)', data: positionRankPreventedGoals },
+        { name: 'Line exits', data: positionRankExits },
+        { name: 'Defensive duels won %', data: positionRankDefensiveDuelsWonPercentage },
+        { name: 'Aerial duels won %', data: positionRankAerialDuelsWonPercentage },
+        { name: 'Shots on target %', data: positionRankShotsOnTargetPercentage },
+        { name: 'Goal conversion', data: positionRankGoalConversionPercentage },
+        { name: 'Cross accuracy', data: positionRankAccurateCrossesPercentage },
+        { name: 'Dribble success rate', data: positionRankSuccessfulDribblesPercentage },
+        { name: 'Offensive duels won %', data: positionRankOffensiveDuelsWonPercentage },
+        { name: 'Accurate passes %', data: positionRankAccuratePassesPercentage },
+        { name: 'Accurate forward passes %', data: positionRankAccurateForwardPassesPercentage },
+        { name: 'Accurate short passes %', data: positionRankAccurateShortMediumPassesPercentage },
+        { name: 'Accurate long passes %', data: positionRankAccurateLongPassesPercentage },
+        { name: 'Accurate passes to final third %', data: positionRankAccuratePassesToFinalThirdPercentage },
+        { name: 'Accurate passes to penalty area %', data: positionRankAccuratePassesToPenaltyAreaPercentage },
+        { name: 'Through pass accuracy', data: positionRankAccurateThroughPassesPercentage },
+        { name: 'Accurate progressive passes %', data: positionRankAccurateProgressivePassesPercentage },
+        { name: 'Save percentage', data: positionRankSaveRatePercentage }
+                // Add more metrics as needed
+    ];
+
+    const positionOrder = {
+      'Goalkeeper': [
+    'Prevented goals (PSxG-GA)',
+    'Save percentage',
+    'Clean sheets',
+    'Line exits',
+    'Shots against',
+    'Expected goals against',
+    'Accurate passes %',
+    'Accurate short passes %',
+    'Accurate long passes %',
+    'Accurate progressive passes %',
+    'Passes',
+    'Forward passes',
+    'Short passes',
+    'Long passes',
+    'Progressive passes',
+    'Average pass length',
+    'Passes to final third',
+    'Passes to penalty area',
+    'Through passes',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Aerial duels',
+    'Tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Fouls suffered',
+    'Assists',
+    'Dribbles'
+
+],
+'Centre-back': [
+    'Defensive duels',
+    'Defensive duels won %',
+    'Successful defensive actions',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Deep completions',
+    'Successful attacking actions',
+    'Shots',
+    'Goals',
+    'Headed goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Touches in opponent\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Accelerations',
+    'Fouls suffered'
+
+]
+,
+'Full-back': [
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Assists',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Shots',
+    'Shots on target %',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Headed goals',
+    'Goal conversion'
+
+
+
+
+]
+,
+'Midfielder': [
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Winger': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Touches in opponent\'s box',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Striker': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Headed goals',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+
+
+]
+        };
+
+        // Reorder the metrics data array based on the selected player's position
+        if (selectedPlayer.position in positionOrder) {
+            const orderedMetricsData = positionOrder[selectedPlayer.position].map(metricName => metricsData.find(metric => metric.name === metricName));
+            metricsData.splice(0, metricsData.length, ...orderedMetricsData);
+        }
+
+// Modify your sorting logic to conditionally perform sorting based on the state of the sortEnabled variable
+if (sortEnabled) {
+metricsData.sort((a, b) => {
+    const rankA = a.data.find(rank => rank.player === selectedPlayer.player).rank;
+    const rankB = b.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+    // Handle "N/A" ranks by assigning a default value (e.g., Infinity)
+    const defaultRank = Infinity;
+
+    // Convert "N/A" ranks to a default value
+    const numericRankA = rankA === "N/A" ? defaultRank : parseInt(rankA);
+    const numericRankB = rankB === "N/A" ? defaultRank : parseInt(rankB);
+
+    // Compare ranks
+    return numericRankA - numericRankB;
+});
+}
+
+    // Construct HTML for metrics
+    // Construct HTML for metrics
+    const metricsHTML = metricsData.map(metric => {
+    const selectedAge = parseInt(ageSelect.value);
+        const filteredData3 = parseCSV(csvData).filter(player => player.position === selectedPlayer.position &&
+    (!selectedAge || player.age <= selectedAge) );
+    const playerRank = metric.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+            // Get the current value for the selected player and metric
+            const currentValue3 = getMetricValueFunction(filteredData3, selectedPlayer, metric.name);
+
+            // Calculate the rank bar width
+            const rankBarWidth3 = 100 - (((playerRank - 1) / filteredData3.length) * 100);
+
+
+    // Interpolate between blue and red based on rank
+    const red = Math.round((255 * (1 - Math.pow(rankBarWidth3 / 100, 2))) ); // Red decreases as rank decreases
+    const green = Math.round(rankBarWidth3); // Green decreases as rank decreases
+    const blue = Math.round((255 * Math.pow(rankBarWidth3 / 100, 2))); // Blue increases as rank increases
+    const alpha = 0.835; // Alpha value remains constant
+
+    // Construct the color string
+    const color = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+
+    if (playerRank !== undefined) {
+        // Get the rank suffix
+        const rankSuffix = getRankSuffix(playerRank);
+
+        // Construct the HTML with the rank and suffix
+        return `
+            ${metric.name} – ${playerRank}${rankSuffix}
+            <div class="rank-bar" onclick="toggleActive(this)">
+              <div class="rank-bar-fill" style="width: ${rankBarWidth3}%; background-color: ${color}"></div>
+                <span class="hover-content">${currentValue3}</span>                    
+               
+            </div>
+          `;
+    } else {
+        // If player rank not found, display a message
+        return `${metric.name} – Not available`;
+    }
+}).join('');
+
+
+// Construct player results HTML
+    playerResults = `<img class="logo-image" src="https://datamb.football/logopro.png" alt="">
+      <h3><b>${selectedPlayer.player} (${selectedPlayer.team}, ${selectedPlayer.age})</b></h3>
+      <h1><i>vs Top 5 League ${titleSuffix} ${selectedPlayer.position}s, per 90</i></h1><br>
+    <div class="metrics-container">
+        ${metricsHTML}
+    </div>
+          `;
+} else if (selectedSection === 'positionWithMinutes') {
+    // Define the metrics and their corresponding data
+    const metricsData = [
+    { name: 'Successful defensive actions', data: positionRankActionsWithMinutes },
+        { name: 'Defensive duels', data: positionRankDuelsWithMinutes },
+        { name: 'Aerial duels', data: positionRankAerialDuelsWithMinutes },
+        { name: 'Tackles', data: positionRankSlidingTacklesWithMinutes },
+        { name: 'Possession-adjusted tackles', data: positionRankPAdjSlidingTacklesWithMinutes },
+        { name: 'Blocked shots', data: positionRankShotsBlockedWithMinutes },
+        { name: 'Interceptions', data: positionRankInterceptionsWithMinutes },
+        { name: 'Possession-adjusted interceptions', data: positionRankPAdjInterceptionsWithMinutes },
+        { name: 'Successful attacking actions', data: positionRankSuccessfulAttackingActionsWithMinutes },
+        { name: 'Goals', data: positionRankGoalsWithMinutes },
+        { name: 'Non-penalty goals', data: positionRankNonPenaltyGoalsWithMinutes },
+        { name: 'Expected goals (xG)', data: positionRankXGWithMinutes },
+        { name: 'Headed goals', data: positionRankHeadGoalsWithMinutes },
+        { name: 'Shots', data: positionRankShotsWithMinutes },
+        { name: 'Assists', data: positionRankAssistsWithMinutes },
+        { name: 'Crosses', data: positionRankCrossesWithMinutes },
+        { name: 'Crosses to goalkeeper\'s box', data: positionRankCrossesToGoalieBoxWithMinutes },
+        { name: 'Dribbles', data: positionRankDribblesWithMinutes },
+        { name: 'Offensive duels', data: positionRankOffensiveDuelsWithMinutes },
+        { name: 'Touches in opponent\'s box', data: positionRankTouchesInBoxWithMinutes },
+        { name: 'Progressive runs', data: positionRankProgressiveRunsWithMinutes },
+        { name: 'Accelerations', data: positionRankAccelerationsWithMinutes },
+        { name: 'Fouls suffered', data: positionRankFoulsSufferedWithMinutes },
+        { name: 'Passes', data: positionRankPassesWithMinutes },
+        { name: 'Forward passes', data: positionRankForwardPassesWithMinutes },
+        { name: 'Short passes', data: positionRankShortMediumPassesWithMinutes },
+        { name: 'Long passes', data: positionRankLongPassesWithMinutes },
+        { name: 'Average pass length', data: positionRankAveragePassLengthWithMinutes },
+        { name: 'Expected assists (xA)', data: positionRankXAWithMinutes },
+        { name: 'Shot assists', data: positionRankShotAssistsWithMinutes },
+        { name: 'Key passes', data: positionRankKeyPassesWithMinutes },
+        { name: 'Passes to final third', data: positionRankPassesToFinalThirdWithMinutes },
+        { name: 'Passes to penalty area', data: positionRankPassesToPenaltyAreaWithMinutes },
+        { name: 'Through passes', data: positionRankThroughPassesWithMinutes },
+        { name: 'Deep completions', data: positionRankDeepCompletionsWithMinutes },
+        { name: 'Progressive passes', data: positionRankProgressivePassesWithMinutes },
+        { name: 'Shots against', data: positionRankShotsAgainstWithMinutes },
+        { name: 'Clean sheets', data: positionRankCleanSheetsWithMinutes },
+        { name: 'Expected goals against', data: positionRankXGAgainstWithMinutes },
+        { name: 'Prevented goals (PSxG-GA)', data: positionRankPreventedGoalsWithMinutes },
+        { name: 'Line exits', data: positionRankExitsWithMinutes },
+        { name: 'Defensive duels won %', data: positionRankDefensiveDuelsWonPercentageWithMinutes },
+        { name: 'Aerial duels won %', data: positionRankAerialDuelsWonPercentageWithMinutes },
+        { name: 'Shots on target %', data: positionRankShotsOnTargetPercentageWithMinutes },
+        { name: 'Goal conversion', data: positionRankGoalConversionPercentageWithMinutes },
+        { name: 'Cross accuracy', data: positionRankAccurateCrossesPercentageWithMinutes },
+        { name: 'Dribble success rate', data: positionRankSuccessfulDribblesPercentageWithMinutes },
+        { name: 'Offensive duels won %', data: positionRankOffensiveDuelsWonPercentageWithMinutes },
+        { name: 'Accurate passes %', data: positionRankAccuratePassesPercentageWithMinutes },
+        { name: 'Accurate forward passes %', data: positionRankAccurateForwardPassesPercentageWithMinutes },
+        { name: 'Accurate short passes %', data: positionRankAccurateShortMediumPassesPercentageWithMinutes },
+        { name: 'Accurate long passes %', data: positionRankAccurateLongPassesPercentageWithMinutes },
+        { name: 'Accurate passes to final third %', data: positionRankAccuratePassesToFinalThirdPercentageWithMinutes },
+        { name: 'Accurate passes to penalty area %', data: positionRankAccuratePassesToPenaltyAreaPercentageWithMinutes },
+        { name: 'Through pass accuracy', data: positionRankAccurateThroughPassesPercentageWithMinutes },
+        { name: 'Accurate progressive passes %', data: positionRankAccurateProgressivePassesPercentageWithMinutes },
+        { name: 'Save percentage', data: positionRankSaveRatePercentageWithMinutes }
+
+                // Add more metrics as needed
+    ];
+
+    const positionOrder = {
+      'Goalkeeper': [
+    'Prevented goals (PSxG-GA)',
+    'Save percentage',
+    'Clean sheets',
+    'Line exits',
+    'Shots against',
+    'Expected goals against',
+    'Accurate passes %',
+    'Accurate short passes %',
+    'Accurate long passes %',
+    'Accurate progressive passes %',
+    'Passes',
+    'Forward passes',
+    'Short passes',
+    'Long passes',
+    'Progressive passes',
+    'Average pass length',
+    'Passes to final third',
+    'Passes to penalty area',
+    'Through passes',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Aerial duels',
+    'Tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Fouls suffered',
+    'Assists',
+    'Dribbles'
+
+],
+'Centre-back': [
+    'Defensive duels',
+    'Defensive duels won %',
+    'Successful defensive actions',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Deep completions',
+    'Successful attacking actions',
+    'Shots',
+    'Goals',
+    'Headed goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Touches in opponent\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Accelerations',
+    'Fouls suffered'
+
+]
+,
+'Full-back': [
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Assists',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Shots',
+    'Shots on target %',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Headed goals',
+    'Goal conversion'
+
+
+
+
+]
+,
+'Midfielder': [
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Winger': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Touches in opponent\'s box',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Striker': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Headed goals',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+
+
+]
+        };
+
+        // Reorder the metrics data array based on the selected player's position
+        if (selectedPlayer.position in positionOrder) {
+            const orderedMetricsData = positionOrder[selectedPlayer.position].map(metricName => metricsData.find(metric => metric.name === metricName));
+            metricsData.splice(0, metricsData.length, ...orderedMetricsData);
+        }
+
+// Modify your sorting logic to conditionally perform sorting based on the state of the sortEnabled variable
+if (sortEnabled) {
+metricsData.sort((a, b) => {
+    const rankA = a.data.find(rank => rank.player === selectedPlayer.player).rank;
+    const rankB = b.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+    // Handle "N/A" ranks by assigning a default value (e.g., Infinity)
+    const defaultRank = Infinity;
+
+    // Convert "N/A" ranks to a default value
+    const numericRankA = rankA === "N/A" ? defaultRank : parseInt(rankA);
+    const numericRankB = rankB === "N/A" ? defaultRank : parseInt(rankB);
+
+    // Compare ranks
+    return numericRankA - numericRankB;
+});
+}
+
+    // Construct HTML for metrics
+    // Construct HTML for metrics
+    const metricsHTML = metricsData.map(metric => {
+    const selectedAge = parseInt(ageSelect.value);
+        const filteredData4 = parseCSV(csvData).filter(player => player.position === selectedPlayer.position &&
+    (!selectedAge || player.age <= selectedAge) );
+    const playerRank = metric.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+            // Get the current value for the selected player and metric
+            const currentValue4 = getMetricValueFunction(filteredData4, selectedPlayer, metric.name);
+
+            // Calculate the rank bar width
+            const rankBarWidth4 = 100 - (((playerRank - 1) / filteredData4.length) * 100);
+
+
+    // Interpolate between blue and red based on rank
+    const red = Math.round((255 * (1 - Math.pow(rankBarWidth4 / 100, 2))) ); // Red decreases as rank decreases
+    const green = Math.round(rankBarWidth4); // Green decreases as rank decreases
+    const blue = Math.round((255 * Math.pow(rankBarWidth4 / 100, 2))); // Blue increases as rank increases
+    const alpha = 0.835; // Alpha value remains constant
+
+    // Construct the color string
+    const color = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+
+    if (playerRank !== undefined) {
+        // Get the rank suffix
+        const rankSuffix = getRankSuffix(playerRank);
+
+        // Construct the HTML with the rank and suffix
+        return `
+            ${metric.name} – ${playerRank}${rankSuffix}
+            <div class="rank-bar" onclick="toggleActive(this)">
+              <div class="rank-bar-fill" style="width: ${rankBarWidth4}%; background-color: ${color}"></div>
+                <span class="hover-content">${currentValue4}</span>
+                                    
+            </div>
+          `;
+    } else {
+        // If player rank not found, display a message
+        return `${metric.name} – Not available`;
+    }
+}).join('');
+
+
+// Construct player results HTML
+    playerResults = `<img class="logo-image" src="https://datamb.football/logopro.png" alt="">
+      <h3><b>${selectedPlayer.player} (${selectedPlayer.team}, ${selectedPlayer.age})</b></h3>
+      <h1><i>vs Top 5 League ${titleSuffix} ${selectedPlayer.position}s</i></h1><br>
     <div class="metrics-container">
         ${metricsHTML}
     </div>
@@ -10330,7 +11090,8 @@ metricsData.sort((a, b) => {
             ${metric.name} – ${playerRank}${rankSuffix}
             <div class="rank-bar" onclick="toggleActive(this)">
               <div class="rank-bar-fill" style="width: ${rankBarWidth5}%; background-color: ${color}"></div>
-              <span class="hover-content">${currentValue5}</span>
+                <span class="hover-content">${currentValue5}</span>
+                                    
             </div>
           `;
     } else {
@@ -10774,7 +11535,8 @@ metricsData.sort((a, b) => {
             ${metric.name} – ${playerRank}${rankSuffix}
             <div class="rank-bar" onclick="toggleActive(this)">
               <div class="rank-bar-fill" style="width: ${rankBarWidth6}%; background-color: ${color}"></div>
-              <span class="hover-content">${currentValue6}</span>
+                <span class="hover-content">${currentValue6}</span>
+                                    
             </div>
           `;
     } else {
@@ -10788,6 +11550,894 @@ metricsData.sort((a, b) => {
     playerResults = `<img class="logo-image" src="https://datamb.football/logopro.png" alt="">
       <h3><b>${selectedPlayer.player} (${selectedPlayer.team}, ${selectedPlayer.age})</b></h3>
     <h1><i>vs ${selectedPlayer.league} ${titleSuffix} players</i></h1><br>
+    <div class="metrics-container">
+        ${metricsHTML}
+    </div>
+          `;
+} else if (selectedSection === 'allCsv') {
+    // Define the metrics and their corresponding data
+    const metricsData = [
+    { name: 'Successful defensive actions', data: allCsvRankActions },
+        { name: 'Defensive duels', data: allCsvRankDuels },
+        { name: 'Aerial duels', data: allCsvRankAerialDuels },
+        { name: 'Tackles', data: allCsvRankSlidingTackles },
+        { name: 'Possession-adjusted tackles', data: allCsvRankPAdjSlidingTackles },
+        { name: 'Blocked shots', data: allCsvRankShotsBlocked },
+        { name: 'Interceptions', data: allCsvRankInterceptions },
+        { name: 'Possession-adjusted interceptions', data: allCsvRankPAdjInterceptions },
+        { name: 'Successful attacking actions', data: allCsvRankSuccessfulAttackingActions },
+        { name: 'Goals', data: allCsvRankGoals },
+        { name: 'Non-penalty goals', data: allCsvRankNonPenaltyGoals },
+        { name: 'Expected goals (xG)', data: allCsvRankXG },
+        { name: 'Headed goals', data: allCsvRankHeadGoals },
+        { name: 'Shots', data: allCsvRankShots },
+        { name: 'Assists', data: allCsvRankAssists },
+        { name: 'Crosses', data: allCsvRankCrosses },
+        { name: 'Crosses to goalkeeper\'s box', data: allCsvRankCrossesToGoalieBox },
+        { name: 'Dribbles', data: allCsvRankDribbles },
+        { name: 'Offensive duels', data: allCsvRankOffensiveDuels },
+        { name: 'Touches in opponent\'s box', data: allCsvRankTouchesInBox },
+        { name: 'Progressive runs', data: allCsvRankProgressiveRuns },
+        { name: 'Accelerations', data: allCsvRankAccelerations },
+        { name: 'Fouls suffered', data: allCsvRankFoulsSuffered },
+        { name: 'Passes', data: allCsvRankPasses },
+        { name: 'Forward passes', data: allCsvRankForwardPasses },
+        { name: 'Short passes', data: allCsvRankShortMediumPasses },
+        { name: 'Long passes', data: allCsvRankLongPasses },
+        { name: 'Average pass length', data: allCsvRankAveragePassLength },
+        { name: 'Expected assists (xA)', data: allCsvRankXA },
+        { name: 'Shot assists', data: allCsvRankShotAssists },
+        { name: 'Key passes', data: allCsvRankKeyPasses },
+        { name: 'Passes to final third', data: allCsvRankPassesToFinalThird },
+        { name: 'Passes to penalty area', data: allCsvRankPassesToPenaltyArea },
+        { name: 'Through passes', data: allCsvRankThroughPasses },
+        { name: 'Deep completions', data: allCsvRankDeepCompletions },
+        { name: 'Progressive passes', data: allCsvRankProgressivePasses },
+        { name: 'Shots against', data: allCsvRankShotsAgainst },
+        { name: 'Clean sheets', data: allCsvRankCleanSheets },
+        { name: 'Expected goals against', data: allCsvRankXGAgainst },
+        { name: 'Prevented goals (PSxG-GA)', data: allCsvRankPreventedGoals },
+        { name: 'Line exits', data: allCsvRankExits },
+        { name: 'Defensive duels won %', data: allCsvRankDefensiveDuelsWonPercentage },
+        { name: 'Aerial duels won %', data: allCsvRankAerialDuelsWonPercentage },
+        { name: 'Shots on target %', data: allCsvRankShotsOnTargetPercentage },
+        { name: 'Goal conversion', data: allCsvRankGoalConversionPercentage },
+        { name: 'Cross accuracy', data: allCsvRankAccurateCrossesPercentage },
+        { name: 'Dribble success rate', data: allCsvRankSuccessfulDribblesPercentage },
+        { name: 'Offensive duels won %', data: allCsvRankOffensiveDuelsWonPercentage },
+        { name: 'Accurate passes %', data: allCsvRankAccuratePassesPercentage },
+        { name: 'Accurate forward passes %', data: allCsvRankAccurateForwardPassesPercentage },
+        { name: 'Accurate short passes %', data: allCsvRankAccurateShortMediumPassesPercentage },
+        { name: 'Accurate long passes %', data: allCsvRankAccurateLongPassesPercentage },
+        { name: 'Accurate passes to final third %', data: allCsvRankAccuratePassesToFinalThirdPercentage },
+        { name: 'Accurate passes to penalty area %', data: allCsvRankAccuratePassesToPenaltyAreaPercentage },
+        { name: 'Through pass accuracy', data: allCsvRankAccurateThroughPassesPercentage },
+        { name: 'Accurate progressive passes %', data: allCsvRankAccurateProgressivePassesPercentage },
+        { name: 'Save percentage', data: allCsvRankSaveRatePercentage }
+                // Add more metrics as needed
+    ];
+
+    const positionOrder = {
+      'Goalkeeper': [
+    'Prevented goals (PSxG-GA)',
+    'Save percentage',
+    'Clean sheets',
+    'Line exits',
+    'Shots against',
+    'Expected goals against',
+    'Accurate passes %',
+    'Accurate short passes %',
+    'Accurate long passes %',
+    'Accurate progressive passes %',
+    'Passes',
+    'Forward passes',
+    'Short passes',
+    'Long passes',
+    'Progressive passes',
+    'Average pass length',
+    'Passes to final third',
+    'Passes to penalty area',
+    'Through passes',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Aerial duels',
+    'Tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Fouls suffered',
+    'Assists',
+    'Dribbles'
+
+],
+'Centre-back': [
+    'Defensive duels',
+    'Defensive duels won %',
+    'Successful defensive actions',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Deep completions',
+    'Successful attacking actions',
+    'Shots',
+    'Goals',
+    'Headed goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Touches in opponent\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Accelerations',
+    'Fouls suffered'
+
+]
+,
+'Full-back': [
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Assists',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Shots',
+    'Shots on target %',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Headed goals',
+    'Goal conversion'
+
+
+
+
+]
+,
+'Midfielder': [
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Winger': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Touches in opponent\'s box',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Striker': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Headed goals',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+
+
+]
+        };
+
+        // Reorder the metrics data array based on the selected player's position
+        if (selectedPlayer.position in positionOrder) {
+            const orderedMetricsData = positionOrder[selectedPlayer.position].map(metricName => metricsData.find(metric => metric.name === metricName));
+            metricsData.splice(0, metricsData.length, ...orderedMetricsData);
+        }
+
+// Modify your sorting logic to conditionally perform sorting based on the state of the sortEnabled variable
+if (sortEnabled) {
+metricsData.sort((a, b) => {
+    const rankA = a.data.find(rank => rank.player === selectedPlayer.player).rank;
+    const rankB = b.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+    // Handle "N/A" ranks by assigning a default value (e.g., Infinity)
+    const defaultRank = Infinity;
+
+    // Convert "N/A" ranks to a default value
+    const numericRankA = rankA === "N/A" ? defaultRank : parseInt(rankA);
+    const numericRankB = rankB === "N/A" ? defaultRank : parseInt(rankB);
+
+    // Compare ranks
+    return numericRankA - numericRankB;
+});
+}
+
+    // Construct HTML for metrics
+// Construct HTML for metrics
+const metricsHTML = metricsData.map(metric => {
+    const selectedAge = parseInt(ageSelect.value);
+        const filteredData7 = parseCSV(csvData).filter(player =>
+    (!selectedAge || player.age <= selectedAge) );
+    const playerRank = metric.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+            // Get the current value for the selected player and metric
+            const currentValue7 = getMetricValueFunction(filteredData7, selectedPlayer, metric.name);
+
+            // Calculate the rank bar width
+            const rankBarWidth7 = 100 - (((playerRank - 1) / filteredData7.length) * 100);
+
+
+    // Interpolate between blue and red based on rank
+    const red = Math.round((255 * (1 - Math.pow(rankBarWidth7 / 100, 2))) ); // Red decreases as rank decreases
+    const green = Math.round(rankBarWidth7); // Green decreases as rank decreases
+    const blue = Math.round((255 * Math.pow(rankBarWidth7 / 100, 2))); // Blue increases as rank increases
+    const alpha = 0.835; // Alpha value remains constant
+
+    // Construct the color string
+    const color = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+
+    if (playerRank !== undefined) {
+        // Get the rank suffix
+        const rankSuffix = getRankSuffix(playerRank);
+
+        // Construct the HTML with the rank and suffix
+        return `
+            ${metric.name} – ${playerRank}${rankSuffix}
+            <div class="rank-bar" onclick="toggleActive(this)">
+              <div class="rank-bar-fill" style="width: ${rankBarWidth7}%; background-color: ${color}"></div>
+                <span class="hover-content">${currentValue7}</span>
+                                    
+            </div>
+          `;
+    } else {
+        // If player rank not found, display a message
+        return `${metric.name} – Not available`;
+    }
+}).join('');
+
+
+// Construct player results HTML
+    playerResults = `<img class="logo-image" src="https://datamb.football/logopro.png" alt="">
+      <h3><b>${selectedPlayer.player} (${selectedPlayer.team}, ${selectedPlayer.age})</b></h3>
+      <h1><i>vs Top 5 League ${titleSuffix} players, per 90</i></h1><br>     
+    <div class="metrics-container">
+        ${metricsHTML}
+    </div>
+          `;
+} else if (selectedSection === 'allCsvWithMinutes') {
+    // Define the metrics and their corresponding data
+    const metricsData = [
+    { name: 'Successful defensive actions', data: allCsvRankActionsWithMinutes },
+        { name: 'Defensive duels', data: allCsvRankDuelsWithMinutes },
+        { name: 'Aerial duels', data: allCsvRankAerialDuelsWithMinutes },
+        { name: 'Tackles', data: allCsvRankSlidingTacklesWithMinutes },
+        { name: 'Possession-adjusted tackles', data: allCsvRankPAdjSlidingTacklesWithMinutes },
+        { name: 'Blocked shots', data: allCsvRankShotsBlockedWithMinutes },
+        { name: 'Interceptions', data: allCsvRankInterceptionsWithMinutes },
+        { name: 'Possession-adjusted interceptions', data: allCsvRankPAdjInterceptionsWithMinutes },
+        { name: 'Successful attacking actions', data: allCsvRankSuccessfulAttackingActionsWithMinutes },
+        { name: 'Goals', data: allCsvRankGoalsWithMinutes },
+        { name: 'Non-penalty goals', data: allCsvRankNonPenaltyGoalsWithMinutes },
+        { name: 'Expected goals (xG)', data: allCsvRankXGWithMinutes },
+        { name: 'Headed goals', data: allCsvRankHeadGoalsWithMinutes },
+        { name: 'Shots', data: allCsvRankShotsWithMinutes },
+        { name: 'Assists', data: allCsvRankAssistsWithMinutes },
+        { name: 'Crosses', data: allCsvRankCrossesWithMinutes },
+        { name: 'Crosses to goalkeeper\'s box', data: allCsvRankCrossesToGoalieBoxWithMinutes },
+        { name: 'Dribbles', data: allCsvRankDribblesWithMinutes },
+        { name: 'Offensive duels', data: allCsvRankOffensiveDuelsWithMinutes },
+        { name: 'Touches in opponent\'s box', data: allCsvRankTouchesInBoxWithMinutes },
+        { name: 'Progressive runs', data: allCsvRankProgressiveRunsWithMinutes },
+        { name: 'Accelerations', data: allCsvRankAccelerationsWithMinutes },
+        { name: 'Fouls suffered', data: allCsvRankFoulsSufferedWithMinutes },
+        { name: 'Passes', data: allCsvRankPassesWithMinutes },
+        { name: 'Forward passes', data: allCsvRankForwardPassesWithMinutes },
+        { name: 'Short passes', data: allCsvRankShortMediumPassesWithMinutes },
+        { name: 'Long passes', data: allCsvRankLongPassesWithMinutes },
+        { name: 'Average pass length', data: allCsvRankAveragePassLengthWithMinutes },
+        { name: 'Expected assists (xA)', data: allCsvRankXAWithMinutes },
+        { name: 'Shot assists', data: allCsvRankShotAssistsWithMinutes },
+        { name: 'Key passes', data: allCsvRankKeyPassesWithMinutes },
+        { name: 'Passes to final third', data: allCsvRankPassesToFinalThirdWithMinutes },
+        { name: 'Passes to penalty area', data: allCsvRankPassesToPenaltyAreaWithMinutes },
+        { name: 'Through passes', data: allCsvRankThroughPassesWithMinutes },
+        { name: 'Deep completions', data: allCsvRankDeepCompletionsWithMinutes },
+        { name: 'Progressive passes', data: allCsvRankProgressivePassesWithMinutes },
+        { name: 'Shots against', data: allCsvRankShotsAgainstWithMinutes },
+        { name: 'Clean sheets', data: allCsvRankCleanSheetsWithMinutes },
+        { name: 'Expected goals against', data: allCsvRankXGAgainstWithMinutes },
+        { name: 'Prevented goals (PSxG-GA)', data: allCsvRankPreventedGoalsWithMinutes },
+        { name: 'Line exits', data: allCsvRankExitsWithMinutes },
+        { name: 'Defensive duels won %', data: allCsvRankDefensiveDuelsWonPercentageWithMinutes },
+        { name: 'Aerial duels won %', data: allCsvRankAerialDuelsWonPercentageWithMinutes },
+        { name: 'Shots on target %', data: allCsvRankShotsOnTargetPercentageWithMinutes },
+        { name: 'Goal conversion', data: allCsvRankGoalConversionPercentageWithMinutes },
+        { name: 'Cross accuracy', data: allCsvRankAccurateCrossesPercentageWithMinutes },
+        { name: 'Dribble success rate', data: allCsvRankSuccessfulDribblesPercentageWithMinutes },
+        { name: 'Offensive duels won %', data: allCsvRankOffensiveDuelsWonPercentageWithMinutes },
+        { name: 'Accurate passes %', data: allCsvRankAccuratePassesPercentageWithMinutes },
+        { name: 'Accurate forward passes %', data: allCsvRankAccurateForwardPassesPercentageWithMinutes },
+        { name: 'Accurate short passes %', data: allCsvRankAccurateShortMediumPassesPercentageWithMinutes },
+        { name: 'Accurate long passes %', data: allCsvRankAccurateLongPassesPercentageWithMinutes },
+        { name: 'Accurate passes to final third %', data: allCsvRankAccuratePassesToFinalThirdPercentageWithMinutes },
+        { name: 'Accurate passes to penalty area %', data: allCsvRankAccuratePassesToPenaltyAreaPercentageWithMinutes },
+        { name: 'Through pass accuracy', data: allCsvRankAccurateThroughPassesPercentageWithMinutes },
+        { name: 'Accurate progressive passes %', data: allCsvRankAccurateProgressivePassesPercentageWithMinutes },
+        { name: 'Save percentage', data: allCsvRankSaveRatePercentageWithMinutes }
+                // Add more metrics as needed
+    ];
+
+const positionOrder = {
+      'Goalkeeper': [
+    'Prevented goals (PSxG-GA)',
+    'Save percentage',
+    'Clean sheets',
+    'Line exits',
+    'Shots against',
+    'Expected goals against',
+    'Accurate passes %',
+    'Accurate short passes %',
+    'Accurate long passes %',
+    'Accurate progressive passes %',
+    'Passes',
+    'Forward passes',
+    'Short passes',
+    'Long passes',
+    'Progressive passes',
+    'Average pass length',
+    'Passes to final third',
+    'Passes to penalty area',
+    'Through passes',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Aerial duels',
+    'Tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Fouls suffered',
+    'Assists',
+    'Dribbles'
+
+],
+'Centre-back': [
+    'Defensive duels',
+    'Defensive duels won %',
+    'Successful defensive actions',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Deep completions',
+    'Successful attacking actions',
+    'Shots',
+    'Goals',
+    'Headed goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Touches in opponent\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Accelerations',
+    'Fouls suffered'
+
+]
+,
+'Full-back': [
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Assists',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Shots',
+    'Shots on target %',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Headed goals',
+    'Goal conversion'
+
+
+
+
+]
+,
+'Midfielder': [
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Key passes',
+    'Expected assists (xA)',
+    'Shot assists',
+    'Assists',
+    'Deep completions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Winger': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Headed goals',
+    'Touches in opponent\'s box',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+]
+,
+'Striker': [
+    'Goals',
+    'Non-penalty goals',
+    'Expected goals (xG)',
+    'Assists',
+    'Expected assists (xA)',
+    'Headed goals',
+    'Shots',
+    'Shots on target %',
+    'Goal conversion',
+    'Touches in opponent\'s box',
+    'Successful attacking actions',
+    'Crosses',
+    'Cross accuracy',
+    'Crosses to goalkeeper\'s box',
+    'Dribbles',
+    'Dribble success rate',
+    'Offensive duels',
+    'Offensive duels won %',
+    'Progressive runs',
+    'Accelerations',
+    'Fouls suffered',
+    'Key passes',
+    'Shot assists',
+    'Deep completions',
+    'Passes',
+    'Accurate passes %',
+    'Forward passes',
+    'Accurate forward passes %',
+    'Short passes',
+    'Accurate short passes %',
+    'Long passes',
+    'Accurate long passes %',
+    'Progressive passes',
+    'Accurate progressive passes %',
+    'Passes to final third',
+    'Accurate passes to final third %',
+    'Passes to penalty area',
+    'Accurate passes to penalty area %',
+    'Through passes',
+    'Average pass length',
+    'Successful defensive actions',
+    'Defensive duels',
+    'Defensive duels won %',
+    'Aerial duels',
+    'Aerial duels won %',
+    'Tackles',
+    'Possession-adjusted tackles',
+    'Interceptions',
+    'Possession-adjusted interceptions',
+    'Blocked shots'
+
+
+
+]
+        };
+
+        // Reorder the metrics data array based on the selected player's position
+        if (selectedPlayer.position in positionOrder) {
+            const orderedMetricsData = positionOrder[selectedPlayer.position].map(metricName => metricsData.find(metric => metric.name === metricName));
+            metricsData.splice(0, metricsData.length, ...orderedMetricsData);
+        }
+
+// Modify your sorting logic to conditionally perform sorting based on the state of the sortEnabled variable
+if (sortEnabled) {
+
+metricsData.sort((a, b) => {
+    const rankA = a.data.find(rank => rank.player === selectedPlayer.player).rank;
+    const rankB = b.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+    // Handle "N/A" ranks by assigning a default value (e.g., Infinity)
+    const defaultRank = Infinity;
+
+    // Convert "N/A" ranks to a default value
+    const numericRankA = rankA === "N/A" ? defaultRank : parseInt(rankA);
+    const numericRankB = rankB === "N/A" ? defaultRank : parseInt(rankB);
+
+    // Compare ranks
+    return numericRankA - numericRankB;
+});}
+
+    // Construct HTML for metrics
+  // Construct HTML for metrics
+  const metricsHTML = metricsData.map(metric => {
+    const selectedAge = parseInt(ageSelect.value);
+        const filteredData8 = parseCSV(csvData).filter(player =>
+    (!selectedAge || player.age <= selectedAge) );
+    const playerRank = metric.data.find(rank => rank.player === selectedPlayer.player).rank;
+
+            // Get the current value for the selected player and metric
+            const currentValue8 = getMetricValueFunction(filteredData8, selectedPlayer, metric.name);
+
+            // Calculate the rank bar width
+            const rankBarWidth8 = 100 - (((playerRank - 1) / filteredData8.length) * 100);
+
+
+    // Interpolate between blue and red based on rank
+    const red = Math.round((255 * (1 - Math.pow(rankBarWidth8 / 100, 2))) ); // Red decreases as rank decreases
+    const green = Math.round(rankBarWidth8); // Green decreases as rank decreases
+    const blue = Math.round((255 * Math.pow(rankBarWidth8 / 100, 2))); // Blue increases as rank increases
+    const alpha = 0.835; // Alpha value remains constant
+
+    // Construct the color string
+    const color = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+
+    if (playerRank !== undefined) {
+        // Get the rank suffix
+        const rankSuffix = getRankSuffix(playerRank);
+
+        // Construct the HTML with the rank and suffix
+        return `
+            ${metric.name} – ${playerRank}${rankSuffix}
+            <div class="rank-bar" onclick="toggleActive(this)">
+              <div class="rank-bar-fill" style="width: ${rankBarWidth8}%; background-color: ${color}"></div>
+                <span class="hover-content">${currentValue8}</span>
+                                    
+            </div>
+          `;
+    } else {
+        // If player rank not found, display a message
+        return `${metric.name} – Not available`;
+    }
+}).join('');
+// Construct player results HTML
+    playerResults = `<img class="logo-image" src="https://datamb.football/logopro.png" alt="">
+      <h3><b>${selectedPlayer.player} (${selectedPlayer.team}, ${selectedPlayer.age})</b></h3>
+      <h1><i>vs Top 5 League ${titleSuffix} players</i></h1><br>
     <div class="metrics-container">
         ${metricsHTML}
     </div>
@@ -10975,7 +12625,6 @@ searchInput.addEventListener('input', function () {
         // Simulate long computation with setTimeout
         setTimeout(() => {
             displaySelectedPlayer();
-
             // Hide spinner
             hideSpinner();
         }, 1000); // Adjust the timeout value as needed
@@ -11001,11 +12650,9 @@ document.getElementById('toggleSortingButton').addEventListener('change', functi
         hideSpinner();
     }, 1000); // Adjust the timeout value as needed
 });
-
 function toggleActive(element) {
   element.classList.toggle('active');
 }
-
   </script>
 
 
