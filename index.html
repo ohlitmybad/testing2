@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7862,19 +7863,32 @@ const metricColumnMap = {
 };
 
 
+let parsedData = [];
+let playerIndex = {};
 
-let parsedData = null;
+document.addEventListener('DOMContentLoaded', () => {
+  // Parse and index data on initial load
+  parseAndStoreData();
+  document.getElementById('playerSelect').addEventListener('change', displaySelectedPlayer);
+  document.getElementById('ageSelect').addEventListener('change', () => displayPlayerRankings(currentSelectedPlayer));
+  document.getElementById('toggleMetrics').addEventListener('change', () => displayPlayerRankings(currentSelectedPlayer));
+});
 
 function parseAndStoreData() {
   parsedData = parseCSV(csvData);
+  // Create an index for faster lookups
+  playerIndex = parsedData.reduce((acc, player) => {
+    if (!acc[player.player]) acc[player.player] = [];
+    acc[player.player].push(player);
+    return acc;
+  }, {});
 }
 
+let currentSelectedPlayer = null;
+
 function displaySelectedPlayer() {
-  if (!parsedData) {
-    parseAndStoreData();
-  }
-  
   document.getElementById('spinner').style.display = 'block';
+
   const playerSelect = document.getElementById('playerSelect');
   const selectedIndex = playerSelect.selectedIndex;
   const selectedPlayerName = playerSelect.options[selectedIndex].value;
@@ -7886,13 +7900,14 @@ function displaySelectedPlayer() {
     position: selectedPlayerPosition
   };
 
-  const matchingPlayers = parsedData.filter(p =>
-    p.player === selectedPlayer.player &&
+  // Use the indexed data for quick lookup
+  const matchingPlayers = (playerIndex[selectedPlayer.player] || []).filter(p =>
     p.position === selectedPlayer.position
   );
 
   if (matchingPlayers.length === 1) {
-    displayPlayerRankings(matchingPlayers[0]);
+    currentSelectedPlayer = matchingPlayers[0];
+    displayPlayerRankings(currentSelectedPlayer);
   } else if (matchingPlayers.length > 1) {
     const selectionPrompt = `Multiple players found with the same name (${selectedPlayer.player}) and position (${selectedPlayer.position}). Please choose one by entering its index:\n\n`;
     const playerOptions = matchingPlayers.map((player, index) => `${index + 1}. ${player.player}, Team: ${player.team}, Position: ${player.position}`).join('\n');
@@ -7901,7 +7916,8 @@ function displaySelectedPlayer() {
     const userChoice = parseInt(userInput);
 
     if (!isNaN(userChoice) && userChoice >= 1 && userChoice <= matchingPlayers.length) {
-      displayPlayerRankings(matchingPlayers[userChoice - 1]);
+      currentSelectedPlayer = matchingPlayers[userChoice - 1];
+      displayPlayerRankings(currentSelectedPlayer);
     }
   }
 
@@ -7909,18 +7925,11 @@ function displaySelectedPlayer() {
 }
 
 function displayPlayerRankings(player) {
-  const selectedPlayer = parsedData.find(p => 
-    p.player === player.player && 
-    p.position === player.position &&
-    p.team === player.team
-  );
-
   const ageSelect = document.getElementById('ageSelect');
   const selectedAge = parseInt(ageSelect.value);
   const filteredData = selectedAge ? parsedData.filter(p => p.age <= selectedAge) : parsedData;
   const toggleMetrics = document.getElementById('toggleMetrics').checked;
   const getMetricValueFunction = toggleMetrics ? updateCurrentMetricValue : getCurrentMetricValue;
-
 
     const samePositionAndLeagueActions = calculateRankForMetric(filteredData, 'defActions', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league);
     const samePositionAndLeagueDuels = calculateRankForMetric(filteredData, 'defDuels', p => p.position === selectedPlayer.position && p.league === selectedPlayer.league);
