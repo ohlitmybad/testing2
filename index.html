@@ -1187,7 +1187,8 @@ ctx.fillText('datamb.football', 345, 476);
   });
 }
 
-	  let csvData = '';
+let csvData = '';
+let dataArray = [];
 
 // Fetch CSV data from external URL
 fetch('https://datamb.football/testing/freecmradars.csv')
@@ -1200,8 +1201,7 @@ fetch('https://datamb.football/testing/freecmradars.csv')
     console.error('Error fetching CSV:', error);
   });
 
-let dataArray = [];
-
+// Function to process CSV data into dataArray
 function processData() {
   dataArray = csvData.split('\n').map(line => line.split(','));
 }
