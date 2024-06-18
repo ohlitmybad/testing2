@@ -1098,287 +1098,449 @@ searchInput.addEventListener("keyup", function(event) {
 <button onclick="takeScreenshot()" class="button-10"><div class="icon2"></div></button>
 
   <script>
-
-
-// Function to fetch CSV data from an external URL
-async function fetchCsvData(url) {
-  const response = await fetch(url);
-  const data = await response.text();
-  return data;
+function loadCSVData(csvFilePath) {
+    return fetch(csvFilePath)
+        .then(response => response.text())
+        .then(csvText => csvText);
 }
 
-// Function to initialize the script after fetching the CSV data
-async function initializeScript() {
-  const csvData = await fetchCsvData('https://datamb.football/testing/freecmradars.csv');
-  const dataArray = csvData.split('\n').map(line => line.split(','));
 
-  function takeScreenshot() {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+function takeScreenshot() {
 
-    let x, y, cropPercentageX, cropPercentageY, cropPercentageRight, captureWidth, captureHeight;
 
-    if (isMobile) {
-      // Values for mobile devices
-      x = 0;
-      y = 0;
-      cropPercentageX = -0.0147;
-      cropPercentageY = 0.15;
-      cropPercentageRight = 0.53;
-      captureWidth = 930;
-      captureHeight = 573;
-    } else {
-      // Values for desktop
-      x = 0;
-      y = 0;
-      cropPercentageX = -0.0087;
-      cropPercentageY = 0.14;
-      cropPercentageRight = 0.45;
-      captureWidth = 1200;
-      captureHeight = 573;
+ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  let x, y, cropPercentageX, cropPercentageY, cropPercentageRight, captureWidth, captureHeight;
+
+  if (isMobile) {
+    // Values for mobile devices
+    x = 0;
+    y = 0;
+    cropPercentageX = -0.0147;
+    cropPercentageY = 0.15;
+    cropPercentageRight = 0.53;
+    captureWidth = 930;
+    captureHeight = 573;
+  } else {
+    // Values for desktop
+    x = 0;
+    y = 0;
+    cropPercentageX = -0.0087;
+    cropPercentageY = 0.14;
+    cropPercentageRight = 0.45;
+    captureWidth = 1200;
+    captureHeight = 573;
+  }
+
+
+
+domtoimage.toBlob(document.getElementById('parent-container'), {
+  width: captureWidth,
+  height: captureHeight,
+  style: {
+    transform: 'none' // Remove any applied transformations
+  }
+}).then(blob => {
+    // Create an image element to load the screenshot blob
+    const img = new Image();
+    img.onload = () => {
+      // Calculate the crop dimensions based on the percentages and image size
+      const cropX = img.width * cropPercentageX;
+      const cropY = img.height * cropPercentageY;
+      const cropWidth = img.width - cropX - (img.width * cropPercentageRight);
+      const cropHeight = img.height - cropY;
+
+      // Create a new canvas element with the cropped dimensions
+      const canvas = document.createElement('canvas');
+      canvas.width = cropWidth;
+      canvas.height = cropHeight;
+
+      // Get the 2D drawing context of the canvas
+      const ctx = canvas.getContext('2d');
+
+const storedDarkMode = localStorage.getItem("darkMode");
+
+// Check if dark mode is enabled based on stored preference or system preference
+const darkModeEnabled = storedDarkMode === "true" || window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+// Fill the canvas with the appropriate color
+if (darkModeEnabled) {
+  ctx.fillStyle = '#000000'; // Black color
+} else {
+  ctx.fillStyle = '#ffffff'; // White color
+}
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+      ctx.drawImage(img, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+
+ctx.font = '12px Arial'; // Adjust the font size for the other text
+ctx.fillStyle = 'grey'; // Adjust the color for the other text
+ctx.fillText('datamb.football', 345, 476);
+
+
+      // Convert the canvas to a PNG image
+      canvas.toBlob(croppedBlob => {
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(croppedBlob);
+        link.download = 'screenshot.png'; // Specify the filename for the downloaded image
+
+        // Simulate a click on the link to trigger the download
+        link.click();
+      }, 'image/png');
+    };
+    img.src = URL.createObjectURL(blob);
+  });
+}
+
+
+
+function calculateEuclideanDifference(data1, data2) {
+  let difference = 0;
+  for (let i = 4; i <= 10; i++) {
+    const metric1 = parseFloat(data1[i]);
+    const metric2 = parseFloat(data2[i]);
+    difference += Math.pow(metric1 - metric2, 2);
+  }
+  return Math.sqrt(difference);
+}
+
+
+
+loadCSVData('datamb.football/testing/freecmradars.csv')
+    .then(csvData => {
+    const dataArray = csvData.split('\n').map(line => line.split(','));
+
+const colorClasses = ['result-color-blue', 'result-color-pink', 'result-color-orange', 'result-color-green', 'result-color-bleu', 'result-color-rose', 'result-color-1', 'result-color-2', 'result-color-3', 'result-color-4', 'result-color-5', 'result-color-6', 'result-color-7', 'result-color-8', 'result-color-9', 'result-color-10', 'result-color-11', 'result-color-12', 'result-color-13', 'result-color-14', 'result-color-15', 'result-color-16', 'result-color-17', 'result-color-18', 'result-color-19', 'result-color-20', 'result-color-21', 'result-color-22', 'result-color-23', 'result-color-24', 'result-color-25', 'result-color-26', 'result-color-27', 'result-color-28', 'result-color-29', 'result-color-30', 'result-color-31', 'result-color-32', 'result-color-33', 'result-color-34', 'result-color-35', 'result-color-36', 'result-color-37', 'result-color-38', 'result-color-39', 'result-color-40', 'result-color-41', 'result-color-42', 'result-color-43', 'result-color-44', 'result-color-45', 'result-color-46', 'result-color-47', 'result-color-48'];
+
+let searchResults = []; // Declare the search results variable
+
+
+    function removeSpecialChars(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f\s]/g, "");
     }
 
-    domtoimage.toBlob(document.getElementById('parent-container'), {
-      width: captureWidth,
-      height: captureHeight,
-      style: {
-        transform: 'none' // Remove any applied transformations
-      }
-    }).then(blob => {
-      // Create an image element to load the screenshot blob
-      const img = new Image();
-      img.onload = () => {
-        // Calculate the crop dimensions based on the percentages and image size
-        const cropX = img.width * cropPercentageX;
-        const cropY = img.height * cropPercentageY;
-        const cropWidth = img.width - cropX - (img.width * cropPercentageRight);
-        const cropHeight = img.height - cropY;
-
-        // Create a new canvas element with the cropped dimensions
-        const canvas = document.createElement('canvas');
-        canvas.width = cropWidth;
-        canvas.height = cropHeight;
-
-        // Get the 2D drawing context of the canvas
-        const ctx = canvas.getContext('2d');
-
-        const storedDarkMode = localStorage.getItem("darkMode");
-
-        // Check if dark mode is enabled based on stored preference or system preference
-        const darkModeEnabled = storedDarkMode === "true" || window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        // Fill the canvas with the appropriate color
-        if (darkModeEnabled) {
-          ctx.fillStyle = '#000000'; // Black color
-        } else {
-          ctx.fillStyle = '#ffffff'; // White color
+    function search(query) {
+      const queryParts = query.split(',').map(part => part.trim()); // Split the query by commas and trim whitespace
+      const name = queryParts[0]; // Extract the name part
+      let age, team;
+      
+      // Extract age and team if they exist
+      if (queryParts.length > 1) {
+        age = queryParts[1].trim(); // Trim any leading or trailing spaces
+        if (queryParts.length > 2) {
+          team = queryParts[2].trim(); // Trim any leading or trailing spaces
         }
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.drawImage(img, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
-
-        ctx.font = '12px Arial'; // Adjust the font size for the other text
-        ctx.fillStyle = 'grey'; // Adjust the color for the other text
-        ctx.fillText('datamb.football', 345, 476);
-
-        // Convert the canvas to a PNG image
-        canvas.toBlob(croppedBlob => {
-          // Create a temporary link element
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(croppedBlob);
-          link.download = 'screenshot.png'; // Specify the filename for the downloaded image
-
-          // Simulate a click on the link to trigger the download
-          link.click();
-        }, 'image/png');
-      };
-      img.src = URL.createObjectURL(blob);
-    });
-  }
-
-  function calculateEuclideanDifference(data1, data2) {
-    let difference = 0;
-    for (let i = 4; i <= 10; i++) {
-      const metric1 = parseFloat(data1[i]);
-      const metric2 = parseFloat(data2[i]);
-      difference += Math.pow(metric1 - metric2, 2);
-    }
-    return Math.sqrt(difference);
-  }
-
-  const colorClasses = ['result-color-blue', 'result-color-pink', 'result-color-orange', 'result-color-green', 'result-color-bleu', 'result-color-rose', 'result-color-1', 'result-color-2', 'result-color-3', 'result-color-4', 'result-color-5', 'result-color-6', 'result-color-7', 'result-color-8', 'result-color-9', 'result-color-10', 'result-color-11', 'result-color-12', 'result-color-13', 'result-color-14', 'result-color-15', 'result-color-16', 'result-color-17', 'result-color-18', 'result-color-19', 'result-color-20', 'result-color-21', 'result-color-22', 'result-color-23', 'result-color-24', 'result-color-25', 'result-color-26', 'result-color-27', 'result-color-28', 'result-color-29', 'result-color-30', 'result-color-31', 'result-color-32', 'result-color-33', 'result-color-34', 'result-color-35', 'result-color-36', 'result-color-37', 'result-color-38', 'result-color-39', 'result-color-40', 'result-color-41', 'result-color-42', 'result-color-43', 'result-color-44', 'result-color-45', 'result-color-46', 'result-color-47', 'result-color-48'];
-
-  let searchResults = []; // Declare the search results variable
-
-  function removeSpecialChars(str) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f\s]/g, "");
-  }
-
-  function search(query) {
-    const queryParts = query.split(',').map(part => part.trim()); // Split the query by commas and trim whitespace
-    const name = queryParts[0]; // Extract the name part
-    let age, team;
-
-    // Extract age and team if they exist
-    if (queryParts.length > 1) {
-      age = queryParts[1].trim(); // Trim any leading or trailing spaces
-      if (queryParts.length > 2) {
-        team = queryParts[2].trim(); // Trim any leading or trailing spaces
       }
-    }
-
-    console.log("Query Parts:", queryParts);
-
-    const results = dataArray.filter(data => {
-      const normalizedName = removeSpecialChars(data[1].toLowerCase());
-      const normalizedTeam = removeSpecialChars(data[2].toLowerCase());
-      const normalizedAge = data[3].trim().toLowerCase(); // Trim any leading or trailing spaces
-
-      console.log("Normalized Data:", normalizedName, normalizedAge, normalizedTeam);
-      console.log("Query Data:", name, age, team);
-
-      // Check if the name matches
-      const nameMatches = normalizedName.includes(removeSpecialChars(name.toLowerCase()));
-
-      // Check if the age matches (or if age is not provided)
-      const ageMatches = !age || normalizedAge === removeSpecialChars(age.toLowerCase());
-
-      // Check if the team matches (or if team is not provided)
-      const teamMatches = !team || normalizedTeam === removeSpecialChars(team.toLowerCase());
-
-      // Return true if name matches and either age or team matches
-      return nameMatches && (ageMatches || teamMatches);
-    });
-
-    return results;
-  }
-
-  function createTable(teamName, teamIndex, color) {
-    const resultsTable = document.getElementById('resultsTable');
-
-    const headerNames = [];
-
-    // Check if table headers exist
-    const headersExist = resultsTable.querySelector('th') !== null;
-
-    const table = headersExist ? resultsTable.querySelector('table') : document.createElement('table');
-    table.classList.add('metrics-table');
-
-    if (!headersExist) {
-      // Create the table header
-      const headerRow = document.createElement('tr');
-      for (let i = 1; i < headerNames.length; i++) {
-        const th = document.createElement('th');
-        th.textContent = headerNames[i];
-        headerRow.appendChild(th);
-      }
-      // Add a separate table header for the "x" column
-      const xHeader = document.createElement('th');
-      xHeader.textContent = '';
-      headerRow.appendChild(xHeader);
-      table.appendChild(headerRow);
-    }
-
-    const teamData = dataArray[teamIndex];
-    const dataRow = document.createElement('tr');
-    for (let i = 1; i <= 11; i++) {
-      if (i === 1 || i === 2 || i === 3 || i === 11) {
-        const td = document.createElement('td');
-        if (i === 11) {
-          td.textContent = teamData[i] + ' min';
-        } else {
-          td.textContent = teamData[i];
-        }
-        td.classList.add(color); // Apply the color class
-        dataRow.appendChild(td);
-      }
-    }
-
-    // Add the "x" column with onclick attribute
-    const xColumn = document.createElement('td');
-    xColumn.innerHTML = '<span class="delete-x" onclick="removeRow(this)">x</span>';
-    dataRow.appendChild(xColumn);
-
-    table.appendChild(dataRow);
-    resultsTable.innerHTML = '';
-    resultsTable.appendChild(table);
-  }
-
-  function addRow(teamName, teamIndex, color) {
-    const resultsTable = document.getElementById('resultsTable');
-    const headersExist = resultsTable.querySelector('th') !== null;
-
-    const table = headersExist ? resultsTable.querySelector('table') : document.createElement('table');
-    table.classList.add('metrics-table');
-
-    const teamData = dataArray[teamIndex];
-    const dataRow = document.createElement('tr');
-    for (let i = 1; i <= 11; i++) {
-      if (i === 1 || i === 2 || i === 3 || i === 11) {
-        const td = document.createElement('td');
-        if (i === 11) {
-          td.textContent = teamData[i] + ' min';
-        } else {
-          td.textContent = teamData[i];
-        }
-        td.classList.add(color); // Apply the color class
-        dataRow.appendChild(td);
-      }
-    }
-
-    // Add the "x" column with onclick attribute
-    const xColumn = document.createElement('td');
-    xColumn.innerHTML = '<span class="delete-x" onclick="removeRow(this)">x</span>';
-    dataRow.appendChild(xColumn);
-
-    table.appendChild(dataRow);
-    resultsTable.innerHTML = '';
-    resultsTable.appendChild(table);
-  }
-
-  function searchAndDisplayResults() {
-    const queryInput = document.getElementById('queryInput').value;
-    const resultsContainer = document.getElementById('resultsContainer');
-    resultsContainer.innerHTML = '';
-
-    searchResults = search(queryInput);
-
-    if (searchResults.length > 0) {
-      const ul = document.createElement('ul');
-      searchResults.forEach((result, index) => {
-        const li = document.createElement('li');
-        li.textContent = result[1] + ', ' + result[2];
-        li.classList.add(colorClasses[index % colorClasses.length]); // Apply the color class
-        li.onclick = function () {
-          addRow(result[1], dataArray.indexOf(result), li.className);
-        };
-        ul.appendChild(li);
+    
+      console.log("Query Parts:", queryParts);
+    
+      const results = dataArray.filter(data => {
+        const normalizedName = removeSpecialChars(data[1].toLowerCase());
+        const normalizedTeam = removeSpecialChars(data[2].toLowerCase());
+        const normalizedAge = data[3].trim().toLowerCase(); // Trim any leading or trailing spaces
+    
+        console.log("Normalized Data:", normalizedName, normalizedAge, normalizedTeam);
+        console.log("Query Data:", name, age, team);
+    
+        // Check if the name matches
+        const nameMatches = normalizedName.includes(removeSpecialChars(name.toLowerCase()));
+    
+        // Check if the age matches (or if age is not provided)
+        const ageMatches = !age || normalizedAge === removeSpecialChars(age.toLowerCase());
+    
+        // Check if the team matches (or if team is not provided)
+        const teamMatches = !team || normalizedTeam === removeSpecialChars(team.toLowerCase());
+    
+        // Return true if name matches and either age or team matches
+        return nameMatches && (ageMatches || teamMatches);
       });
-      resultsContainer.appendChild(ul);
+    
+      return results;
+    }
+    
+
+
+function createTable(teamName, teamIndex, color) {
+  const resultsTable = document.getElementById('resultsTable');
+
+  const headerNames = [
+  ];
+
+  // Check if table headers exist
+  const headersExist = resultsTable.querySelector('th') !== null;
+
+  const table = headersExist ? resultsTable.querySelector('table') : document.createElement('table');
+  table.classList.add('metrics-table');
+
+  if (!headersExist) {
+    // Create the table header
+    const headerRow = document.createElement('tr');
+  for (let i = 1; i < headerNames.length; i++) {
+  const th = document.createElement('th');
+  th.textContent = headerNames[i];
+  headerRow.appendChild(th);
+}
+// Add a separate table header for the "x" column
+const xHeader = document.createElement('th');
+xHeader.textContent = '';
+headerRow.appendChild(xHeader);
+    table.appendChild(headerRow);
+  }
+
+
+
+
+const teamData = dataArray[teamIndex];
+const dataRow = document.createElement('tr');
+for (let i = 1; i <= 11; i++) {
+  if (i === 1 || i === 2 || i === 3 || i === 11) {
+    const td = document.createElement('td');
+    if (i === 11) {
+      td.textContent = teamData[i] + ' min';
     } else {
-      resultsContainer.textContent = 'No results found';
+      td.textContent = teamData[i] + ',';
     }
+    td.classList.add(color);
+    dataRow.appendChild(td);
   }
-
-  function removeRow(element) {
-    const row = element.parentNode.parentNode;
-    const table = row.parentNode;
-    table.removeChild(row);
-
-    // Check if the table has any remaining rows
-    if (table.rows.length === 1) {
-      // If there are no remaining rows, remove the table
-      table.parentNode.removeChild(table);
-    }
-  }
-
-  document.getElementById('searchButton').onclick = searchAndDisplayResults;
-  document.getElementById('screenshotButton').onclick = takeScreenshot;
-		  colorIndex++; // Increment color index for the next search
 }
 
-initializeScript(); // Call the initialize function to fetch the CSV data and set up the script
+// Add a separate table cell for the "x" column
+const xCell = document.createElement('td');
+const xButton = document.createElement('button');
+xButton.textContent = 'x';
+xButton.classList.add('x-button');
+xCell.classList.add('x-cell');
+xButton.addEventListener('click', function () {
+  dataRow.remove(); // Remove the corresponding row from the table
+  const radarPolygons = document.querySelectorAll(`.radarPolygon.${color}`);
+  const radarLines = document.querySelectorAll(`.radarLines.${color}`);
+  const radarCircles = document.querySelectorAll(`.radarCircle.${color}`);
+
+  radarPolygons.forEach((polygon) => polygon.remove()); // Remove radar polygons with the specified color
+  radarLines.forEach((line) => line.remove()); // Remove radar lines with the specified color
+  radarCircles.forEach((circle) => circle.remove()); // Remove radar circles with the specified color
+});
+
+xCell.appendChild(xButton);
+dataRow.appendChild(xCell);
+
+table.appendChild(dataRow);
+
+  if (!headersExist) {
+    resultsTable.appendChild(table);
+  }
+
+      const combResults = dataArray[teamIndex].join(', ');
+      console.log(combResults);
+
+
+
+      const outerRadius = 150;
+      const center = [0, 0];
+      const angles = [0, 2 * Math.PI / 7, 4 * Math.PI / 7, 6 * Math.PI / 7, 8 * Math.PI / 7, 10 * Math.PI / 7, 12 * Math.PI / 7];
+
+      function axisValueToCartesian(axis, value) {
+        let angle = angles[axis - 1];
+        angle += (2 * Math.PI / 7) * 0.2;
+        const x = 150 * value * Math.cos(angle);
+        const y = 150 * value * Math.sin(angle);
+        return { x, y };
+      }
+
+      const svg = document.querySelector('.radar');
+      const radarWrapper = svg.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'g'));
+      radarWrapper.setAttribute('transform', 'translate(231.77,225.77)');
+      radarWrapper.innerHTML = '';
+
+      const data = [];
+      const rowCols = combResults.split(',');
+      for (let i = 4; i < 11; i++) {
+        data.push({ axis: i - 3, value: parseFloat(rowCols[i]) });
+      }
+
+      const points = data.map(({ axis, value }) => {
+        const { x, y } = axisValueToCartesian(axis, value);
+        return `${x},${y}`;
+      }).join(' ');
+
+   const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  polyline.setAttribute('class', `radarLines ${color}`); // Add the color class to the polyline
+  polyline.setAttribute('points', `${points} ${points.split(' ')[0]}`);
+  polyline.setAttribute('stroke-width', '3');
+  polyline.setAttribute('fill', 'none');
+  radarWrapper.appendChild(polyline);
+
+  const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  polygon.setAttribute('class', `radarPolygon ${color}`); // Add the color class to the polygon
+  polygon.setAttribute('points', points);
+  polygon.style.fillOpacity = '0.2';
+  radarWrapper.appendChild(polygon);
+
+  data.forEach(({ axis, value }) => {
+    const { x, y } = axisValueToCartesian(axis, value);
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('class', `radarCircle ${color}`); // Add the color class to the circle
+circle.style.fillOpacity = '0.86'; // Set the opacity to 1 (fully opaque)
+    circle.setAttribute('r', '6');
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
+    radarWrapper.appendChild(circle);
+  });
+    }
+
+
+function createTableForTeam1() {
+  const searchInput = document.getElementById('searchInput1');
+  const searchButton = document.getElementById('searchButton1');
+  const resultsTable = document.getElementById('resultsTable');
+
+
+  const teamNames = new Set(); // Keep track of unique team names
+
+  const teamNamesList = document.createElement('ul');
+teamNamesList.style.fontFamily = 'Arial, sans-serif'; 
+teamNamesList.style.listStyleType = 'none'; // Remove the bullet points
+teamNamesList.style.paddingLeft = '9px'; // Adjust the padding to move it further left
+ resultsTable.appendChild(teamNamesList);
+
+
+  let searchCounter = 0; // Initialize search counter
+
+  searchButton.addEventListener('click', function () {
+    const searchQuery = searchInput.value;
+    const results = search(searchQuery);
+
+    if (results) {
+      const teamId = parseInt(results[0]); // Parse the team ID from the results
+
+      const teamName = results[1] + ' (' + results[2] + ', ' + results[3] + ') - ' + results[11] + ' min';
+      const color = colorClasses[searchCounter % colorClasses.length]; // Get the color class based on the search counter
+
+      if (!teamNames.has(teamName)) {
+
+        const teamNameItem = document.createElement('li');
+        teamNameItem.textContent = teamName;
+        teamNameItem.classList.add(color); // Apply the color class to the team name
+
+        
+createTable(teamName, teamId - 1, color); // Pass the team ID and color to createTable
+searchCounter++;
+
+      }
+    } 
+
+  });
+ 
+
+}
+
+
+
+createTableForTeam1();
+    })
+    .catch(error => {
+        console.error('Failed to load CSV:', error);
+    });
+
+
+const similarPlayersContainer = document.createElement("div");
+similarPlayersContainer.id = "similarPlayersContainer";
+similarPlayersContainer.style.position = "absolute";
+similarPlayersContainer.style.top = "600px";
+similarPlayersContainer.style.left = "80px";
+document.body.appendChild(similarPlayersContainer);
+
+let colorIndex = 0; // Initialize color index
+
+
+searchButton1.addEventListener("click", function() {
+ const searchQuery = searchInput.value;
+const searchedPlayer = search(searchQuery);
+
+if (searchedPlayer.length > 0) {
+  const searchedPlayerData = searchedPlayer[0];
+  const searchedPlayerIndex = parseInt(searchedPlayerData[0]) - 1;
+
+  // Calculate Euclidean difference with all matching players and find the most similar players
+  const similarPlayers = [];
+  for (let i = 0; i < dataArray.length; i++) {
+    if (i !== searchedPlayerIndex) {
+      const difference = calculateEuclideanDifference(searchedPlayerData, dataArray[i]);
+      similarPlayers.push({ index: i, difference: difference });
+    }
+  }
+
+  similarPlayers.sort((a, b) => a.difference - b.difference);
+
+  // Get the three most similar players
+  const mostSimilarPlayers = similarPlayers.slice(0, 3);
+
+  for (let i = 0; i < 1; i++) {
+    const playerIndex = mostSimilarPlayers[i].index;
+    const playerName = dataArray[playerIndex][1];
+    const playerAge = dataArray[playerIndex][3];
+    const playerTeam = dataArray[playerIndex][2];
+
+const similarPlayerTable = document.createElement("table");
+similarPlayerTable.classList.add("metrics-table");
+
+const headerRow = document.createElement("tr");
+const headerCell = document.createElement("th");
+headerCell.setAttribute("colspan", "5");
+headerCell.textContent = `Similar data to ${searchedPlayer[0][1]}`;
+  headerCell.classList.add(colorClasses[colorIndex % colorClasses.length]);
+headerRow.appendChild(headerCell);
+similarPlayerTable.appendChild(headerRow);
+
+const similarPlayerRow = document.createElement("tr");
+
+for (let i = 0; i < mostSimilarPlayers.length; i++) {
+  const playerIndex = mostSimilarPlayers[i].index;
+  const playerName = dataArray[playerIndex][1];
+  const playerAge = dataArray[playerIndex][3];
+  const playerTeam = dataArray[playerIndex][2];
+
+  const playerCell = document.createElement("td");
+   playerCell.innerHTML = `<u>${playerName}</u><br/>`;
+    playerCell.style.fontSize = "10.8px"; // Set the desired font size
+    playerCell.style.cursor = "pointer"; // Set cursor to pointer
+
+
+  // Add click event listener to the player name cell
+  playerCell.addEventListener("click", function() {
+    searchInput.value = playerName; // Set search input value to the clicked player name
+    // Trigger the search button click event to perform the search
+    searchButton1.click();
+  });
+
+  similarPlayerRow.appendChild(playerCell);
+}
+
+if (similarPlayersContainer.children.length > 0) {
+  // Remove the previous table if it exists
+  similarPlayersContainer.removeChild(similarPlayersContainer.firstChild);
+}
+
+similarPlayerTable.appendChild(similarPlayerRow);
+similarPlayersContainer.appendChild(similarPlayerTable);
+
+colorIndex++; // Increment color index for the next search
+
+
+
+  }
+
+}
+
+
   searchInput.value = '';
   updateMatchingNames();
+
+});
+
 
 
 
