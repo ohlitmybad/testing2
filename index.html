@@ -13,11 +13,6 @@
 	<meta name="robots" content="noindex">
 
 
-  <link rel="stylesheet" href="path/to/autocomplete.css">
-
-  <!-- Include JavaScript for the autocomplete library -->
-  <script src="path/to/autocomplete.js"></script>
-
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
 
@@ -1190,6 +1185,8 @@ ctx.fillText('datamb.football', 345, 476);
   });
 }
 
+let dataArray = []; // Declare dataArray globally
+
 async function fetchCSVData(url) {
   const response = await fetch(url);
   const data = await response.text();
@@ -1542,9 +1539,9 @@ async function initializeApp() {
     const csvUrl = 'https://datamb.football/testing/freecmradars.csv';
     const csvData = await fetchCSVData(csvUrl);
     dataArray = csvData.split('\n').map(line => line.split(','));
-    
+
     // Once data is fetched and parsed, continue initializing the application
-    createTableForTeam1(); // Example of initiating table creation
+    createTableForTeam1();
   } catch (error) {
     console.error('Error fetching or parsing CSV:', error);
   }
