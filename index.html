@@ -13,6 +13,8 @@
 	<meta name="robots" content="noindex">
 
 
+
+
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
 
@@ -1184,41 +1186,40 @@ ctx.fillText('datamb.football', 345, 476);
     img.src = URL.createObjectURL(blob);
   });
 }
-let dataArray = []; // Global declaration for dataArray
 
-async function fetchCSVData(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch data');
-    }
-    const data = await response.text();
-    return data;
-  } catch (error) {
-    console.error('Error fetching CSV data:', error);
-    throw error; // Propagate the error further if needed
-  }
+	  let csvData = '';
+
+// Fetch CSV data from external URL
+fetch('https://datamb.football/testing/freecmradars.csv')
+  .then(response => response.text())
+  .then(data => {
+    csvData = data;
+    processData();
+  })
+  .catch(error => {
+    console.error('Error fetching CSV:', error);
+  });
+
+let dataArray = [];
+
+function processData() {
+  dataArray = csvData.split('\n').map(line => line.split(','));
 }
 
-async function initializeApp() {
-  try {
-    const csvUrl = 'https://datamb.football/testing/freecmradars.csv';
-    const csvData = await fetchCSVData(csvUrl);
-    dataArray = csvData.split('\n').map(line => line.split(','));
-
-    // Log the fetched data for debugging
-    console.log(dataArray);
-
-    // Continue with initializing application (e.g., creating tables)
-    createTableForTeam1();
-  } catch (error) {
-    console.error('Error fetching or parsing CSV:', error);
+function calculateEuclideanDifference(data1, data2) {
+  let difference = 0;
+  for (let i = 4; i <= 10; i++) {
+    const metric1 = parseFloat(data1[i]);
+    const metric2 = parseFloat(data2[i]);
+    difference += Math.pow(metric1 - metric2, 2);
   }
+  return Math.sqrt(difference);
 }
 
-// Call initializeApp to start fetching and processing data
-initializeApp();
 
+
+
+    const dataArray = csvData.split('\n').map(line => line.split(','));
 
 const colorClasses = ['result-color-blue', 'result-color-pink', 'result-color-orange', 'result-color-green', 'result-color-bleu', 'result-color-rose', 'result-color-1', 'result-color-2', 'result-color-3', 'result-color-4', 'result-color-5', 'result-color-6', 'result-color-7', 'result-color-8', 'result-color-9', 'result-color-10', 'result-color-11', 'result-color-12', 'result-color-13', 'result-color-14', 'result-color-15', 'result-color-16', 'result-color-17', 'result-color-18', 'result-color-19', 'result-color-20', 'result-color-21', 'result-color-22', 'result-color-23', 'result-color-24', 'result-color-25', 'result-color-26', 'result-color-27', 'result-color-28', 'result-color-29', 'result-color-30', 'result-color-31', 'result-color-32', 'result-color-33', 'result-color-34', 'result-color-35', 'result-color-36', 'result-color-37', 'result-color-38', 'result-color-39', 'result-color-40', 'result-color-41', 'result-color-42', 'result-color-43', 'result-color-44', 'result-color-45', 'result-color-46', 'result-color-47', 'result-color-48'];
 
@@ -1545,6 +1546,7 @@ colorIndex++; // Increment color index for the next search
   updateMatchingNames();
 
 });
+
 
 
 
