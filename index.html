@@ -1187,24 +1187,8 @@ ctx.fillText('datamb.football', 345, 476);
   });
 }
 
-let csvData = '';
-let dataArray = [];
 
-// Fetch CSV data from external URL
-fetch('https://datamb.football/testing/freecmradars.csv')
-  .then(response => response.text())
-  .then(data => {
-    csvData = data;
-    processData();
-  })
-  .catch(error => {
-    console.error('Error fetching CSV:', error);
-  });
 
-// Function to process CSV data into dataArray
-function processData() {
-  dataArray = csvData.split('\n').map(line => line.split(','));
-}
 
 function calculateEuclideanDifference(data1, data2) {
   let difference = 0;
@@ -1219,6 +1203,7 @@ function calculateEuclideanDifference(data1, data2) {
 
 
 
+    const dataArray = csvData.split('\n').map(line => line.split(','));
 
 const colorClasses = ['result-color-blue', 'result-color-pink', 'result-color-orange', 'result-color-green', 'result-color-bleu', 'result-color-rose', 'result-color-1', 'result-color-2', 'result-color-3', 'result-color-4', 'result-color-5', 'result-color-6', 'result-color-7', 'result-color-8', 'result-color-9', 'result-color-10', 'result-color-11', 'result-color-12', 'result-color-13', 'result-color-14', 'result-color-15', 'result-color-16', 'result-color-17', 'result-color-18', 'result-color-19', 'result-color-20', 'result-color-21', 'result-color-22', 'result-color-23', 'result-color-24', 'result-color-25', 'result-color-26', 'result-color-27', 'result-color-28', 'result-color-29', 'result-color-30', 'result-color-31', 'result-color-32', 'result-color-33', 'result-color-34', 'result-color-35', 'result-color-36', 'result-color-37', 'result-color-38', 'result-color-39', 'result-color-40', 'result-color-41', 'result-color-42', 'result-color-43', 'result-color-44', 'result-color-45', 'result-color-46', 'result-color-47', 'result-color-48'];
 
@@ -1399,27 +1384,50 @@ circle.style.fillOpacity = '0.86'; // Set the opacity to 1 (fully opaque)
   });
     }
 
+async function fetchCSVFromGitHub() {
+  const csvUrl = 'https://raw.githubusercontent.com/ohlithmybad/testing/main/freecmradars.csv';
 
-function createTableForTeam1() {
+  try {
+    const response = await fetch(csvUrl);
+    if (!response.ok) {
+      throw new Error('Failed to fetch CSV');
+    }
+    const csvData = await response.text();
+    return csvData;
+  } catch (error) {
+    console.error('Error fetching CSV:', error);
+    return null;
+  }
+}
+
+	  
+async function createTableForTeam1() {
+  const csvData = await fetchCSVFromGitHub();
+
+  if (!csvData) {
+    console.error('Failed to fetch CSV data');
+    return;
+  }
+
+  const dataArray = csvData.split('\n').map(line => line.split(','));
+
   const searchInput = document.getElementById('searchInput1');
   const searchButton = document.getElementById('searchButton1');
   const resultsTable = document.getElementById('resultsTable');
 
-
   const teamNames = new Set(); // Keep track of unique team names
 
   const teamNamesList = document.createElement('ul');
-teamNamesList.style.fontFamily = 'Arial, sans-serif'; 
-teamNamesList.style.listStyleType = 'none'; // Remove the bullet points
-teamNamesList.style.paddingLeft = '9px'; // Adjust the padding to move it further left
- resultsTable.appendChild(teamNamesList);
-
+  teamNamesList.style.fontFamily = 'Arial, sans-serif';
+  teamNamesList.style.listStyleType = 'none'; // Remove the bullet points
+  teamNamesList.style.paddingLeft = '9px'; // Adjust the padding to move it further left
+  resultsTable.appendChild(teamNamesList);
 
   let searchCounter = 0; // Initialize search counter
 
   searchButton.addEventListener('click', function () {
     const searchQuery = searchInput.value;
-    const results = search(searchQuery);
+    const results = search(searchQuery, dataArray);
 
     if (results) {
       const teamId = parseInt(results[0]); // Parse the team ID from the results
@@ -1428,25 +1436,18 @@ teamNamesList.style.paddingLeft = '9px'; // Adjust the padding to move it furthe
       const color = colorClasses[searchCounter % colorClasses.length]; // Get the color class based on the search counter
 
       if (!teamNames.has(teamName)) {
-
         const teamNameItem = document.createElement('li');
         teamNameItem.textContent = teamName;
         teamNameItem.classList.add(color); // Apply the color class to the team name
 
-        
-createTable(teamName, teamId - 1, color); // Pass the team ID and color to createTable
-searchCounter++;
-
+        createTable(teamName, teamId - 1, color); // Pass the team ID and color to createTable
+        searchCounter++;
       }
-    } 
-
+    }
   });
- 
-
 }
 
-
-
+// Call the function to start fetching and processing CSV data
 createTableForTeam1();
 
 
