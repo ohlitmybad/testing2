@@ -1187,27 +1187,35 @@ ctx.fillText('datamb.football', 345, 476);
   });
 }
 
-	  async function fetchCSVData(url) {
+const csvUrl = 'https://datamb.football/testing/freecmradars.csv';
+let dataArray = [];
+
+async function fetchAndParseCSV(url) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error('Failed to fetch CSV data');
     }
     const csvData = await response.text();
-    return csvData;
+    return csvData.split('\n').map(line => line.split(','));
   } catch (error) {
-    console.error('Error fetching CSV data:', error);
-    return null;
+    console.error('Error fetching or parsing CSV data:', error);
+    return [];
   }
 }
 
-const colorClasses = ['result-color-blue', 'result-color-pink', 'result-color-orange', 'result-color-green', 'result-color-bleu', 'result-color-rose', 'result-color-1', 'result-color-2', 'result-color-3', 'result-color-4', 'result-color-5', 'result-color-6', 'result-color-7', 'result-color-8', 'result-color-9', 'result-color-10', 'result-color-11', 'result-color-12', 'result-color-13', 'result-color-14', 'result-color-15', 'result-color-16', 'result-color-17', 'result-color-18', 'result-color-19', 'result-color-20', 'result-color-21', 'result-color-22', 'result-color-23', 'result-color-24', 'result-color-25', 'result-color-26', 'result-color-27', 'result-color-28', 'result-color-29', 'result-color-30', 'result-color-31', 'result-color-32', 'result-color-33', 'result-color-34', 'result-color-35', 'result-color-36', 'result-color-37', 'result-color-38', 'result-color-39', 'result-color-40', 'result-color-41', 'result-color-42', 'result-color-43', 'result-color-44', 'result-color-45', 'result-color-46', 'result-color-47', 'result-color-48'];
+async function initialize() {
+  dataArray = await fetchAndParseCSV(csvUrl);
 
-let dataArray = [];
+  if (dataArray.length === 0) {
+    console.error('Failed to fetch or parse CSV data');
+    return;
+  }
 
-function parseCSV(csvData) {
-  return csvData.split('\n').map(line => line.split(','));
+  // Now that dataArray is populated, you can proceed with using it in your existing functions
+  createTableForTeam1();
 }
+
 
 function calculateEuclideanDifference(data1, data2) {
   let difference = 0;
@@ -1219,50 +1227,60 @@ function calculateEuclideanDifference(data1, data2) {
   return Math.sqrt(difference);
 }
 
-function removeSpecialChars(str) {
+
+
+
+    const dataArray = csvData.split('\n').map(line => line.split(','));
+
+const colorClasses = ['result-color-blue', 'result-color-pink', 'result-color-orange', 'result-color-green', 'result-color-bleu', 'result-color-rose', 'result-color-1', 'result-color-2', 'result-color-3', 'result-color-4', 'result-color-5', 'result-color-6', 'result-color-7', 'result-color-8', 'result-color-9', 'result-color-10', 'result-color-11', 'result-color-12', 'result-color-13', 'result-color-14', 'result-color-15', 'result-color-16', 'result-color-17', 'result-color-18', 'result-color-19', 'result-color-20', 'result-color-21', 'result-color-22', 'result-color-23', 'result-color-24', 'result-color-25', 'result-color-26', 'result-color-27', 'result-color-28', 'result-color-29', 'result-color-30', 'result-color-31', 'result-color-32', 'result-color-33', 'result-color-34', 'result-color-35', 'result-color-36', 'result-color-37', 'result-color-38', 'result-color-39', 'result-color-40', 'result-color-41', 'result-color-42', 'result-color-43', 'result-color-44', 'result-color-45', 'result-color-46', 'result-color-47', 'result-color-48'];
+
+let searchResults = []; // Declare the search results variable
+
+
+    function removeSpecialChars(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f\s]/g, "");
-}
-
-function search(query) {
-  const queryParts = query.split(',').map(part => part.trim());
-  const name = queryParts[0];
-  let age, team;
-  
-  if (queryParts.length > 1) {
-    age = queryParts[1].trim();
-    if (queryParts.length > 2) {
-      team = queryParts[2].trim();
     }
-  }
 
-  const results = dataArray.filter(data => {
-    const normalizedName = removeSpecialChars(data[1].toLowerCase());
-    const normalizedTeam = removeSpecialChars(data[2].toLowerCase());
-    const normalizedAge = data[3].trim().toLowerCase();
+    function search(query) {
+      const queryParts = query.split(',').map(part => part.trim()); // Split the query by commas and trim whitespace
+      const name = queryParts[0]; // Extract the name part
+      let age, team;
+      
+      // Extract age and team if they exist
+      if (queryParts.length > 1) {
+        age = queryParts[1].trim(); // Trim any leading or trailing spaces
+        if (queryParts.length > 2) {
+          team = queryParts[2].trim(); // Trim any leading or trailing spaces
+        }
+      }
     
-    const nameMatches = normalizedName.includes(removeSpecialChars(name.toLowerCase()));
-    const ageMatches = !age || normalizedAge === removeSpecialChars(age.toLowerCase());
-    const teamMatches = !team || normalizedTeam === removeSpecialChars(team.toLowerCase());
+      console.log("Query Parts:", queryParts);
     
-    return nameMatches && (ageMatches || teamMatches);
-  });
+      const results = dataArray.filter(data => {
+        const normalizedName = removeSpecialChars(data[1].toLowerCase());
+        const normalizedTeam = removeSpecialChars(data[2].toLowerCase());
+        const normalizedAge = data[3].trim().toLowerCase(); // Trim any leading or trailing spaces
+    
+        console.log("Normalized Data:", normalizedName, normalizedAge, normalizedTeam);
+        console.log("Query Data:", name, age, team);
+    
+        // Check if the name matches
+        const nameMatches = normalizedName.includes(removeSpecialChars(name.toLowerCase()));
+    
+        // Check if the age matches (or if age is not provided)
+        const ageMatches = !age || normalizedAge === removeSpecialChars(age.toLowerCase());
+    
+        // Check if the team matches (or if team is not provided)
+        const teamMatches = !team || normalizedTeam === removeSpecialChars(team.toLowerCase());
+    
+        // Return true if name matches and either age or team matches
+        return nameMatches && (ageMatches || teamMatches);
+      });
+    
+      return results;
+    }
+    
 
-  return results;
-}
-
-async function initialize() {
-  const csvUrl = 'https://datamb.football/testing/freecmradars.csv';
-  const csvData = await fetchCSVData(csvUrl);
-
-  if (csvData) {
-    dataArray = parseCSV(csvData);
-
-    // Now that dataArray is populated, you can proceed with using it in your existing functions
-    createTableForTeam1();
-  } else {
-    console.error('Failed to fetch or parse CSV data');
-  }
-}
 
 function createTable(teamName, teamIndex, color) {
   const resultsTable = document.getElementById('resultsTable');
