@@ -1109,7 +1109,7 @@ async function fetchCsvData(url) {
 
 // Function to initialize the script after fetching the CSV data
 async function initializeScript() {
-  const csvData = await fetchCsvData('https://datamb.football/freecmradars');
+  const csvData = await fetchCsvData('https://datamb.football/testing/freecmradars.csv');
   const dataArray = csvData.split('\n').map(line => line.split(','));
 
   function takeScreenshot() {
