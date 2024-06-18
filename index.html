@@ -1188,8 +1188,7 @@ ctx.fillText('datamb.football', 345, 476);
     img.src = URL.createObjectURL(blob);
   });
 }
-
-          const csvUrl = 'https://raw.githubusercontent.com/ohlitmybad/testing/main/freecmradars.csv';
+       const csvUrl = 'https://raw.githubusercontent.com/ohlitmybad/testing/main/freecmradars.csv';
 
         // Global variable to hold the CSV data
         var csvData;
@@ -1203,16 +1202,23 @@ ctx.fillText('datamb.football', 345, 476);
                 }
                 csvData = await response.text();
                 console.log(csvData);
-                // Process your CSV data here
-                // For example, you can convert it to JSON if needed
+                processCsvData(csvData);
             } catch (error) {
                 console.error('Failed to fetch CSV data:', error);
             }
         }
 
-        // Call the function to fetch and handle the CSV data
-        fetchCsvData(csvUrl);
+        // Function to process the CSV data
+        function processCsvData(csvData) {
+            const dataArray = csvData.split('\n').map(line => line.split(','));
+            console.log(dataArray);
 
+            // Example usage of calculateEuclideanDifference function
+            if (dataArray.length > 2) {
+                const difference = calculateEuclideanDifference(dataArray[1], dataArray[2]);
+                console.log('Euclidean difference:', difference);
+            }
+        }
 
 
 function calculateEuclideanDifference(data1, data2) {
@@ -1225,6 +1231,7 @@ function calculateEuclideanDifference(data1, data2) {
   return Math.sqrt(difference);
 }
 
+        fetchCsvData(csvUrl);
 
 
 
