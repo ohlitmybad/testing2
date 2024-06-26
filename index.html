@@ -329,26 +329,29 @@ td {
 
 
     <script>
+
+
 const urls = [
-'https://datamb.football/database/plots/CURRENT/PRO2024/GK/GK.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2425/GK/GK.xlsx',
-    'https://datamb.football/database/plots/CURRENT/TOP72425/GK/GK.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2024/CB/CB.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2425/CB/CB.xlsx',
-    'https://datamb.football/database/plots/CURRENT/TOP72425/CB/CB.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2024/FB/FB.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2425/FB/FB.xlsx',
-    'https://datamb.football/database/plots/CURRENT/TOP72425/FB/FB.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2024/CM/CM.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2425/CM/CM.xlsx',
-    'https://datamb.football/database/plots/CURRENT/TOP72425/CM/CM.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2024/FW/FW.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2425/FW/FW.xlsx',
-    'https://datamb.football/database/plots/CURRENT/TOP72425/FW/FW.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2024/ST/ST.xlsx',
-    'https://datamb.football/database/plots/CURRENT/PRO2425/ST/ST.xlsx',
-    'https://datamb.football/database/plots/CURRENT/TOP72425/ST/ST.xlsx',
+'https://datamb.football/database/plots/TOP72324/gk/GK.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/GK.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/GK.xlsx',
+'https://datamb.football/database/plots/TOP72324/cb/CB.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/CB.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/CB.xlsx',
+'https://datamb.football/database/plots/TOP72324/fb/FB.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/FB.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/FB.xlsx',
+'https://datamb.football/database/plots/TOP72324/cm/CM.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/CM.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/CM.xlsx',
+'https://datamb.football/database/plots/TOP72324/fw/FW.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/FW.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/FW.xlsx',
+'https://datamb.football/database/plots/TOP72324/st/ST.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/ST.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/ST.xlsx',
 ];
+
 
 const allData = [];
 function showLoadingOverlay() {
@@ -378,17 +381,17 @@ Promise.all(fetchPromises)
 
             // Define the label based on the index of the URL
             let label;
-                if (index >= 0 && index <= 35) {
+                if (index >= 0 && index <= 2) {
                     label = 'Goalkeeper';
-                } else if (index >= 36 && index <= 71) {
+                } else if (index >= 3 && index <= 5) {
                     label = 'Centre-back';
-                } else if (index >= 72 && index <= 107) {
+                } else if (index >= 6 && index <= 8) {
                     label = 'Full-back';
-                } else if (index >= 108 && index <= 143) {
+                } else if (index >= 9 && index <= 11) {
                     label = 'Midfielder';
-                } else if (index >= 144 && index <= 179) {
+                } else if (index >= 12 && index <= 14) {
                     label = 'Winger';
-                } else if (index >= 180 && index <= 215) {
+                } else if (index >= 15 && index <= 17) {
                     label = 'Striker';
                 } else {
                     label = 'Unknown';
@@ -734,10 +737,9 @@ allData.forEach(row => {
         const league = getTeamLeague(team);
         row.splice(2, 0, league); // Insert league information at index 2
     }
-    row.splice(5, 0, '1');
+    row.splice(5, 0, '');
 
 });
-
 
 
 const columnsToDelete = [
@@ -781,6 +783,107 @@ row.splice(64, 0, roundedResult);
 
 });
 
+
+// Example usage within your context:
+const leaguePositionData = {};
+const positionData = {
+    Goalkeeper: {},
+    'Centre-back': {},
+    'Full-back': {},
+    Midfielder: {},
+    Winger: {},
+    Striker: {}
+};
+
+const positionColumnMapping = {
+    Goalkeeper: [7,8,9,13,30,31,32,34,45,47,55],
+    'Centre-back': [48,48, 48, 48, 48,42, 42],
+    'Full-back': [27,27, 27,28, 28, 28,48, 48],        // Example: Columns 6 and 7 for Full-backs
+    Midfielder: [42,42,56,56,56,7,48,42,31,42, 42],         // Example: Columns 8 and 9 for Midfielders
+    Winger: [24,16,18,20,35,36,21,22,41,28,24,29],
+    Striker: [16,17,16,18,16,18,16,18,17,16,17]
+};
+
+// Flatten the positionColumnMapping for better performance
+const uniquePositionColumns = {};
+Object.keys(positionColumnMapping).forEach(position => {
+    uniquePositionColumns[position] = [...new Set(positionColumnMapping[position])];
+});
+
+// Populate position-specific data
+allData.forEach(row => {
+    const league = row[2];
+    const position = row[3];
+
+    if (league && position) {
+        if (!positionData[position][league]) {
+            positionData[position][league] = [];
+        }
+        positionData[position][league].push(row);
+    }
+});
+// Pre-calculate percentiles for all columns
+const allPercentiles = {};
+Object.keys(positionData).forEach(position => {
+    allPercentiles[position] = {};
+    Object.keys(positionData[position]).forEach(league => {
+        const players = positionData[position][league];
+        allPercentiles[position][league] = players.map(player => {
+            return positionColumnMapping[position].map(columnIndex => percentile(players, player, columnIndex));
+        });
+    });
+});
+
+// Function to calculate percentile for a specific player
+function percentile(players, player, columnIndex) {
+    const value = player[columnIndex];
+    const columnValues = players.map(p => p[columnIndex]);
+    const sorted = columnValues.slice().sort((a, b) => a - b);
+    const index = sorted.findIndex(item => item >= value);
+    return (index + 1) / sorted.length * 100;
+}
+
+// Function to calculate performance index
+function calculatePerformanceIndexForPosition(positionData, position, columnMapping) {
+    Object.keys(positionData[position]).forEach(league => {
+        const playersInSameLeaguePosition = positionData[position][league];
+        const columns = columnMapping[position];
+
+        // Calculate average percentiles for all players once
+        const averagePercentiles = playersInSameLeaguePosition.map(player => {
+            return columns.map((columnIndex, index) => {
+                return allPercentiles[position][league][playersInSameLeaguePosition.indexOf(player)][index];
+            });
+        });
+
+        // Find highest average percentile
+        const highestAveragePercentile = Math.max(...averagePercentiles.map(p => p.reduce((a, b) => a + b, 0) / columns.length));
+
+        // Calculate and update performance index for each player
+        playersInSameLeaguePosition.forEach(player => {
+            const sumOfPercentiles = columns.reduce((sum, columnIndex, index) => {
+                return sum + averagePercentiles[playersInSameLeaguePosition.indexOf(player)][index];
+            }, 0);
+
+            const averagePercentile = sumOfPercentiles / columns.length;
+            const minutesPlayedPercentile = percentile(playersInSameLeaguePosition, player, 6);
+            const inverseMinutesPlayedPercentile = 100 - minutesPlayedPercentile;
+
+            const normalizedIndex = ((averagePercentile / highestAveragePercentile)) - 0.00273 * inverseMinutesPlayedPercentile;
+            const scaledIndex = Math.pow(normalizedIndex, 1.48);
+            const minOld = 0, maxOld = 0.99;
+            const minNew = 0.38, maxNew = 0.98;
+            const transformedIndex = (((maxNew - minNew) / (maxOld - minOld)) * (scaledIndex - minOld) + minNew) * 100;
+
+            player[5] = transformedIndex.toFixed(0);
+        });
+    });
+}
+
+// Example usage for each position
+Object.keys(positionColumnMapping).forEach(position => {
+    calculatePerformanceIndexForPosition(positionData, position, positionColumnMapping);
+});
 
 
 const outputLines = [];
