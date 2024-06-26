@@ -401,14 +401,8 @@ Promise.all(fetchPromises)
             for (let i = 0; i < jsonData.length; i++) {
                 // Skip the header row for all but the first file
                 if (index !== 0 && i === 0) continue;
+                jsonData[i][3] = label;
 
-                // Shift the elements to the right in each row
-                for (let j = jsonData[i].length - 1; j >= 2; j--) {
-                    jsonData[i][j] = jsonData[i][j - 1];
-                }
-
-                // Add the label in the 3rd column
-                jsonData[i][2] = label;
             }
 
 
@@ -417,327 +411,13 @@ Promise.all(fetchPromises)
             
         });
 
-
-        const leagues = {
-
-   
-   
-"Ukrainian Premier League": [
-      "Zorya", "Chornomorets", "Vorskla", "Veres", "Shakhtar Donetsk", "Rukh Lviv", 
-      "Polissya", "Oleksandria", "Obolon", "Minaj", "Metalist 1925 Kharkiv", 
-      "LNZ Cherkasy", "Kryvbas KR", "Kolos Kovalivka", "Dynamo Kyiv", "Dnipro-1",
-   ],
-
-   "Poland Ekstraklasa": [
-      "Śląsk Wrocław", "Łódzki KS", "Zagłębie Lubin", "Ruch Chorzów", "Widzew Łódź", 
-      "Warta Poznań", "Stal Mielec", "Raków Częstochowa", "Radomiak Radom", 
-      "Puszcza Niepołomice", "Pogoń Szczecin", "Piast Gliwice", "Legia Warszawa", 
-      "Lech Poznań", "Korona Kielce", "Jagiellonia Białystok", "Górnik Zabrze", 
-      "Cracovia Kraków",
-   ],
-   "Russian Premier League": [
-      "Zenit", "Ural", "Spartak Moskva", "Sochi", "Rubin Kazan'", 
-      "Rostov", "Orenburg", "Nizhny Novgorod", "Lokomotiv Moskva", 
-      "Krylya Sovetov", "Krasnodar", "Fakel", "Dinamo Moskva", 
-      "CSKA Moskva", "Baltika", "Akhmat Grozny",
-   ],
-
-   "Israel Ligat HaAl": [
-      "Maccabi Tel Aviv", "Maccabi Petah Tikva", "Maccabi Netanya", "Maccabi Haifa", 
-      "Maccabi Bnei Raina", "Hapoel Tel Aviv", "Hapoel Petah Tikva", "Hapoel Jerusalem", 
-      "Hapoel Haifa", "Hapoel Hadera", "Hapoel Be'er Sheva", "Bnei Sakhnin", 
-      "Beitar Jerusalem", "Ashdod",
-   ],
-
-
-
-   "Ecuador Serie A": [
-      "Universidad", "Técnico Universitario", "Orense", "Mushuc Runa", 
-      "Macará", "Libertad (ECU)", "LDU Quito", "Independiente del Valle", 
-      "Imbabura", "Emelec", "El Nacional", "Deportivo Cuenca", 
-      "Delfin", "Cumbayá", "Barcelona (ECU)", "Aucas", "Guayaquil City", "Gualaceo",
-   ],
-
-   "Chile Primera": [
-      "Ñublense", "Unión La Calera", "Unión Española", "Universidad de Chile", 
-      "Universidad Católica", "Palestino", "O'Higgins", "Huachipato", 
-      "Everton (CHI)", "Deportes Iquique", "Coquimbo Unido", "Copiapó", 
-      "Colo Colo", "Cobresal", "Cobreloa", "Audax Italiano", "Curicó Unido", "Magallanes",
-   ],
-
-    
-      
-   "Paraguay Primera": [
-      "Tacuary", "Sportivo Trinidense", "Sportivo Luqueño", "Sportivo Ameliano", 
-      "Sol de América", "Olimpia", "Nacional Asunción", "Libertad", 
-      "Guaraní", "General Caballero JLM", "Cerro Porteño", "2 de Mayo", "Resistencia", "Guaireña",
-   ],
-
-   "Greek Super League": [
-      "Volos NFC", "Panserraikos", "Panetolikos FC", "Panathinaikos", "PAS Giannina", 
-      "PAOK", "Olympiacos Piraeus", "OFI", "Lamia", "Kifissia", 
-      "Atromitos", "Asteras Tripolis", "Aris", "AEK Athens",
-   ],
-  
-
-   "Colombia Primera A": [
-      "Águilas Doradas", "Tolima", "Santa Fe", "Medellín", 
-      "Patriotas Boyacá", "Once Caldas", "Millonarios", "La Equidad", 
-      "Junior", "Jaguares de Córdoba", "Fortaleza (COL)", "Envigado", 
-      "Deportivo Pereira", "Deportivo Pasto", "Deportivo Cali", "Boyacá Chicó", 
-      "Atlético Nacional", "Atlético Bucaramanga", "América de Cali", "Alianza", "Atlético Huila", "Unión Magdalena",
-   ],
-
-   
-"Argentina Primera": [
-"Argentinos Juniors", "Atlético Tucumán", "Banfield", "Barracas Central", "Belgrano",
-"Boca Juniors", "Central Córdoba SdE", "Defensa y Justicia", "Deportivo Riestra", "Estudiantes",
-"Gimnasia La Plata", "Godoy Cruz", "Huracán", "Independiente", "Independiente Rivadavia",
-"Instituto", "Lanús", "Newell's Old Boys", "Platense", "Racing Club",
-"River Plate", "Rosario Central", "San Lorenzo", "Sarmiento", "Talleres Córdoba",
-"Tigre", "Unión Santa Fe", "Vélez Sarsfield", "Colón",
-],
-
-
-
-"Brazil Serie A": [
-"Athletico Paranaense", "Atlético GO", "Atlético Mineiro", "Bahia", "Botafogo",
-"Corinthians", "Criciúma", "Cruzeiro", "Cuiabá", "Flamengo",
-"Fluminense", "Fortaleza", "Grêmio", "Internacional", "Juventude",
-"Palmeiras", "Red Bull Bragantino", "São Paulo", "Vasco da Gama", "Vitória", "Santos", "América Mineiro", "Coritiba", "Goiás",
-],
-
-
-"Uruguay Primera": [
-"Boston River", "Cerro", "Cerro Largo", "Danubio", "Defensor Sporting",
-"Deportivo Maldonado", "Fénix", "Liverpool (URU)", "Miramar Misiones", "Nacional",
-"Peñarol", "Progreso", "Racing", "Rampla Juniors", "River Plate (URU)", "Wanderers", "Plaza Colonia", "La Luz", "Torque",
-],
-
-"MLS": [
-"Los Angeles FC", "Philadelphia Union", "SJ Earthquakes", "Orlando City", "Toronto",
-"Minnesota United", "Colorado Rapids", "Chicago Fire", "St. Louis City", "St. Louis City ", "Charlotte FC",
-"Dallas", "Vancouver Whitecaps", "Inter Miami", "Austin FC", "DC United",
-"Los Angeles Galaxy", "New York RB", "Sporting KC", "Portland Timbers", "Nashville SC",
-"Seattle Sounders", "CF Montréal", "Real Salt Lake", "New York City", "Houston Dynamo",
-"Atlanta United", "New England", "Cincinnati", "Columbus Crew",
-],
-
-"K League 1": [
-"Gangwon", "Seoul", "Pohang Steelers", "Suwon", "Gwangju",
-"Jeju United", "Ulsan Hyundai", "Daejeon Citizen", "Jeonbuk Motors",
-"Incheon United", "Daegu", "Gimcheon Sangmu",
-],
-
-  
-    
-            
-          
-
-"J1 League": [
-"Albirex Niigata", "Avispa Fukuoka", "Cerezo Osaka", "Consadole Sapporo", "Gamba Osaka",
-"Júbilo Iwata", "Kashima Antlers", "Kashiwa Reysol", "Kawasaki Frontale", "Kyoto Sanga",
-"Machida Zelvia", "Nagoya Grampus", "Sagan Tosu", "Sanfrecce Hiroshima", "Shonan Bellmare",
-"Tokyo", "Tokyo Verdy", "Urawa Reds", "Vissel Kobe", "Yokohama F. Marinos", "Suwon Bluewings", "Yokohama",
-],
-
-
-"Norway Eliteserien": [
-"Bodø / Glimt", "Brann", "Fredrikstad", "HamKam", "Haugesund",
-"KFUM", "Kristiansund", "Lillestrøm", "Molde", "Odds",
-"Rosenborg", "Sandefjord", "Sarpsborg 08", "Strømsgodset", "Tromsø",
-"Viking", "Vålerenga", "Aalesund", "Stabæk",
-],
-
-
-"Sweden Allsvenskan": [
-"AIK", "Brommapojkarna", "Djurgården", "Elfsborg", "GAIS",
-"Halmstad", "Hammarby", "Häcken", "IFK Göteborg", "IFK Norrköping",
-"Kalmar", "Malmö FF", "Mjällby", "Sirius", "Värnamo",
-"Västerås SK","Degerfors", "Varbergs",
-
-],
-
-
-"Championship": [
-"Leicester City", "Queens Park Rangers", "Plymouth Argyle", "Swansea City", "Cardiff City",
-"Sunderland", "Leeds United", "Blackburn Rovers", "Bristol City", "Huddersfield Town",
-"Hull City", "Middlesbrough", "Coventry City", "Millwall", "Southampton",
-"Reading", "Norwich City", "Stoke City", "Birmingham City", "West Bromwich Albion",
-"Preston North End", "Rotherham United", "Watford", "Ipswich Town", "Bristol Rovers", "Sheffield Wednesday",
-],
-"Süper Lig": [
-"Adana Demirspor", "Alanyaspor", "Ankaragücü", "Antalyaspor", "Beşiktaş",
-"Fatih Karagümrük", "Fenerbahçe", "Galatasaray", "Gaziantep", "Hatayspor",
-"İstanbul Başakşehir", "İstanbulspor", "Kasımpaşa", "Kayserispor", "Konyaspor",
-"Pendikspor", "Rizespor", "Samsunspor", "Sivasspor", "Trabzonspor",
-],
-
-"Segunda Division": [
-"Elche", "Racing Santander", "Alcorcón", "Tenerife", "Huesca",
-"Sporting Gijón", "Eldense", "Burgos", "Racing Ferrol", "Espanyol",
-"Cartagena", "Villareal B", "Amorebieta", "Albacete", "Leganés",
-"Mirandés", "Real Valladolid", "Levante", "FC Andorra", "Real Oviedo", "Eibar", "Villarreal B", "Real Zaragoza",
-],
-
-"Scotland Premiership": [
-"Celtic", "Rangers", "Motherwell", "Hearts", "Aberdeen", 
-"Ross County", "Dundee", "Livingston", "St. Mirren", "Hibernian", 
-"St. Johnstone", "Kilmarnock",
-],
-
-"Belgium Pro League": [
-"Genk", "Eupen", "Antwerp", "Club Brugge", "Standard Liège", 
-"Gent", "Anderlecht", "OH Leuven", "Union Saint-Gilloise", "Charleroi", 
-"Westerlo", "Mechelen", "RWD Molenbeek", "Kortrijk", "Cercle Brugge", 
-"Sint-Truiden",
-],
-
-"Swiss Super League": [
-"Yverdon Sport", "Young Boys", "St. Gallen", "Lugano", "Zürich", 
-"Lausanne Sport", "Basel", "Stade Lausanne-Ouchy", "Grasshopper", 
-"Winterthur", "Servette", "Luzern",
-],
-
-"Austrian Bundesliga": [
-"Sturm Graz", "Rapid Wien", "Salzburg", "Austria Wien", "Austria Klagenfurt", 
-"Wolfsberger AC", "Rheindorf Altach", "Austria Lustenau", "WSG Swarovski Tirol", 
-"Blau-Weiß Linz", "LASK", "LASK ", "Hartberg",
-],
-
-"Saudi Pro League": [
-"Al Ahli", "Al Hilal", "Al Nassr", "Al Taawon", "Al Khaleej",
-"Al Wehda", "Al Raed", "Al Hazem", "Al Shabab", "Al Fateh",
-"Al Ta'ee", "Al Ittihad", "Abha", "Dhamk", "Al Riyadh",
-"Al Akhdoud", "Al Ettifaq", "Al Feiha",
-],
-
-"LigaMX": [
-"Santos Laguna", "Necaxa", "América", "Monterrey", "Cruz Azul",
-"Toluca", "Atlas", "Club Tijuana", "Guadalajara", "León",
-"Pachuca", "Tigres UANL", "Juárez", "Pumas UNAM", "Mazatlán",
-"Querétaro", "Puebla", "Atlético de San Luis",
-],
-
-
-"Denmark Superliga": [
-"København", "Brøndby", "Viborg", "AGF", "Randers",
-"Midtjylland", "Nordsjælland", "Silkeborg", "OB", "Lyngby",
-"Vejle", "Hvidovre",
-],
-
-"Czech Fortuna Liga": [
-"Slavia Praha", "Mladá Boleslav", "Sparta Praha", "Karviná", "Viktoria Plzeň",
-"Slovan Liberec", "Slovácko", "Sigma Olomouc", "Teplice", "Zlín",
-"Bohemians 1905", "České Budějovice", "Jablonec", "Baník Ostrava", "Pardubice",
-"Hradec Králové",
-],
-
-"Serbia SuperLiga": [
-"Crvena Zvezda", "Vojvodina", "Bačka Topola", "Partizan", "Radnički Niš",
-"Radnički Kragujevac", "Spartak Subotica", "Radnik Surdulica", "Železničar Pancevo", "IMT Novi Beograd",
-"Voždovac", "Novi Pazar", "Javor Ivanjica", "Čukarički", "Napredak Kruševac",
-"Mladost Novi Sad", "Mladost Lučani",
-],
-
-"Croatia HNL": [
-"Dinamo Zagreb", "Rijeka", "Istra 1961", "Osijek", "Lokomotiva Zagreb",
-"Gorica", "Hajduk Split", "Rudeš", "Slaven Belupo", "Varaždin",
-],
-
-"Bundesliga 2": [
-"Hamburger SV", "Schalke 04", "Fortuna Düsseldorf", "Osnabrück", "Greuther Fürth",
-"Hertha BSC", "St. Pauli", "Hannover 96", "Paderborn", "Holstein Kiel",
-"Karlsruher SC", "Nürnberg", "Kaiserslautern", "Hansa Rostock", "Magdeburg",
-"Eintracht Braunschweig", "Wehen Wiesbaden", "Elversberg",
-],
-
-"Serie B": [
-"Spezia", "Bari", "Como", "Cittadella", "Palermo",
-"Venezia", "Sampdoria", "Modena", "Parma", "Brescia",
-"Reggiana", "Ternana", "Cremonese", "Südtirol", "Ascoli",
-"FeralpiSalò", "Pisa", "Cosenza", "Catanzaro", "Lecco",
-],
-
-"Ligue 2": [
-"Troyes", "Saint-Étienne", "Angers SCO", "Caen", "Guingamp",
-"Pau", "Rodez", "Rodez ", "Bordeaux", "Annecy", "Auxerre",
-"Quevilly Rouen", "Paris", "Grenoble", "Ajaccio", "Amiens SC",
-"Concarneau", "Bastia", "Laval", "Valenciennes", "Dunkerque",
-],
-
-   
-  "Liga Portugal": [
-"Porto", "Benfica", "Famalicão", "Sporting CP", "Sporting Braga", "Gil Vicente",
-"Arouca", "Boavista", "Vizela", "Chaves", "Estoril",
-"Estrela Amadora", "Vitória Guimarães", "Farense",
-"Casa Pia AC", "Moreirense", "Portimonense", "Rio Ave",
-],
-"Ligue 1": [
-"PSG", "Nice", "Lens", "Monaco", "Olympique Marseille",
-"Nantes", "Toulouse", "Lille", "Lorient", "Olympique Lyonnais", "Brest", "Reims",
-"Montpellier", "Le Havre", "Clermont", "Rennes", "Metz",
-"Strasbourg",
-],
-"Premier League": [
-"Chelsea", "Manchester City", "West Ham United", "Tottenham Hotspur", "Arsenal",
-"Manchester United", "Newcastle United", "Burnley", "Brighton", "Wolverhampton Wanderers",
-"Fulham", "Liverpool", "Sheffield United", "Nottingham Forest", "Bournemouth",
-"Aston Villa", "Brentford", "Everton", "Luton Town", "Crystal Palace",
-],
-
-
-"Bundesliga": [
-"Bayern München", "Borussia Dortmund", "Eintracht Frankfurt", "Union Berlin", "Köln",
-"Freiburg", "Stuttgart", "Bayer Leverkusen", "Hoffenheim", "Darmstadt 98",
-"Bochum", "Wolfsburg", "Heidenheim", "Augsburg", "Borussia M'gladbach",
-"Mainz 05", "RB Leipzig", "Werder Bremen",
-],
-
-"Eredivisie": [
-"AZ", "Feyenoord", "Ajax", "PSV", "Sparta Rotterdam",
-"Twente", "Heracles", "Volendam", "PEC Zwolle", "Heerenveen",
-"NEC", "Vitesse", "Excelsior", "Utrecht", "RKC Waalwijk",
-"Go Ahead Eagles", "Almere City", "Fortuna Sittard",
-],
-"La Liga": [
-"Real Madrid", "Barcelona", "Villarreal", "Real Sociedad", "Sevilla",
-"Real Betis", "Granada", "Girona", "Valencia", "Atlético Madrid",
-"Athletic Bilbao", "Celta de Vigo", "Deportivo Alavés", "Osasuna", "Almería",
-"Rayo Vallecano", "Mallorca", "Las Palmas", "Getafe", "Cádiz",
-],
-"Serie A": [
-"Juventus", "Roma", "Napoli", "Lazio", "Milan",
-"Internazionale", "Fiorentina", "Atalanta", "Torino", "Udinese",
-"Lecce", "Hellas Verona", "Monza", "Salernitana", "Empoli",
-"Genoa", "Sassuolo", "Frosinone", "Cagliari", "Bologna",
-],
-
-
-
-};
-
-function getTeamLeague(team) {
-    for (const [league, teams] of Object.entries(leagues)) {
-        if (teams.includes(team)) {
-            return league;
-        }
-    }
-    return "Unknown League";
-}
-
 const columnsToCopy = [7, 9, 24, 25, 28, 35, 37, 45, 47, 53, 55, 66, 68, 70, 74, 80];
 
 allData.forEach(row => {
     const copiedValues = columnsToCopy.map(col => row[col]);
     row.push(...copiedValues); // Append copied values to the end of the row
 
-    if (row.length >= 3) {
-        const team = row[1];
-        const league = getTeamLeague(team);
-        row.splice(2, 0, league); // Insert league information at index 2
-    }
-    row.splice(5, 0, '1');
+    row.splice(5, 0, '');
 
 });
 
@@ -758,11 +438,132 @@ allData.forEach(row => {
     });
 
 
+    let column4 = Number(row[8]);
+    let column6 = Number(row[10]);
+let column9 = Number(row[13]);
+let column21 = Number(row[25]);
+let column27 = Number(row[30]);
+let column44 = Number(row[48]);
+let column51 = Number(row[55]);
+let column50 = Number(row[54]);
 
-row.splice(64, 0, '1');
+
+// Calculate each part of the formula
+let part1 = column6 + column9 + (column4 * column44 / 100);
+let part2 = (column27 + column21) / 100;
+let part3 = (100 - column51) * (column27 / 100) + (100 - column50) * (column21 / 100);
+let part4 = 100 / (column27 + column21);
+
+// Combine the parts to get the final result
+let result = (part1 * part2) - (part3 * part4);
+let roundedResult = result.toFixed(2);
+
+// Insert the result at the desired position, assuming position 65
+row.splice(64, 0, roundedResult);
 
 });
 
+
+// Example usage within your context:
+const leaguePositionData = {};
+const positionData = {
+    Goalkeeper: {},
+    'Centre-back': {},
+    'Full-back': {},
+    Midfielder: {},
+    Winger: {},
+    Striker: {}
+};
+
+const positionColumnMapping = {
+    Goalkeeper: [7,8,9,13,30,31,32,34,45,47,55],
+    'Centre-back': [48,48, 48, 48, 48,42, 42],
+    'Full-back': [27,27, 27,28, 28, 28,48, 48],        // Example: Columns 6 and 7 for Full-backs
+    Midfielder: [42,42,56,56,56,7,48,42,31,42, 42],         // Example: Columns 8 and 9 for Midfielders
+    Winger: [24,16,18,20,35,36,21,22,41,28,24,29],
+    Striker: [16,17,16,18,16,18,16,18,17,16,17]
+};
+
+// Flatten the positionColumnMapping for better performance
+const uniquePositionColumns = {};
+Object.keys(positionColumnMapping).forEach(position => {
+    uniquePositionColumns[position] = [...new Set(positionColumnMapping[position])];
+});
+
+// Populate position-specific data
+allData.forEach(row => {
+    const league = row[2];
+    const position = row[3];
+
+    if (league && position) {
+        if (!positionData[position][league]) {
+            positionData[position][league] = [];
+        }
+        positionData[position][league].push(row);
+    }
+});
+// Pre-calculate percentiles for all columns
+const allPercentiles = {};
+Object.keys(positionData).forEach(position => {
+    allPercentiles[position] = {};
+    Object.keys(positionData[position]).forEach(league => {
+        const players = positionData[position][league];
+        allPercentiles[position][league] = players.map(player => {
+            return positionColumnMapping[position].map(columnIndex => percentile(players, player, columnIndex));
+        });
+    });
+});
+
+// Function to calculate percentile for a specific player
+function percentile(players, player, columnIndex) {
+    const value = player[columnIndex];
+    const columnValues = players.map(p => p[columnIndex]);
+    const sorted = columnValues.slice().sort((a, b) => a - b);
+    const index = sorted.findIndex(item => item >= value);
+    return (index + 1) / sorted.length * 100;
+}
+
+// Function to calculate performance index
+function calculatePerformanceIndexForPosition(positionData, position, columnMapping) {
+    Object.keys(positionData[position]).forEach(league => {
+        const playersInSameLeaguePosition = positionData[position][league];
+        const columns = columnMapping[position];
+
+        // Calculate average percentiles for all players once
+        const averagePercentiles = playersInSameLeaguePosition.map(player => {
+            return columns.map((columnIndex, index) => {
+                return allPercentiles[position][league][playersInSameLeaguePosition.indexOf(player)][index];
+            });
+        });
+
+        // Find highest average percentile
+        const highestAveragePercentile = Math.max(...averagePercentiles.map(p => p.reduce((a, b) => a + b, 0) / columns.length));
+
+        // Calculate and update performance index for each player
+        playersInSameLeaguePosition.forEach(player => {
+            const sumOfPercentiles = columns.reduce((sum, columnIndex, index) => {
+                return sum + averagePercentiles[playersInSameLeaguePosition.indexOf(player)][index];
+            }, 0);
+
+            const averagePercentile = sumOfPercentiles / columns.length;
+            const minutesPlayedPercentile = percentile(playersInSameLeaguePosition, player, 6);
+            const inverseMinutesPlayedPercentile = 100 - minutesPlayedPercentile;
+
+            const normalizedIndex = ((averagePercentile / highestAveragePercentile)) - 0.00273 * inverseMinutesPlayedPercentile;
+            const scaledIndex = Math.pow(normalizedIndex, 1.48);
+            const minOld = 0, maxOld = 0.99;
+            const minNew = 0.38, maxNew = 0.98;
+            const transformedIndex = (((maxNew - minNew) / (maxOld - minOld)) * (scaledIndex - minOld) + minNew) * 100;
+
+            player[5] = transformedIndex.toFixed(0);
+        });
+    });
+}
+
+// Example usage for each position
+Object.keys(positionColumnMapping).forEach(position => {
+    calculatePerformanceIndexForPosition(positionData, position, positionColumnMapping);
+});
 
 
 const outputLines = [];
