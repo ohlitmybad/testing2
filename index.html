@@ -758,28 +758,8 @@ allData.forEach(row => {
     });
 
 
-    let column4 = Number(row[8]);
-    let column6 = Number(row[10]);
-let column9 = Number(row[13]);
-let column21 = Number(row[25]);
-let column27 = Number(row[30]);
-let column44 = Number(row[48]);
-let column51 = Number(row[55]);
-let column50 = Number(row[54]);
 
-
-// Calculate each part of the formula
-let part1 = column6 + column9 + (column4 * column44 / 100);
-let part2 = (column27 + column21) / 100;
-let part3 = (100 - column51) * (column27 / 100) + (100 - column50) * (column21 / 100);
-let part4 = 100 / (column27 + column21);
-
-// Combine the parts to get the final result
-let result = (part1 * part2) - (part3 * part4);
-let roundedResult = result.toFixed(2);
-
-// Insert the result at the desired position, assuming position 65
-row.splice(64, 0, roundedResult);
+row.splice(64, 0, '1');
 
 });
 
