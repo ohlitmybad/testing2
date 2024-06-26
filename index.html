@@ -734,9 +734,10 @@ allData.forEach(row => {
         const league = getTeamLeague(team);
         row.splice(2, 0, league); // Insert league information at index 2
     }
-    row.splice(5, 0, '');
+    row.splice(5, 0, '1');
 
 });
+
 
 
 const columnsToDelete = [
@@ -780,107 +781,6 @@ row.splice(64, 0, roundedResult);
 
 });
 
-
-// Example usage within your context:
-const leaguePositionData = {};
-const positionData = {
-    Goalkeeper: {},
-    'Centre-back': {},
-    'Full-back': {},
-    Midfielder: {},
-    Winger: {},
-    Striker: {}
-};
-
-const positionColumnMapping = {
-    Goalkeeper: [7,8,9,13,30,31,32,34,45,47,55,56,57,58,62,63,44,63,45, 44, 63,45, 63,45, 46, 63],
-    'Centre-back': [48,48, 48, 48, 48,42, 42, 42,49, 49, 49,56, 56, 56,7, 7,8, 8,27, 27,31, 31, 55, 55,57, 57,9,11,14,12,58,19,37,38,40,41,32 ],
-    'Full-back': [27,27, 27,28, 28, 28,48, 48, 48,35, 35, 35,7, 7, 7,  42, 42, 42,21, 21, 21,37, 37,22, 22, 8, 8,9, 9,11, 11,14, 14,15, 15,16, 16,18, 18, 25, 25, 23,29,12,20,26,31,36,38,39,40,41,49,49,52,54,56],        // Example: Columns 6 and 7 for Full-backs
-    Midfielder: [42,42,56,56,56,7,48,42,31,42, 42,42, 37, 37,37, 27,27,27,  48, 48, 49, 7, 8, 9, 11, 12, 14, 21, 25, 16,17,18,20,30,31,33,35,38,39,36,22,41,40,55,56,58,62,28,24,29,52,53,54],         // Example: Columns 8 and 9 for Midfielders
-    Winger: [16,16,17,21,17,21,21,17,21,17,21,17,24,16,29,15,22,35,29,24,28,15,17,18,35,17,18,35,17,18,35,22,35,29,24,28,15,22,35,37,16,35,21,16,18,16,18,20,35,39,36,22,41,28,24,29,35,35,37,15, 53,54,52,24,16,18,20,35,36,21,22,41,28,24,29,27,27,37,37,37,15, 53,54,52,40,42,8,9,11,14,51],
-    Striker: [16,17,16,18,16,18,16,18,17,16,17,16,17,17,16,17,17,16,17,51,51,51,51,18,18,35,35,21,21,50,50,49,25,37,7,24,22,27,28,29]
-};
-
-// Flatten the positionColumnMapping for better performance
-const uniquePositionColumns = {};
-Object.keys(positionColumnMapping).forEach(position => {
-    uniquePositionColumns[position] = [...new Set(positionColumnMapping[position])];
-});
-
-// Populate position-specific data
-allData.forEach(row => {
-    const league = row[2];
-    const position = row[3];
-
-    if (league && position) {
-        if (!positionData[position][league]) {
-            positionData[position][league] = [];
-        }
-        positionData[position][league].push(row);
-    }
-});
-// Pre-calculate percentiles for all columns
-const allPercentiles = {};
-Object.keys(positionData).forEach(position => {
-    allPercentiles[position] = {};
-    Object.keys(positionData[position]).forEach(league => {
-        const players = positionData[position][league];
-        allPercentiles[position][league] = players.map(player => {
-            return positionColumnMapping[position].map(columnIndex => percentile(players, player, columnIndex));
-        });
-    });
-});
-
-// Function to calculate percentile for a specific player
-function percentile(players, player, columnIndex) {
-    const value = player[columnIndex];
-    const columnValues = players.map(p => p[columnIndex]);
-    const sorted = columnValues.slice().sort((a, b) => a - b);
-    const index = sorted.findIndex(item => item >= value);
-    return (index + 1) / sorted.length * 100;
-}
-
-// Function to calculate performance index
-function calculatePerformanceIndexForPosition(positionData, position, columnMapping) {
-    Object.keys(positionData[position]).forEach(league => {
-        const playersInSameLeaguePosition = positionData[position][league];
-        const columns = columnMapping[position];
-
-        // Calculate average percentiles for all players once
-        const averagePercentiles = playersInSameLeaguePosition.map(player => {
-            return columns.map((columnIndex, index) => {
-                return allPercentiles[position][league][playersInSameLeaguePosition.indexOf(player)][index];
-            });
-        });
-
-        // Find highest average percentile
-        const highestAveragePercentile = Math.max(...averagePercentiles.map(p => p.reduce((a, b) => a + b, 0) / columns.length));
-
-        // Calculate and update performance index for each player
-        playersInSameLeaguePosition.forEach(player => {
-            const sumOfPercentiles = columns.reduce((sum, columnIndex, index) => {
-                return sum + averagePercentiles[playersInSameLeaguePosition.indexOf(player)][index];
-            }, 0);
-
-            const averagePercentile = sumOfPercentiles / columns.length;
-            const minutesPlayedPercentile = percentile(playersInSameLeaguePosition, player, 6);
-            const inverseMinutesPlayedPercentile = 100 - minutesPlayedPercentile;
-
-            const normalizedIndex = ((averagePercentile / highestAveragePercentile)) - 0.00273 * inverseMinutesPlayedPercentile;
-            const scaledIndex = Math.pow(normalizedIndex, 1.48);
-            const minOld = 0, maxOld = 0.99;
-            const minNew = 0.38, maxNew = 0.98;
-            const transformedIndex = (((maxNew - minNew) / (maxOld - minOld)) * (scaledIndex - minOld) + minNew) * 100;
-
-            player[5] = transformedIndex.toFixed(0);
-        });
-    });
-}
-
-// Example usage for each position
-Object.keys(positionColumnMapping).forEach(position => {
-    calculatePerformanceIndexForPosition(positionData, position, positionColumnMapping);
-});
 
 
 const outputLines = [];
