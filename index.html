@@ -191,57 +191,12 @@ td {
     font-size: 79%; /* or adjust with specific size like 80% or 0.8em */
 }
 
-#loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    visibility: hidden; /* Initially hidden */
-}
-
-.spinner {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 2s linear infinite;
-    margin-bottom: 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-#content {
-    filter: none; /* Initially no blur */
-}
-
-#loading-overlay.visible {
-    visibility: visible; /* Show the overlay */
-}
-
-#content.blurred {
-    filter: blur(5px); /* Apply blur when loading */
-}
    </style>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 </head>
 <body>
-    <div id="loading-overlay">
-        <div class="spinner"></div>
-        <p>Generating your data...</p>
-    </div>
-    <div id="content">
+
     <select id="metric" class="metric-selector">
     </select>
     <select id="position">
@@ -354,19 +309,7 @@ const urls = [
 
 
 const allData = [];
-function showLoadingOverlay() {
-    console.log('Showing overlay'); // Debugging log
-    document.getElementById('loading-overlay').classList.add('visible');
-    document.getElementById('content').classList.add('blurred');
-}
 
-// Function to hide the loading overlay
-function hideLoadingOverlay() {
-    console.log('Hiding overlay'); // Debugging log
-    document.getElementById('loading-overlay').classList.remove('visible');
-    document.getElementById('content').classList.remove('blurred');
-}
-showLoadingOverlay();
 
 let isFirstFileProcessed = false;
 const fetchPromises = urls.map(url => fetch(url).then(response => response.arrayBuffer()));
@@ -790,7 +733,6 @@ if (selectedPosition === 'All' || (selectedLeague === 'Top 5 Leagues' || selecte
 
 
 }
-hideLoadingOverlay();
 
 // Add event listener for all selectors
 metricSelect.addEventListener('change', handleSelectorsChange);
@@ -807,7 +749,6 @@ filterTable();
 
 </script>
 
-</div>
 
 </body>
 </html>
