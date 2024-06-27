@@ -191,12 +191,57 @@ td {
     font-size: 79%; /* or adjust with specific size like 80% or 0.8em */
 }
 
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden; /* Initially hidden */
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#content {
+    filter: none; /* Initially no blur */
+}
+
+#loading-overlay.visible {
+    visibility: visible; /* Show the overlay */
+}
+
+#content.blurred {
+    filter: blur(5px); /* Apply blur when loading */
+}
    </style>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 </head>
 <body>
-
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Generating your data...</p>
+    </div>
+    <div id="content">
     <select id="metric" class="metric-selector">
     </select>
     <select id="position">
@@ -287,29 +332,239 @@ td {
 
 
 const urls = [
-'https://datamb.football/database/plots/TOP72324/gk/GK.xlsx',
-'https://datamb.football/database/plots/PRO202324/gk/GK.xlsx',
-'https://datamb.football/database/plots/PRO2024/gk/GK.xlsx',
-'https://datamb.football/database/plots/TOP72324/cb/CB.xlsx',
-'https://datamb.football/database/plots/PRO202324/cb/CB.xlsx',
-'https://datamb.football/database/plots/PRO2024/cb/CB.xlsx',
-'https://datamb.football/database/plots/TOP72324/fb/FB.xlsx',
-'https://datamb.football/database/plots/PRO2024/fb/FB.xlsx',
-'https://datamb.football/database/plots/PRO202324/fb/FB.xlsx',
-'https://datamb.football/database/plots/TOP72324/cm/CM.xlsx',
-'https://datamb.football/database/plots/PRO202324/cm/CM.xlsx',
-'https://datamb.football/database/plots/PRO2024/cm/CM.xlsx',
-'https://datamb.football/database/plots/TOP72324/fw/FW.xlsx',
-'https://datamb.football/database/plots/PRO202324/fw/FW.xlsx',
-'https://datamb.football/database/plots/PRO2024/fw/FW.xlsx',
-'https://datamb.football/database/plots/TOP72324/st/ST.xlsx',
-'https://datamb.football/database/plots/PRO202324/st/ST.xlsx',
-'https://datamb.football/database/plots/PRO2024/st/ST.xlsx',
+'https://datamb.football/database/plots/TOP72324/gk/1.xlsx',
+    'https://datamb.football/database/plots/TOP72324/gk/2.xlsx',
+    'https://datamb.football/database/plots/TOP72324/gk/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/1.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/2.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/4.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/5.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/6.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/7.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/8.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/9.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/10.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/11.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/13.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/14.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/15.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/16.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/17.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/18.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/19.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/20.xlsx',
+'https://datamb.football/database/plots/PRO202324/gk/21.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/1.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/2.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/4.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/5.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/6.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/7.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/8.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/9.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/10.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/11.xlsx',
+'https://datamb.football/database/plots/PRO2024/gk/12.xlsx',
+'https://datamb.football/database/plots/TOP72324/cb/1.xlsx',
+    'https://datamb.football/database/plots/TOP72324/cb/2.xlsx',
+    'https://datamb.football/database/plots/TOP72324/cb/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/1.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/2.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/4.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/5.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/6.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/7.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/8.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/9.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/10.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/11.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/13.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/14.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/15.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/16.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/17.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/18.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/19.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/20.xlsx',
+'https://datamb.football/database/plots/PRO202324/cb/21.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/1.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/2.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/4.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/5.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/6.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/7.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/8.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/9.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/10.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/11.xlsx',
+'https://datamb.football/database/plots/PRO2024/cb/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/1.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/2.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/4.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/5.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/6.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/7.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/8.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/9.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/10.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/11.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/13.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/14.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/15.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/16.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/17.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/18.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/19.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/20.xlsx',
+'https://datamb.football/database/plots/PRO202324/fb/21.xlsx',
+'https://datamb.football/database/plots/TOP72324/fb/1.xlsx',
+    'https://datamb.football/database/plots/TOP72324/fb/2.xlsx',
+    'https://datamb.football/database/plots/TOP72324/fb/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/1.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/2.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/4.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/5.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/6.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/7.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/8.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/9.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/10.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/11.xlsx',
+'https://datamb.football/database/plots/PRO2024/fb/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/1.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/2.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/4.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/5.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/6.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/7.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/8.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/9.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/10.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/11.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/13.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/14.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/15.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/16.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/17.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/18.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/19.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/20.xlsx',
+'https://datamb.football/database/plots/PRO202324/cm/21.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/1.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/2.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/4.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/5.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/6.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/7.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/8.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/9.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/10.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/11.xlsx',
+'https://datamb.football/database/plots/PRO2024/cm/12.xlsx',
+'https://datamb.football/database/plots/TOP72324/cm/1.xlsx',
+    'https://datamb.football/database/plots/TOP72324/cm/2.xlsx',
+    'https://datamb.football/database/plots/TOP72324/cm/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/1.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/2.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/4.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/5.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/6.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/7.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/8.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/9.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/10.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/11.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/13.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/14.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/15.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/16.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/17.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/18.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/19.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/20.xlsx',
+'https://datamb.football/database/plots/PRO202324/fw/21.xlsx',
+'https://datamb.football/database/plots/TOP72324/fw/1.xlsx',
+    'https://datamb.football/database/plots/TOP72324/fw/2.xlsx',
+    'https://datamb.football/database/plots/TOP72324/fw/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/1.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/2.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/4.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/5.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/6.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/7.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/8.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/9.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/10.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/11.xlsx',
+'https://datamb.football/database/plots/PRO2024/fw/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/1.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/2.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/3.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/4.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/5.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/6.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/7.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/8.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/9.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/10.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/11.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/12.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/13.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/14.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/15.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/16.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/17.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/18.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/19.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/20.xlsx',
+'https://datamb.football/database/plots/PRO202324/st/21.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/1.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/2.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/3.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/4.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/5.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/6.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/7.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/8.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/9.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/10.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/11.xlsx',
+'https://datamb.football/database/plots/PRO2024/st/12.xlsx',
+'https://datamb.football/database/plots/TOP72324/st/1.xlsx',
+    'https://datamb.football/database/plots/TOP72324/st/2.xlsx',
+    'https://datamb.football/database/plots/TOP72324/st/3.xlsx',
 ];
 
 
 const allData = [];
+function showLoadingOverlay() {
+    console.log('Showing overlay'); // Debugging log
+    document.getElementById('loading-overlay').classList.add('visible');
+    document.getElementById('content').classList.add('blurred');
+}
 
+// Function to hide the loading overlay
+function hideLoadingOverlay() {
+    console.log('Hiding overlay'); // Debugging log
+    document.getElementById('loading-overlay').classList.remove('visible');
+    document.getElementById('content').classList.remove('blurred');
+}
+showLoadingOverlay();
 
 let isFirstFileProcessed = false;
 const fetchPromises = urls.map(url => fetch(url).then(response => response.arrayBuffer()));
@@ -324,28 +579,35 @@ Promise.all(fetchPromises)
 
             // Define the label based on the index of the URL
             let label;
-                if (index >= 0 && index <= 2) {
+                if (index >= 0 && index <= 35) {
                     label = 'Goalkeeper';
-                } else if (index >= 3 && index <= 5) {
+                } else if (index >= 36 && index <= 71) {
                     label = 'Centre-back';
-                } else if (index >= 6 && index <= 8) {
+                } else if (index >= 72 && index <= 107) {
                     label = 'Full-back';
-                } else if (index >= 9 && index <= 11) {
+                } else if (index >= 108 && index <= 143) {
                     label = 'Midfielder';
-                } else if (index >= 12 && index <= 14) {
+                } else if (index >= 144 && index <= 179) {
                     label = 'Winger';
-                } else if (index >= 15 && index <= 17) {
+                } else if (index >= 180 && index <= 215) {
                     label = 'Striker';
                 } else {
                     label = 'Unknown';
                 }
 
+
             // Iterate through each row in the jsonData
             for (let i = 0; i < jsonData.length; i++) {
                 // Skip the header row for all but the first file
                 if (index !== 0 && i === 0) continue;
-                jsonData[i][3] = label;
 
+                // Shift the elements to the right in each row
+                for (let j = jsonData[i].length - 1; j >= 2; j--) {
+                    jsonData[i][j] = jsonData[i][j - 1];
+                }
+
+                // Add the label in the 3rd column
+                jsonData[i][2] = label;
             }
 
 
@@ -354,13 +616,327 @@ Promise.all(fetchPromises)
             
         });
 
+
+        const leagues = {
+
+   
+   
+"Ukrainian Premier League": [
+      "Zorya", "Chornomorets", "Vorskla", "Veres", "Shakhtar Donetsk", "Rukh Lviv", 
+      "Polissya", "Oleksandria", "Obolon", "Minaj", "Metalist 1925 Kharkiv", 
+      "LNZ Cherkasy", "Kryvbas KR", "Kolos Kovalivka", "Dynamo Kyiv", "Dnipro-1",
+   ],
+
+   "Poland Ekstraklasa": [
+      "Śląsk Wrocław", "Łódzki KS", "Zagłębie Lubin", "Ruch Chorzów", "Widzew Łódź", 
+      "Warta Poznań", "Stal Mielec", "Raków Częstochowa", "Radomiak Radom", 
+      "Puszcza Niepołomice", "Pogoń Szczecin", "Piast Gliwice", "Legia Warszawa", 
+      "Lech Poznań", "Korona Kielce", "Jagiellonia Białystok", "Górnik Zabrze", 
+      "Cracovia Kraków",
+   ],
+   "Russian Premier League": [
+      "Zenit", "Ural", "Spartak Moskva", "Sochi", "Rubin Kazan'", 
+      "Rostov", "Orenburg", "Nizhny Novgorod", "Lokomotiv Moskva", 
+      "Krylya Sovetov", "Krasnodar", "Fakel", "Dinamo Moskva", 
+      "CSKA Moskva", "Baltika", "Akhmat Grozny",
+   ],
+
+   "Israel Ligat HaAl": [
+      "Maccabi Tel Aviv", "Maccabi Petah Tikva", "Maccabi Netanya", "Maccabi Haifa", 
+      "Maccabi Bnei Raina", "Hapoel Tel Aviv", "Hapoel Petah Tikva", "Hapoel Jerusalem", 
+      "Hapoel Haifa", "Hapoel Hadera", "Hapoel Be'er Sheva", "Bnei Sakhnin", 
+      "Beitar Jerusalem", "Ashdod",
+   ],
+
+
+
+   "Ecuador Serie A": [
+      "Universidad", "Técnico Universitario", "Orense", "Mushuc Runa", 
+      "Macará", "Libertad (ECU)", "LDU Quito", "Independiente del Valle", 
+      "Imbabura", "Emelec", "El Nacional", "Deportivo Cuenca", 
+      "Delfin", "Cumbayá", "Barcelona (ECU)", "Aucas", "Guayaquil City", "Gualaceo",
+   ],
+
+   "Chile Primera": [
+      "Ñublense", "Unión La Calera", "Unión Española", "Universidad de Chile", 
+      "Universidad Católica", "Palestino", "O'Higgins", "Huachipato", 
+      "Everton (CHI)", "Deportes Iquique", "Coquimbo Unido", "Copiapó", 
+      "Colo Colo", "Cobresal", "Cobreloa", "Audax Italiano", "Curicó Unido", "Magallanes",
+   ],
+
+    
+      
+   "Paraguay Primera": [
+      "Tacuary", "Sportivo Trinidense", "Sportivo Luqueño", "Sportivo Ameliano", 
+      "Sol de América", "Olimpia", "Nacional Asunción", "Libertad", 
+      "Guaraní", "General Caballero JLM", "Cerro Porteño", "2 de Mayo", "Resistencia", "Guaireña",
+   ],
+
+   "Greek Super League": [
+      "Volos NFC", "Panserraikos", "Panetolikos FC", "Panathinaikos", "PAS Giannina", 
+      "PAOK", "Olympiacos Piraeus", "OFI", "Lamia", "Kifissia", 
+      "Atromitos", "Asteras Tripolis", "Aris", "AEK Athens",
+   ],
+  
+
+   "Colombia Primera A": [
+      "Águilas Doradas", "Tolima", "Santa Fe", "Medellín", 
+      "Patriotas Boyacá", "Once Caldas", "Millonarios", "La Equidad", 
+      "Junior", "Jaguares de Córdoba", "Fortaleza (COL)", "Envigado", 
+      "Deportivo Pereira", "Deportivo Pasto", "Deportivo Cali", "Boyacá Chicó", 
+      "Atlético Nacional", "Atlético Bucaramanga", "América de Cali", "Alianza", "Atlético Huila", "Unión Magdalena",
+   ],
+
+   
+"Argentina Primera": [
+"Argentinos Juniors", "Atlético Tucumán", "Banfield", "Barracas Central", "Belgrano",
+"Boca Juniors", "Central Córdoba SdE", "Defensa y Justicia", "Deportivo Riestra", "Estudiantes",
+"Gimnasia La Plata", "Godoy Cruz", "Huracán", "Independiente", "Independiente Rivadavia",
+"Instituto", "Lanús", "Newell's Old Boys", "Platense", "Racing Club",
+"River Plate", "Rosario Central", "San Lorenzo", "Sarmiento", "Talleres Córdoba",
+"Tigre", "Unión Santa Fe", "Vélez Sarsfield", "Colón",
+],
+
+
+
+"Brazil Serie A": [
+"Athletico Paranaense", "Atlético GO", "Atlético Mineiro", "Bahia", "Botafogo",
+"Corinthians", "Criciúma", "Cruzeiro", "Cuiabá", "Flamengo",
+"Fluminense", "Fortaleza", "Grêmio", "Internacional", "Juventude",
+"Palmeiras", "Red Bull Bragantino", "São Paulo", "Vasco da Gama", "Vitória", "Santos", "América Mineiro", "Coritiba", "Goiás",
+],
+
+
+"Uruguay Primera": [
+"Boston River", "Cerro", "Cerro Largo", "Danubio", "Defensor Sporting",
+"Deportivo Maldonado", "Fénix", "Liverpool (URU)", "Miramar Misiones", "Nacional",
+"Peñarol", "Progreso", "Racing", "Rampla Juniors", "River Plate (URU)", "Wanderers", "Plaza Colonia", "La Luz", "Torque",
+],
+
+"MLS": [
+"Los Angeles FC", "Philadelphia Union", "SJ Earthquakes", "Orlando City", "Toronto",
+"Minnesota United", "Colorado Rapids", "Chicago Fire", "St. Louis City", "St. Louis City ", "Charlotte FC",
+"Dallas", "Vancouver Whitecaps", "Inter Miami", "Austin FC", "DC United",
+"Los Angeles Galaxy", "New York RB", "Sporting KC", "Portland Timbers", "Nashville SC",
+"Seattle Sounders", "CF Montréal", "Real Salt Lake", "New York City", "Houston Dynamo",
+"Atlanta United", "New England", "Cincinnati", "Columbus Crew",
+],
+
+"K League 1": [
+"Gangwon", "Seoul", "Pohang Steelers", "Suwon", "Gwangju",
+"Jeju United", "Ulsan Hyundai", "Daejeon Citizen", "Jeonbuk Motors",
+"Incheon United", "Daegu", "Gimcheon Sangmu",
+],
+
+  
+    
+            
+          
+
+"J1 League": [
+"Albirex Niigata", "Avispa Fukuoka", "Cerezo Osaka", "Consadole Sapporo", "Gamba Osaka",
+"Júbilo Iwata", "Kashima Antlers", "Kashiwa Reysol", "Kawasaki Frontale", "Kyoto Sanga",
+"Machida Zelvia", "Nagoya Grampus", "Sagan Tosu", "Sanfrecce Hiroshima", "Shonan Bellmare",
+"Tokyo", "Tokyo Verdy", "Urawa Reds", "Vissel Kobe", "Yokohama F. Marinos", "Suwon Bluewings", "Yokohama",
+],
+
+
+"Norway Eliteserien": [
+"Bodø / Glimt", "Brann", "Fredrikstad", "HamKam", "Haugesund",
+"KFUM", "Kristiansund", "Lillestrøm", "Molde", "Odds",
+"Rosenborg", "Sandefjord", "Sarpsborg 08", "Strømsgodset", "Tromsø",
+"Viking", "Vålerenga", "Aalesund", "Stabæk",
+],
+
+
+"Sweden Allsvenskan": [
+"AIK", "Brommapojkarna", "Djurgården", "Elfsborg", "GAIS",
+"Halmstad", "Hammarby", "Häcken", "IFK Göteborg", "IFK Norrköping",
+"Kalmar", "Malmö FF", "Mjällby", "Sirius", "Värnamo",
+"Västerås SK","Degerfors", "Varbergs",
+
+],
+
+
+"Championship": [
+"Leicester City", "Queens Park Rangers", "Plymouth Argyle", "Swansea City", "Cardiff City",
+"Sunderland", "Leeds United", "Blackburn Rovers", "Bristol City", "Huddersfield Town",
+"Hull City", "Middlesbrough", "Coventry City", "Millwall", "Southampton",
+"Reading", "Norwich City", "Stoke City", "Birmingham City", "West Bromwich Albion",
+"Preston North End", "Rotherham United", "Watford", "Ipswich Town", "Bristol Rovers", "Sheffield Wednesday",
+],
+"Süper Lig": [
+"Adana Demirspor", "Alanyaspor", "Ankaragücü", "Antalyaspor", "Beşiktaş",
+"Fatih Karagümrük", "Fenerbahçe", "Galatasaray", "Gaziantep", "Hatayspor",
+"İstanbul Başakşehir", "İstanbulspor", "Kasımpaşa", "Kayserispor", "Konyaspor",
+"Pendikspor", "Rizespor", "Samsunspor", "Sivasspor", "Trabzonspor",
+],
+
+"Segunda Division": [
+"Elche", "Racing Santander", "Alcorcón", "Tenerife", "Huesca",
+"Sporting Gijón", "Eldense", "Burgos", "Racing Ferrol", "Espanyol",
+"Cartagena", "Villareal B", "Amorebieta", "Albacete", "Leganés",
+"Mirandés", "Real Valladolid", "Levante", "FC Andorra", "Real Oviedo", "Eibar", "Villarreal B", "Real Zaragoza",
+],
+
+"Scotland Premiership": [
+"Celtic", "Rangers", "Motherwell", "Hearts", "Aberdeen", 
+"Ross County", "Dundee", "Livingston", "St. Mirren", "Hibernian", 
+"St. Johnstone", "Kilmarnock",
+],
+
+"Belgium Pro League": [
+"Genk", "Eupen", "Antwerp", "Club Brugge", "Standard Liège", 
+"Gent", "Anderlecht", "OH Leuven", "Union Saint-Gilloise", "Charleroi", 
+"Westerlo", "Mechelen", "RWD Molenbeek", "Kortrijk", "Cercle Brugge", 
+"Sint-Truiden",
+],
+
+"Swiss Super League": [
+"Yverdon Sport", "Young Boys", "St. Gallen", "Lugano", "Zürich", 
+"Lausanne Sport", "Basel", "Stade Lausanne-Ouchy", "Grasshopper", 
+"Winterthur", "Servette", "Luzern",
+],
+
+"Austrian Bundesliga": [
+"Sturm Graz", "Rapid Wien", "Salzburg", "Austria Wien", "Austria Klagenfurt", 
+"Wolfsberger AC", "Rheindorf Altach", "Austria Lustenau", "WSG Swarovski Tirol", 
+"Blau-Weiß Linz", "LASK", "LASK ", "Hartberg",
+],
+
+"Saudi Pro League": [
+"Al Ahli", "Al Hilal", "Al Nassr", "Al Taawon", "Al Khaleej",
+"Al Wehda", "Al Raed", "Al Hazem", "Al Shabab", "Al Fateh",
+"Al Ta'ee", "Al Ittihad", "Abha", "Dhamk", "Al Riyadh",
+"Al Akhdoud", "Al Ettifaq", "Al Feiha",
+],
+
+"LigaMX": [
+"Santos Laguna", "Necaxa", "América", "Monterrey", "Cruz Azul",
+"Toluca", "Atlas", "Club Tijuana", "Guadalajara", "León",
+"Pachuca", "Tigres UANL", "Juárez", "Pumas UNAM", "Mazatlán",
+"Querétaro", "Puebla", "Atlético de San Luis",
+],
+
+
+"Denmark Superliga": [
+"København", "Brøndby", "Viborg", "AGF", "Randers",
+"Midtjylland", "Nordsjælland", "Silkeborg", "OB", "Lyngby",
+"Vejle", "Hvidovre",
+],
+
+"Czech Fortuna Liga": [
+"Slavia Praha", "Mladá Boleslav", "Sparta Praha", "Karviná", "Viktoria Plzeň",
+"Slovan Liberec", "Slovácko", "Sigma Olomouc", "Teplice", "Zlín",
+"Bohemians 1905", "České Budějovice", "Jablonec", "Baník Ostrava", "Pardubice",
+"Hradec Králové",
+],
+
+"Serbia SuperLiga": [
+"Crvena Zvezda", "Vojvodina", "Bačka Topola", "Partizan", "Radnički Niš",
+"Radnički Kragujevac", "Spartak Subotica", "Radnik Surdulica", "Železničar Pancevo", "IMT Novi Beograd",
+"Voždovac", "Novi Pazar", "Javor Ivanjica", "Čukarički", "Napredak Kruševac",
+"Mladost Novi Sad", "Mladost Lučani",
+],
+
+"Croatia HNL": [
+"Dinamo Zagreb", "Rijeka", "Istra 1961", "Osijek", "Lokomotiva Zagreb",
+"Gorica", "Hajduk Split", "Rudeš", "Slaven Belupo", "Varaždin",
+],
+
+"Bundesliga 2": [
+"Hamburger SV", "Schalke 04", "Fortuna Düsseldorf", "Osnabrück", "Greuther Fürth",
+"Hertha BSC", "St. Pauli", "Hannover 96", "Paderborn", "Holstein Kiel",
+"Karlsruher SC", "Nürnberg", "Kaiserslautern", "Hansa Rostock", "Magdeburg",
+"Eintracht Braunschweig", "Wehen Wiesbaden", "Elversberg",
+],
+
+"Serie B": [
+"Spezia", "Bari", "Como", "Cittadella", "Palermo",
+"Venezia", "Sampdoria", "Modena", "Parma", "Brescia",
+"Reggiana", "Ternana", "Cremonese", "Südtirol", "Ascoli",
+"FeralpiSalò", "Pisa", "Cosenza", "Catanzaro", "Lecco",
+],
+
+"Ligue 2": [
+"Troyes", "Saint-Étienne", "Angers SCO", "Caen", "Guingamp",
+"Pau", "Rodez", "Rodez ", "Bordeaux", "Annecy", "Auxerre",
+"Quevilly Rouen", "Paris", "Grenoble", "Ajaccio", "Amiens SC",
+"Concarneau", "Bastia", "Laval", "Valenciennes", "Dunkerque",
+],
+
+   
+  "Liga Portugal": [
+"Porto", "Benfica", "Famalicão", "Sporting CP", "Sporting Braga", "Gil Vicente",
+"Arouca", "Boavista", "Vizela", "Chaves", "Estoril",
+"Estrela Amadora", "Vitória Guimarães", "Farense",
+"Casa Pia AC", "Moreirense", "Portimonense", "Rio Ave",
+],
+"Ligue 1": [
+"PSG", "Nice", "Lens", "Monaco", "Olympique Marseille",
+"Nantes", "Toulouse", "Lille", "Lorient", "Olympique Lyonnais", "Brest", "Reims",
+"Montpellier", "Le Havre", "Clermont", "Rennes", "Metz",
+"Strasbourg",
+],
+"Premier League": [
+"Chelsea", "Manchester City", "West Ham United", "Tottenham Hotspur", "Arsenal",
+"Manchester United", "Newcastle United", "Burnley", "Brighton", "Wolverhampton Wanderers",
+"Fulham", "Liverpool", "Sheffield United", "Nottingham Forest", "Bournemouth",
+"Aston Villa", "Brentford", "Everton", "Luton Town", "Crystal Palace",
+],
+
+
+"Bundesliga": [
+"Bayern München", "Borussia Dortmund", "Eintracht Frankfurt", "Union Berlin", "Köln",
+"Freiburg", "Stuttgart", "Bayer Leverkusen", "Hoffenheim", "Darmstadt 98",
+"Bochum", "Wolfsburg", "Heidenheim", "Augsburg", "Borussia M'gladbach",
+"Mainz 05", "RB Leipzig", "Werder Bremen",
+],
+
+"Eredivisie": [
+"AZ", "Feyenoord", "Ajax", "PSV", "Sparta Rotterdam",
+"Twente", "Heracles", "Volendam", "PEC Zwolle", "Heerenveen",
+"NEC", "Vitesse", "Excelsior", "Utrecht", "RKC Waalwijk",
+"Go Ahead Eagles", "Almere City", "Fortuna Sittard",
+],
+"La Liga": [
+"Real Madrid", "Barcelona", "Villarreal", "Real Sociedad", "Sevilla",
+"Real Betis", "Granada", "Girona", "Valencia", "Atlético Madrid",
+"Athletic Bilbao", "Celta de Vigo", "Deportivo Alavés", "Osasuna", "Almería",
+"Rayo Vallecano", "Mallorca", "Las Palmas", "Getafe", "Cádiz",
+],
+"Serie A": [
+"Juventus", "Roma", "Napoli", "Lazio", "Milan",
+"Internazionale", "Fiorentina", "Atalanta", "Torino", "Udinese",
+"Lecce", "Hellas Verona", "Monza", "Salernitana", "Empoli",
+"Genoa", "Sassuolo", "Frosinone", "Cagliari", "Bologna",
+],
+
+
+
+};
+
+function getTeamLeague(team) {
+    for (const [league, teams] of Object.entries(leagues)) {
+        if (teams.includes(team)) {
+            return league;
+        }
+    }
+    return "Unknown League";
+}
+
 const columnsToCopy = [7, 9, 24, 25, 28, 35, 37, 45, 47, 53, 55, 66, 68, 70, 74, 80];
 
 allData.forEach(row => {
     const copiedValues = columnsToCopy.map(col => row[col]);
     row.push(...copiedValues); // Append copied values to the end of the row
 
-    row.splice(5, 0, '1');
+    if (row.length >= 3) {
+        const team = row[1];
+        const league = getTeamLeague(team);
+        row.splice(2, 0, league); // Insert league information at index 2
+    }
+    row.splice(5, 0, '');
 
 });
 
@@ -381,12 +957,133 @@ allData.forEach(row => {
     });
 
 
+    let column4 = Number(row[8]);
+    let column6 = Number(row[10]);
+let column9 = Number(row[13]);
+let column21 = Number(row[25]);
+let column27 = Number(row[30]);
+let column44 = Number(row[48]);
+let column51 = Number(row[55]);
+let column50 = Number(row[54]);
+
+
+// Calculate each part of the formula
+let part1 = column6 + column9 + (column4 * column44 / 100);
+let part2 = (column27 + column21) / 100;
+let part3 = (100 - column51) * (column27 / 100) + (100 - column50) * (column21 / 100);
+let part4 = 100 / (column27 + column21);
+
+// Combine the parts to get the final result
+let result = (part1 * part2) - (part3 * part4);
+let roundedResult = result.toFixed(2);
 
 // Insert the result at the desired position, assuming position 65
-row.splice(64, 0, 1);
+row.splice(64, 0, roundedResult);
 
 });
 
+
+// Example usage within your context:
+const leaguePositionData = {};
+const positionData = {
+    Goalkeeper: {},
+    'Centre-back': {},
+    'Full-back': {},
+    Midfielder: {},
+    Winger: {},
+    Striker: {}
+};
+
+const positionColumnMapping = {
+    Goalkeeper: [7,8,9,13,30,31,32,34,45,47,55,56,57,58,62,63,44,63,45, 44, 63,45, 63,45, 46, 63],
+    'Centre-back': [48,48, 48, 48, 48,42, 42, 42,49, 49, 49,56, 56, 56,7, 7,8, 8,27, 27,31, 31, 55, 55,57, 57,9,11,14,12,58,19,37,38,40,41,32 ],
+    'Full-back': [27,27, 27,28, 28, 28,48, 48, 48,35, 35, 35,7, 7, 7,  42, 42, 42,21, 21, 21,37, 37,22, 22, 8, 8,9, 9,11, 11,14, 14,15, 15,16, 16,18, 18, 25, 25, 23,29,12,20,26,31,36,38,39,40,41,49,49,52,54,56],        // Example: Columns 6 and 7 for Full-backs
+    Midfielder: [42,42,56,56,56,7,48,42,31,42, 42,42, 37, 37,37, 27,27,27,  48, 48, 49, 7, 8, 9, 11, 12, 14, 21, 25, 16,17,18,20,30,31,33,35,38,39,36,22,41,40,55,56,58,62,28,24,29,52,53,54],         // Example: Columns 8 and 9 for Midfielders
+    Winger: [16,16,17,21,17,21,21,17,21,17,21,17,24,16,29,15,22,35,29,24,28,15,17,18,35,17,18,35,17,18,35,22,35,29,24,28,15,22,35,37,16,35,21,16,18,16,18,20,35,39,36,22,41,28,24,29,35,35,37,15, 53,54,52,24,16,18,20,35,36,21,22,41,28,24,29,27,27,37,37,37,15, 53,54,52,40,42,8,9,11,14,51],
+    Striker: [16,17,16,18,16,18,16,18,17,16,17,16,17,17,16,17,17,16,17,51,51,51,51,18,18,35,35,21,21,50,50,49,25,37,7,24,22,27,28,29]
+
+};
+
+// Flatten the positionColumnMapping for better performance
+const uniquePositionColumns = {};
+Object.keys(positionColumnMapping).forEach(position => {
+    uniquePositionColumns[position] = [...new Set(positionColumnMapping[position])];
+});
+
+// Populate position-specific data
+allData.forEach(row => {
+    const league = row[2];
+    const position = row[3];
+
+    if (league && position) {
+        if (!positionData[position][league]) {
+            positionData[position][league] = [];
+        }
+        positionData[position][league].push(row);
+    }
+});
+// Pre-calculate percentiles for all columns
+const allPercentiles = {};
+Object.keys(positionData).forEach(position => {
+    allPercentiles[position] = {};
+    Object.keys(positionData[position]).forEach(league => {
+        const players = positionData[position][league];
+        allPercentiles[position][league] = players.map(player => {
+            return positionColumnMapping[position].map(columnIndex => percentile(players, player, columnIndex));
+        });
+    });
+});
+
+// Function to calculate percentile for a specific player
+function percentile(players, player, columnIndex) {
+    const value = player[columnIndex];
+    const columnValues = players.map(p => p[columnIndex]);
+    const sorted = columnValues.slice().sort((a, b) => a - b);
+    const index = sorted.findIndex(item => item >= value);
+    return (index + 1) / sorted.length * 100;
+}
+
+// Function to calculate performance index
+function calculatePerformanceIndexForPosition(positionData, position, columnMapping) {
+    Object.keys(positionData[position]).forEach(league => {
+        const playersInSameLeaguePosition = positionData[position][league];
+        const columns = columnMapping[position];
+
+        // Calculate average percentiles for all players once
+        const averagePercentiles = playersInSameLeaguePosition.map(player => {
+            return columns.map((columnIndex, index) => {
+                return allPercentiles[position][league][playersInSameLeaguePosition.indexOf(player)][index];
+            });
+        });
+
+        // Find highest average percentile
+        const highestAveragePercentile = Math.max(...averagePercentiles.map(p => p.reduce((a, b) => a + b, 0) / columns.length));
+
+        // Calculate and update performance index for each player
+        playersInSameLeaguePosition.forEach(player => {
+            const sumOfPercentiles = columns.reduce((sum, columnIndex, index) => {
+                return sum + averagePercentiles[playersInSameLeaguePosition.indexOf(player)][index];
+            }, 0);
+
+            const averagePercentile = sumOfPercentiles / columns.length;
+            const minutesPlayedPercentile = percentile(playersInSameLeaguePosition, player, 6);
+            const inverseMinutesPlayedPercentile = 100 - minutesPlayedPercentile;
+
+            const normalizedIndex = ((averagePercentile / highestAveragePercentile)) - 0.00273 * inverseMinutesPlayedPercentile;
+            const scaledIndex = Math.pow(normalizedIndex, 1.48);
+            const minOld = 0, maxOld = 0.99;
+            const minNew = 0.38, maxNew = 0.98;
+            const transformedIndex = (((maxNew - minNew) / (maxOld - minOld)) * (scaledIndex - minOld) + minNew) * 100;
+
+            player[5] = transformedIndex.toFixed(0);
+        });
+    });
+}
+
+// Example usage for each position
+Object.keys(positionColumnMapping).forEach(position => {
+    calculatePerformanceIndexForPosition(positionData, position, positionColumnMapping);
+});
 
 
 const outputLines = [];
@@ -733,6 +1430,7 @@ if (selectedPosition === 'All' || (selectedLeague === 'Top 5 Leagues' || selecte
 
 
 }
+hideLoadingOverlay();
 
 // Add event listener for all selectors
 metricSelect.addEventListener('change', handleSelectorsChange);
@@ -749,6 +1447,7 @@ filterTable();
 
 </script>
 
+</div>
 
 </body>
 </html>
