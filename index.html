@@ -2191,24 +2191,29 @@ searchButton1.addEventListener("click", function() {
 </script></center>
 </div>
 
-<script>// Function to scroll down
+<script>
   // Function to scroll down a tiny bit
   function scrollDown() {
-      window.scrollBy(0, 400); // Adjust the value (100) to change the scroll distance
+    window.scrollBy(0, 400); // Adjust the value (400) to change the scroll distance
   }
 
   // Function to scroll up a tiny bit
   function scrollUp() {
-      window.scrollBy(0, -10); // Adjust the value (-80) to change the scroll distance
+    window.scrollBy(0, -10); // Adjust the value (-10) to change the scroll distance
+  }
+
+  // Function to check if the device is mobile
+  function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
   }
 
   // Combine both actions with a small timer between them
   window.onload = function() {
-   
+    if (isMobileDevice()) {
       scrollDown();
-      setTimeout(scrollUp, 100); // Adjust the delay time (1000ms = 1 second)
-    };
-
+      setTimeout(scrollUp, 100); // Adjust the delay time (100ms = 0.1 second)
+    }
+  };
 </script>
 
 </body>
