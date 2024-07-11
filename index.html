@@ -1356,9 +1356,9 @@ const _0x1cda9d=_0x3279;(function(_0x3d1616,_0x106f05){const _0x561e6e=_0x3279,_
     &nbsp;<input type="button" id="searchButton1" value="+&nbsp;" />
     <div class="dark-mode-toggle" onclick="toggleDarkMode()"><div class="toggle-icon"></div></div></div>
     <div class="screenshotcontainer">
+      <div id="matchingNames"></div>
 	<div id="resultsTable"></div>  
  <br><br>
-  <div id="matchingNames"></div>
   <div class="maxcontainer">
   <div class="toggle-container">
     <label class="toggle-label"></label>
@@ -1704,17 +1704,11 @@ const urls2 = [
                 matchingNamesContainer.style.backgroundColor = "#9c9b9b";
                 matchingNamesContainer.style.width = "384px";
                 matchingNamesContainer.style.padding = "10px";
-                matchingNamesContainer.style.position = "absolute";
-                matchingNamesContainer.style.left = "12px";
+                matchingNamesContainer.style.position = "relative";
+                matchingNamesContainer.style.left = "5.5px";
                 matchingNamesContainer.style.zIndex = "9999"; // Set a high z-index value
             
             
-                // Set different styles for mobile and non-mobile
-                if (isMobileDevice()) {
-                  matchingNamesContainer.style.top = "5.6%";
-                } else {
-                  matchingNamesContainer.style.top = "4.76%";
-                }
             
               }
               if (searchQuery === "") {
