@@ -13,25 +13,25 @@
   <meta name="twitter:image" content="https://datamb.football/vignettes/cm.png">
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get the width of the viewport
-        var width = window.innerWidth;
-        console.log('Window width:', width);  // Debug log
+  (function() {
+      // Get the width of the viewport
+      var width = window.innerWidth;
+      console.log('Window width:', width);  // Debug log
 
-        // Calculate the initial scale based on the width
-        var initialScale = width / 770;
-        console.log('Initial scale:', initialScale);  // Debug log
+      // Calculate the initial scale based on the width
+      var initialScale = width / 770;
+      console.log('Initial scale:', initialScale);  // Debug log
 
-        // Find the viewport meta tag
-        var viewportMeta = document.querySelector('meta[name="viewport"]');
-        if (viewportMeta) {
-            // Set the viewport meta tag content attribute
-            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=' + initialScale + ', user-scalable=no');
-            console.log('Viewport meta updated with initial scale:', initialScale);  // Debug log
-        } else {
-            console.error('Viewport meta tag not found');
-        }
-    });
+      // Find the viewport meta tag
+      var viewportMeta = document.querySelector('meta[name="viewport"]');
+      if (viewportMeta) {
+          // Set the viewport meta tag content attribute
+          viewportMeta.setAttribute('content', 'width=device-width, initial-scale=' + initialScale + ', user-scalable=no');
+          console.log('Viewport meta updated with initial scale:', initialScale);  // Debug log
+      } else {
+          console.error('Viewport meta tag not found');
+      }
+  })();
 </script>
 	<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
@@ -1089,6 +1089,152 @@ opacity: .8;
         }
 
 
+
+        .header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.header .logo img {
+  width: 40px;
+  height: 40px;
+opacity: 0.84;
+}
+
+.header .logo-text {
+  margin-left: 10px;
+  font-size: 20px;
+color: #444444;
+  font-weight: 600;
+}
+
+.header .navigation {
+  display: center;
+  align-items: center;
+  word-spacing: 2.6em; /* Adjust the spacing as needed */
+}
+
+
+
+
+.header {
+  font-family: system-ui;
+  background: white;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ececec;
+}
+
+
+
+
+.header .button {
+  margin: 0 10px;
+  padding: 0px 20px;
+  color: #444444;
+  text-decoration: none;
+  border-radius: 0px;
+font-size: 18px;
+}
+
+header a {
+      color: #444444;
+      text-decoration: none;
+
+    }
+
+.header .twitter-link svg {
+  width: 25px;
+  height: 24px;
+  fill: #444444;
+}
+
+
+
+
+
+
+.search-input-modal {
+    display: none;
+    position: fixed; /* Change this to "fixed" to cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Increase opacity for better obscuring */
+    z-index: 999; /* Ensure it's above other elements */
+}
+
+.search-input-container {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    z-index: 1000; /* Make sure it's on top of the modal background */
+}
+
+#searchInput {
+            width: 340px;
+            padding: 12px;
+            border: 3px solid #ccc;
+            border-radius: 4px;
+            font-size: 19px;
+            outline: none;
+        }
+
+        #autocompleteBox {
+            width: 360px;
+            max-height: 150px;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+
+
+        #autocompleteBox ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #autocompleteBox li {
+            margin: 0;
+            padding: 5px;
+        }
+
+        #autocompleteBox {
+            line-height: 2; /* Adjust the value as needed to control line spacing */
+            text-align: center !important;
+
+        }
+
+        #autocompleteBox a {
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            text-align: center !important;
+            color: #333 !important;
+            cursor: pointer; /* Add pointer cursor style to the anchor element */
+        }
+
+        #autocompleteBox li:hover {
+            background-color: #f0f0f0;
+        }
+        #searchButton {
+    padding: 10px;
+    background-color: #0074d9;
+    color: #fff;
+    border: none;
+    width: 40px; /* Set the width and height to the same value for a round button */
+    height: 40px;
+    border-radius: 50%; /* Make the button round by setting border-radius to 50% of the size */
+    cursor: pointer;
+    font-size: 20px; /* Increase the text size */
+}
 body, html {
             margin: 0;
             padding: 0;
@@ -1147,7 +1293,26 @@ body, html {
 
 
 
-
+<header class="header">
+  <div class="logo">
+    <a href="http://datamb.football">
+        <img src="https://datamb.football/logo.png" alt="Player comparisons. Radar comparison tool. Visualise and compare midfielder statistics from the top 7 leagues : Premier League, La Liga, Bundesliga, Serie A, Ligue 1, Eredivisie, Primeira Liga" /></a>
+    <div class="logo-text"><a href="http://datamb.football"></a>Radars</div>
+  </div>&nbsp;
+  <nav class="navigation">
+   <a href="http://datamb.football/" class="button">Home</a>
+    <a href="http://datamb.football/join" class="button">Pro</a>
+ <a href="http://datamb.football/glossary" class="button">Guide</a>  
+  </nav>
+  <div class="search-container">
+    <button id="searchButton"><iconify-icon icon="ion:search-outline"></iconify-icon></button>
+</div>
+  <a href="https://twitter.com/datamb_" target="_blank" class="twitter-link">
+    <svg width="25" height="24" fill="#bcbcbc" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  </a>
+</header>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7677714701428206"
      crossorigin="anonymous"></script>
 </head>
@@ -1162,12 +1327,44 @@ body, html {
 </script>
 
 
+<div class="search-input-modal" id="searchInputModal">
+  <div class="search-input-container">
+      <input type="text" id="searchInput" placeholder="Enter a team or player name...">
+      <div id="autocompleteBox"></div>
+  </div>
+</div>
+
+
+<script>
+
+  
+const xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://datamb.football/database/searchbar.csv', false); // false for synchronous request
+xhr.send(null);
+
+let dataCSV = xhr.responseText;
+
+const _0x1cda9d=_0x3279;(function(_0x3d1616,_0x106f05){const _0x561e6e=_0x3279,_0x2e8a41=_0x3d1616();while(!![]){try{const _0x282d7f=-parseInt(_0x561e6e(0x1a1))/0x1+parseInt(_0x561e6e(0x18f))/0x2*(-parseInt(_0x561e6e(0x195))/0x3)+-parseInt(_0x561e6e(0x18b))/0x4+-parseInt(_0x561e6e(0x1a2))/0x5+-parseInt(_0x561e6e(0x19a))/0x6+parseInt(_0x561e6e(0x188))/0x7*(-parseInt(_0x561e6e(0x19d))/0x8)+parseInt(_0x561e6e(0x191))/0x9*(parseInt(_0x561e6e(0x19b))/0xa);if(_0x282d7f===_0x106f05)break;else _0x2e8a41['push'](_0x2e8a41['shift']());}catch(_0x219362){_0x2e8a41['push'](_0x2e8a41['shift']());}}}(_0x113e,0x28c6f));const dataLines=dataCSV[_0x1cda9d(0x199)]('\x0a'),searchButton=document[_0x1cda9d(0x18a)](_0x1cda9d(0x182)),searchInputModal=document[_0x1cda9d(0x18a)]('searchInputModal'),searchInput=document[_0x1cda9d(0x18a)]('searchInput'),autocompleteBox=document[_0x1cda9d(0x18a)](_0x1cda9d(0x18c)),data1=dataLines[_0x1cda9d(0x18e)](_0x2eff42=>{const [_0x577075,_0x1d5918]=_0x2eff42['split'](',');return{'name':_0x577075,'link':_0x1d5918};});function _0x113e(){const _0x254e59=['trim','getElementById','274776cBvuqt','autocompleteBox','link','map','442SSdBdl','length','1620naLciC','block','includes','name','4038eTYCsb','createElement','replace','href','split','327870eYOUMc','53290VqPTPN','div','8696OyNMkN','target','appendChild','style','53872WUKLzq','603865uRsUWF','display','click','input','addEventListener','searchButton','none','toLowerCase','forEach','filter','textContent','1267oKEowq'];_0x113e=function(){return _0x254e59;};return _0x113e();}function removeDiacritics(_0x521617){return _0x521617['normalize']('NFD')['replace'](/[\u0300-\u036f]/g,'');}function search2(_0x20c915){const _0x2d8964=_0x1cda9d;autocompleteBox['innerHTML']='';const _0x25dc8b=removeDiacritics(_0x20c915)[_0x2d8964(0x197)](/[^\w\s]/g,'')[_0x2d8964(0x184)](),_0x4c0cab=data1[_0x2d8964(0x186)](_0x122915=>{const _0x3f413e=_0x2d8964,_0x19a3ab=removeDiacritics(_0x122915[_0x3f413e(0x194)])[_0x3f413e(0x197)](/[^\w\s]/g,'')[_0x3f413e(0x184)]();return _0x19a3ab[_0x3f413e(0x193)](_0x25dc8b);});if(_0x4c0cab[_0x2d8964(0x190)]===0x0){autocompleteBox[_0x2d8964(0x1a0)][_0x2d8964(0x1a3)]='none';return;}_0x4c0cab[_0x2d8964(0x185)](_0x548088=>{const _0xc8b0f0=_0x2d8964,_0xaae7d=document[_0xc8b0f0(0x196)](_0xc8b0f0(0x19c)),_0x25de77=document[_0xc8b0f0(0x196)]('a');_0x25de77[_0xc8b0f0(0x198)]=_0x548088[_0xc8b0f0(0x18d)],_0x25de77[_0xc8b0f0(0x187)]=_0x548088[_0xc8b0f0(0x194)],_0xaae7d[_0xc8b0f0(0x19f)](_0x25de77),autocompleteBox[_0xc8b0f0(0x19f)](_0xaae7d);}),autocompleteBox[_0x2d8964(0x1a0)][_0x2d8964(0x1a3)]=_0x2d8964(0x192);}function _0x3279(_0xecdda4,_0x35cb52){const _0x113ead=_0x113e();return _0x3279=function(_0x32790c,_0x3803af){_0x32790c=_0x32790c-0x182;let _0x4b6796=_0x113ead[_0x32790c];return _0x4b6796;},_0x3279(_0xecdda4,_0x35cb52);}searchButton[_0x1cda9d(0x1a6)](_0x1cda9d(0x1a4),()=>{const _0x2900c9=_0x1cda9d;searchInputModal[_0x2900c9(0x1a0)][_0x2900c9(0x1a3)]=_0x2900c9(0x192);}),searchInput[_0x1cda9d(0x1a6)](_0x1cda9d(0x1a5),()=>{const _0xa04743=_0x1cda9d,_0x40b10d=searchInput['value'];_0x40b10d[_0xa04743(0x189)]()===''?autocompleteBox[_0xa04743(0x1a0)][_0xa04743(0x1a3)]='none':search2(_0x40b10d);}),document[_0x1cda9d(0x1a6)](_0x1cda9d(0x1a4),_0x4eaaf3=>{const _0x505703=_0x1cda9d;_0x4eaaf3[_0x505703(0x19e)]===searchInputModal&&(searchInputModal[_0x505703(0x1a0)]['display']=_0x505703(0x183));});
 
 
 
+</script>
 
 <body>
 
+  <center>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7677714701428206"
+     crossorigin="anonymous"></script>
+<!-- radarplotsearch -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7677714701428206"
+     data-ad-slot="6673239737"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></center>
   <div class="searchcontainer">
     <input type="text" id="searchInput1" class="search-bar" placeholder="Enter name of midfielder..." />
     &nbsp;<input type="button" id="searchButton1" value="+&nbsp;" />
