@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -512,38 +511,6 @@ table {
   font-family: Arial;
   border-radius: 10px;
 }
-.similar-table {
-  position: absolute;
-  top: -468px;
-  width: auto;
-  left: 381px;
-  transform: translateX(-50%);
-  background-color: #f2f2f2;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  table-layout: fixed; /* Ensures fixed table layout */
-  border-collapse: collapse; /* Removes extra space between cells */
-}
-
-.similar-table th,
-.similar-table td {
-  text-align: center;
-
-}
-
-/* Header Cells */
-.similar-table th {
-  color: #000000;
-  padding: 6px 9px;
-  font-size: 11px;
-  overflow: hidden; 
-}
-
-/* Data Cells */
-.similar-table td {
-  padding: 4px 11px;
-}
-
 
 .metrics-table {
   background-color: #f2f2f2;
@@ -785,7 +752,7 @@ body.dark-mode .button-10 {
 
 .button-10 {
     position: absolute;
-    top: 589px;
+    top: 612px;
     left: 657px;
     display: flex;
     align-items: center;
@@ -827,7 +794,7 @@ height: 20px;
   border: 0;
   user-select: none;
   position: absolute;
-top: 593px;
+top: 616px;
   left: 55px;
 width: 85px; 
  
@@ -863,7 +830,7 @@ width: 85px;
   border: 0;
   user-select: none;
   position: absolute;
-top: 593px;
+top: 616px;
   left: 155px;
 height: 20px;
 width: 85px; 
@@ -901,7 +868,7 @@ height: 20px;
   border: 0;
   user-select: none;
   position: absolute;
-top: 593px;
+top: 616px;
   left: 255px;
 width: 85px; 
  
@@ -937,7 +904,7 @@ width: 85px;
   border: 0;
   user-select: none;
   position: absolute;
-top: 593px;
+top: 616px;
   left: 355px;
 height: 20px;
 width: 85px; 
@@ -977,7 +944,7 @@ height: 20px;
   border: 0;
   user-select: none;
   position: absolute;
-top: 593px;
+top: 616px;
   left: 455px;
 width: 85px; 
  
@@ -1013,7 +980,7 @@ width: 85px;
   border: 0;
   user-select: none;
   position: absolute;
-top: 593px;
+top: 616px;
   left: 555px;
 height: 20px;
 width: 85px; 
@@ -1270,6 +1237,40 @@ body, html {
   height: 300px;
   width: 100%; /* This ensures the container takes the full width of its parent */
 }
+
+
+.similar-table {
+  position: absolute;
+  left: 381px;
+  transform: translateX(-50%);
+  background-color: #f2f2f2;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  border-collapse: collapse; /* Removes extra space between cells */
+}
+
+.similar-table th,
+.similar-table td {
+  text-align: center;
+  white-space: normal; /* Allows text to wrap */
+  width: auto;
+
+}
+
+/* Header Cells */
+.similar-table th {
+  color: #000000;
+  padding: 6px 9px;
+  font-size: 11px;
+  overflow: hidden; 
+}
+
+/* Data Cells */
+.similar-table td {
+  padding: 4px 11px;
+}
+
+
 </style>
 </defs>
 	
@@ -1337,6 +1338,7 @@ const _0x1cda9d=_0x3279;(function(_0x3d1616,_0x106f05){const _0x561e6e=_0x3279,_
 </script>
 
 <body>
+
   <center>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7677714701428206"
      crossorigin="anonymous"></script>
@@ -1441,7 +1443,7 @@ const _0x1cda9d=_0x3279;(function(_0x3d1616,_0x106f05){const _0x561e6e=_0x3279,_
   
   <g class="radarWrapper"></g>
   </g></g>    
-	  
+  <div id="insertHere"></div>
 </div>
 <script>
       
@@ -1993,99 +1995,93 @@ function calculateEuclideanDifference(data1, data2) {
       
       createTableForTeam1();
       
-      
-      
       const similarPlayersContainer = document.createElement("div");
-      similarPlayersContainer.id = "similarPlayersContainer";
-      similarPlayersContainer.style.position = "absolute";
-      document.body.appendChild(similarPlayersContainer);
-      
-      let colorIndex = 0; // Initialize color index
-      
-      
-      searchButton1.addEventListener("click", function() {
-       const searchQuery = searchInput.value;
-      const searchedPlayer = search(searchQuery);
-      
-      if (searchedPlayer.length > 0) {
-        const searchedPlayerData = searchedPlayer[0];
-        const searchedPlayerIndex = parseInt(searchedPlayerData[0]) - 1;
-      
-        // Calculate Euclidean difference with all matching players and find the most similar players
-        const similarPlayers = [];
-        for (let i = 0; i < dataArray.length; i++) {
-          if (i !== searchedPlayerIndex) {
-            const difference = calculateEuclideanDifference(searchedPlayerData, dataArray[i]);
-            similarPlayers.push({ index: i, difference: difference });
-          }
-        }
-      
-        similarPlayers.sort((a, b) => a.difference - b.difference);
-      
-        // Get the three most similar players
-        const mostSimilarPlayers = similarPlayers.slice(0, 5);
-      
-        for (let i = 0; i < 1; i++) {
-          const playerIndex = mostSimilarPlayers[i].index;
-          const playerName = dataArray[playerIndex][1];
-          const playerAge = dataArray[playerIndex][3];
-          const playerTeam = dataArray[playerIndex][2];
-      
+similarPlayersContainer.id = "similarPlayersContainer";
+const insertHere = document.getElementById("insertHere");
+insertHere.appendChild(similarPlayersContainer);
+
+let colorIndex = 0; // Initialize color index
+
+searchButton1.addEventListener("click", function() {
+  const searchQuery = searchInput.value;
+  const searchedPlayer = search(searchQuery);
+
+  if (searchedPlayer.length > 0) {
+    const searchedPlayerData = searchedPlayer[0];
+    const searchedPlayerIndex = parseInt(searchedPlayerData[0]) - 1;
+
+    // Calculate Euclidean difference with all matching players and find the most similar players
+    const similarPlayers = [];
+    for (let i = 0; i < dataArray.length; i++) {
+      if (i !== searchedPlayerIndex) {
+        const difference = calculateEuclideanDifference(searchedPlayerData, dataArray[i]);
+        similarPlayers.push({ index: i, difference: difference });
+      }
+    }
+
+    similarPlayers.sort((a, b) => a.difference - b.difference);
+
+    // Get the three most similar players
+    const mostSimilarPlayers = similarPlayers.slice(0, 5);
+
+    for (let i = 0; i < 1; i++) {
+      const playerIndex = mostSimilarPlayers[i].index;
+      const playerName = dataArray[playerIndex][1];
+      const playerAge = dataArray[playerIndex][3];
+      const playerTeam = dataArray[playerIndex][2];
+
       const similarPlayerTable = document.createElement("table");
       similarPlayerTable.classList.add("similar-table");
-      
+
       const headerRow = document.createElement("tr");
       const headerCell = document.createElement("th");
       headerCell.setAttribute("colspan", "5");
       headerCell.textContent = `Similar data to ${searchedPlayer[0][1]}`;
-        headerCell.classList.add(colorClasses[colorIndex % colorClasses.length]);
+      headerCell.classList.add(colorClasses[colorIndex % colorClasses.length]);
       headerRow.appendChild(headerCell);
       similarPlayerTable.appendChild(headerRow);
-      
+
       const similarPlayerRow = document.createElement("tr");
-      
+
       for (let i = 0; i < mostSimilarPlayers.length; i++) {
         const playerIndex = mostSimilarPlayers[i].index;
         const playerName = dataArray[playerIndex][1];
         const playerAge = dataArray[playerIndex][3];
         const playerTeam = dataArray[playerIndex][2];
-      
+
         const playerCell = document.createElement("td");
         playerCell.textContent = `${playerName}`;
-      playerCell.style.fontSize = "10.8px"; // Set the desired font size
+        playerCell.style.fontSize = "10.8px"; // Set the desired font size
         playerCell.style.cursor = "pointer"; // Set cursor to pointer
-      
+
         // Add click event listener to the player name cell
         playerCell.addEventListener("click", function() {
           searchInput.value = playerName; // Set search input value to the clicked player name
           // Trigger the search button click event to perform the search
           searchButton1.click();
         });
-      
+
         similarPlayerRow.appendChild(playerCell);
       }
-      
+
       if (similarPlayersContainer.children.length > 0) {
         // Remove the previous table if it exists
         similarPlayersContainer.removeChild(similarPlayersContainer.firstChild);
       }
-      
+
       similarPlayerTable.appendChild(similarPlayerRow);
       similarPlayersContainer.appendChild(similarPlayerTable);
-      
+
       colorIndex++; // Increment color index for the next search
-      
-      
-      
-        }
-      
-      }
-      
-      
-        searchInput.value = '';
-        updateMatchingNames();
-      
-      });
+
+    }
+
+  }
+
+  searchInput.value = '';
+  updateMatchingNames();
+
+});
       
 
     }) })
