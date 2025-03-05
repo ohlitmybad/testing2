@@ -2256,12 +2256,42 @@ return true;
 
 
   document.getElementById('datasetSelector').addEventListener('change', function () {
-    const selectedDataset = document.getElementById('datasetSelector').value;
-    updateMetricLabels(selectedDataset); // Call the function with the selected dataset
-  });
+    // Check if translations are loaded
+    if (!translations || !translations.metrics) {
+        console.log('Waiting for translations to load...');
+        return;
+    }
 
-  // Initialize the metric labels based on the default dataset
-  updateMetricLabels('dataset1');
+    const selectedDataset = document.getElementById('datasetSelector').value;
+
+    // Call the function with the selected dataset to update the metric labels
+    switch (selectedDataset) {
+      case 'dataset2':
+        updateMetricLabels('dataset2');
+        break;
+      case 'dataset3':
+        updateMetricLabels('dataset3');
+        break;
+      case 'dataset4':
+        updateMetricLabels('dataset4');
+        break;
+      case 'dataset5':
+        updateMetricLabels('dataset5');
+        break;
+      case 'dataset6':
+        updateMetricLabels('dataset6');
+        break;
+      default:
+        updateMetricLabels('dataset1');
+        break;
+    }
+
+    // Clear the search inputs and results when the dataset selector changes
+    clearSearchInputs();
+});
+
+    // Initialize the metric labels based on the default dataset
+    updateMetricLabels('dataset1');
 
 
 
@@ -2276,127 +2306,133 @@ return true;
     }
 
     document.getElementById('searchForm').addEventListener('submit', function (event) {
-  event.preventDefault();
+      event.preventDefault();
 
-  // Get the selected dataset and league
-  const selectedDataset = document.getElementById('datasetSelector').value;
-  selectedLeague = document.getElementById('league').value;
+      // Check if translations are loaded
+      if (!translations || !translations.metrics) {
+          console.log('Waiting for translations to load...');
+          return;
+      }
 
-    // Get the user-entered percentile values from the form
-    const defensiveActionsLow = parseInt(document.getElementById('defensiveActionsLow').value);
-    const aerialsContestedLow = parseInt(document.getElementById('aerialsContestedLow').value);
-    const exitLineLow = parseInt(document.getElementById('exitLineLow').value);
-    const passesLow = parseInt(document.getElementById('passesLow').value);
-    const longPassPercentageLow = parseInt(document.getElementById('longPassPercentageLow').value);
-    const shortPassPercentageLow = parseInt(document.getElementById('shortPassPercentageLow').value);
-    const psxgLow = parseInt(document.getElementById('psxgLow').value);
-    const ageLow = parseInt(document.getElementById('ageLow').value);
-    const ageHigh = parseInt(document.getElementById('ageHigh').value);
-    const minutesPlayedLow = parseInt(document.getElementById('minutesPlayedLow').value);
-    const minutesPlayedHigh = parseInt(document.getElementById('minutesPlayedHigh').value);
+      // Get the selected dataset and league
+      const selectedDataset = document.getElementById('datasetSelector').value;
+      selectedLeague = document.getElementById('league').value;
 
-    // Determine the dataArray based on the selected dataset
-    let dataArray;
-    switch (selectedDataset) {
-      case 'dataset2':
-        dataArray = dataArray2;
-        break;
-      case 'dataset3':
-        dataArray = dataArray3;
-        break;
-      case 'dataset4':
-        dataArray = dataArray4;
-        break;
-      case 'dataset5':
-        dataArray = dataArray5;
-        break;
-      case 'dataset6':
-        dataArray = dataArray6;
-        break;
-      default:
-        dataArray = dataArray1;
+      // Get the user-entered percentile values from the form
+      const defensiveActionsLow = parseInt(document.getElementById('defensiveActionsLow').value);
+      const aerialsContestedLow = parseInt(document.getElementById('aerialsContestedLow').value);
+      const exitLineLow = parseInt(document.getElementById('exitLineLow').value);
+      const passesLow = parseInt(document.getElementById('passesLow').value);
+      const longPassPercentageLow = parseInt(document.getElementById('longPassPercentageLow').value);
+      const shortPassPercentageLow = parseInt(document.getElementById('shortPassPercentageLow').value);
+      const psxgLow = parseInt(document.getElementById('psxgLow').value);
+      const ageLow = parseInt(document.getElementById('ageLow').value);
+      const ageHigh = parseInt(document.getElementById('ageHigh').value);
+      const minutesPlayedLow = parseInt(document.getElementById('minutesPlayedLow').value);
+      const minutesPlayedHigh = parseInt(document.getElementById('minutesPlayedHigh').value);
+
+      // Determine the dataArray based on the selected dataset
+      let dataArray;
+      switch (selectedDataset) {
+        case 'dataset2':
+          dataArray = dataArray2;
+          break;
+        case 'dataset3':
+          dataArray = dataArray3;
+          break;
+        case 'dataset4':
+          dataArray = dataArray4;
+          break;
+        case 'dataset5':
+          dataArray = dataArray5;
+          break;
+        case 'dataset6':
+          dataArray = dataArray6;
+          break;
+        default:
+          dataArray = dataArray1;
+      }
+
+      // Filter the dataArray based on user-entered percentiles
+      const restrictedPlayers = reverseSearch(
+    [
+      [defensiveActionsLow],
+      [aerialsContestedLow],
+      [exitLineLow],
+      [passesLow],
+      [longPassPercentageLow],
+      [shortPassPercentageLow],
+      [psxgLow],
+      [ageLow, ageHigh],
+      [minutesPlayedLow, minutesPlayedHigh]
+    ],
+    dataArray, // Pass the dataArray as a parameter
+    selectedLeague // Pass the selected league as a parameter
+  );
+  const resultsContainer = document.getElementById('resultsContainer');
+  resultsContainer.innerHTML = '';
+
+  if (restrictedPlayers.length === 0) {
+    const noResultsMessage = document.createElement('p');
+    noResultsMessage.textContent = 'No players found';
+    noResultsMessage.classList.add('no-results-message'); // Add a class to the element
+    resultsContainer.appendChild(noResultsMessage);
+  } else {
+    // Create the table element
+    const table = document.createElement('table');
+
+    // Create the table header
+    const tableHeader = createTableHeader();
+    table.appendChild(tableHeader);
+
+    // Create the table body
+    const tableBody = document.createElement('tbody');
+
+    // Add the player data rows to the table body
+    restrictedPlayers.forEach(playerData => {
+      const playerRow = document.createElement('tr');
+      tableBody.appendChild(playerRow);
+
+      // Add the player name and other info in the first column
+      const playerNameCell = document.createElement('td');
+      const playerName = playerData[1];
+      const playerData2 = playerData[2];
+      const playerData11 = playerData[11];
+      const playerData10 = playerData[10];
+
+
+      // Create a formatted HTML string
+      const formattedText = `<span>${playerName}</span><br><span class="player-info">${playerData11}, ${playerData2}, ${playerData10} min</span>`;
+
+      // Set the formatted HTML as the content of playerNameCell
+      playerNameCell.innerHTML = formattedText;
+      playerRow.appendChild(playerNameCell);
+
+      // Add the player metric values in the subsequent columns
+   for (let i = 3; i <= 9; i++) {
+    const metricValueCell = document.createElement('td');
+    const numericValue = (parseFloat(playerData[i]) * 100).toFixed(2);
+
+    // Apply the color inline style based on the value range
+    metricValueCell.textContent = numericValue;
+    if (numericValue >= 75 && numericValue <= 100) {
+      metricValueCell.style.color = 'green';
+    } else if (numericValue >= 0 && numericValue <= 25) {
+      metricValueCell.style.color = 'red';
     }
-
-    // Filter the dataArray based on user-entered percentiles
-    const restrictedPlayers = reverseSearch(
-  [
-    [defensiveActionsLow],
-    [aerialsContestedLow],
-    [exitLineLow],
-    [passesLow],
-    [longPassPercentageLow],
-    [shortPassPercentageLow],
-    [psxgLow],
-    [ageLow, ageHigh],
-    [minutesPlayedLow, minutesPlayedHigh]
-  ],
-  dataArray, // Pass the dataArray as a parameter
-  selectedLeague // Pass the selected league as a parameter
-);
-const resultsContainer = document.getElementById('resultsContainer');
-resultsContainer.innerHTML = '';
-
-if (restrictedPlayers.length === 0) {
-  const noResultsMessage = document.createElement('p');
-  noResultsMessage.textContent = 'No players found';
-  noResultsMessage.classList.add('no-results-message'); // Add a class to the element
-  resultsContainer.appendChild(noResultsMessage);
-} else {
-  // Create the table element
-  const table = document.createElement('table');
-
-  // Create the table header
-  const tableHeader = createTableHeader();
-  table.appendChild(tableHeader);
-
-  // Create the table body
-  const tableBody = document.createElement('tbody');
-
-  // Add the player data rows to the table body
-  restrictedPlayers.forEach(playerData => {
-    const playerRow = document.createElement('tr');
-    tableBody.appendChild(playerRow);
-
-    // Add the player name and other info in the first column
-    const playerNameCell = document.createElement('td');
-    const playerName = playerData[1];
-    const playerData2 = playerData[2];
-    const playerData11 = playerData[11];
-    const playerData10 = playerData[10];
-
-
-    // Create a formatted HTML string
-    const formattedText = `<span>${playerName}</span><br><span class="player-info">${playerData11}, ${playerData2}, ${playerData10} min</span>`;
-
-    // Set the formatted HTML as the content of playerNameCell
-    playerNameCell.innerHTML = formattedText;
-    playerRow.appendChild(playerNameCell);
-
-    // Add the player metric values in the subsequent columns
- for (let i = 3; i <= 9; i++) {
-  const metricValueCell = document.createElement('td');
-  const numericValue = (parseFloat(playerData[i]) * 100).toFixed(2);
-
-  // Apply the color inline style based on the value range
-  metricValueCell.textContent = numericValue;
-  if (numericValue >= 75 && numericValue <= 100) {
-    metricValueCell.style.color = 'green';
-  } else if (numericValue >= 0 && numericValue <= 25) {
-    metricValueCell.style.color = 'red';
+    
+    playerRow.appendChild(metricValueCell);
   }
-  
-  playerRow.appendChild(metricValueCell);
-}
-  });
+    });
 
-  // Append the table body to the table
-  table.appendChild(tableBody);
+    // Append the table body to the table
+    table.appendChild(tableBody);
 
-  // Append the table to the wrapper container
-  const tableWrapper = document.getElementById('tableWrapper');
-  tableWrapper.innerHTML = ''; // Clear any previous content
-  tableWrapper.appendChild(table);
-}
+    // Append the table to the wrapper container
+    const tableWrapper = document.getElementById('tableWrapper');
+    tableWrapper.innerHTML = ''; // Clear any previous content
+    tableWrapper.appendChild(table);
+  }
 
     });
 
@@ -2579,10 +2615,13 @@ function sortColumn(columnIndex) {
       return navigator.language.slice(0, 2);
     }
     
+    let translations = {}; // Add global translations variable
+    
     function applyLanguage(language) {
       fetch(`locales/${language}.json`)
         .then(response => response.json())
-        .then(translations => {
+        .then(data => {
+          translations = data; // Store translations globally
           // Update text content for elements with data-i18n attribute
           document.querySelectorAll('[data-i18n]').forEach(element => {
             const keys = element.getAttribute('data-i18n').split('.');
@@ -2611,6 +2650,14 @@ function sortColumn(columnIndex) {
           document.title = translations.meta.title;
           document.querySelector('meta[name="description"]').setAttribute('content', translations.meta.description);
           document.querySelector('meta[name="language"]').setAttribute('content', language);
+
+          // After translations are loaded, initialize the table header
+          const table = document.querySelector('table');
+          if (table) {
+            const oldHeader = table.querySelector('thead');
+            if (oldHeader) oldHeader.remove();
+            table.insertBefore(createTableHeader(), table.firstChild);
+          }
         });
     }
     
@@ -2621,4 +2668,3 @@ function sortColumn(columnIndex) {
     </script>
 </body>
 </html>
-
