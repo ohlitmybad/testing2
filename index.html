@@ -2543,7 +2543,7 @@ function sortColumn(columnIndex) {
   // Load translations
   async function loadTranslations(lang) {
     try {
-      const response = await fetch(`../locales/${lang}.json`);
+      const response = await fetch(`locales/${lang}.json`);
       translations = await response.json();
       applyTranslations();
     } catch (error) {
