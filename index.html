@@ -337,9 +337,9 @@ body.dark-mode #SFctr td {
     </select>
 
     <select id="league">
-      <option value="All" data-i18n="selectors.leagues.all">🌎 All Leagues</option>
-      <option value="Top 5 Leagues" data-i18n="selectors.leagues.top5">🇪🇺 Top 5 Leagues</option>
-      <option value="Top 7 Leagues" data-i18n="selectors.leagues.top7">🇪🇺 Top 7 Leagues</option>
+      <option value="All" data-i18n="league.all">🌎 All Leagues</option>
+      <option value="Top 5 Leagues" data-i18n="league.top5">🇪🇺 Top 5 Leagues</option>
+      <option value="Top 7 Leagues" data-i18n="league.top7">🇪🇺 Top 7 Leagues</option>
       <option value="Premier League">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
       <option value="La Liga">🇪🇸 La Liga</option>
       <option value="Bundesliga">🇩🇪 Bundesliga</option>
@@ -386,36 +386,36 @@ body.dark-mode #SFctr td {
       <option value="Balkans">🌍 Eastern Europe</option>
     </select>
 
-    <label for="defensiveActions" data-i18n="metrics.defensive_actions">Defensive Actions</label>
-    <input type="number" id="defensiveActionsLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder">
+    <label for="defensiveActions" data-i18n="metrics.gk.def_actions">Defensive Actions</label>
+    <input type="number" id="defensiveActionsLow" min="0" max="100" data-i18n-placeholder="search.percentile">
 
-    <label for="aerialsContested" data-i18n="metrics.aerials_contested">Aerials Contested</label>
-    <input type="number" id="aerialsContestedLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder">
+    <label for="aerialsContested" data-i18n="metrics.gk.aerials">Aerials Contested</label>
+    <input type="number" id="aerialsContestedLow" min="0" max="100" data-i18n-placeholder="search.percentile">
 
-    <label for="exitLine" data-i18n="metrics.exit_line">Exit Line</label>
-    <input type="number" id="exitLineLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder">
+    <label for="exitLine" data-i18n="metrics.gk.exit_line">Exit Line</label>
+    <input type="number" id="exitLineLow" min="0" max="100" data-i18n-placeholder="search.percentile">
 
-    <label for="passes" data-i18n="metrics.passes">Passes</label>
-    <input type="number" id="passesLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder">
+    <label for="passes" data-i18n="metrics.gk.passes">Passes</label>
+    <input type="number" id="passesLow" min="0" max="100" data-i18n-placeholder="search.percentile">
 
-    <label for="longPassPercentage" data-i18n="metrics.long_pass_percentage">Long Pass %</label>
-    <input type="number" id="longPassPercentageLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder">
+    <label for="longPassPercentage" data-i18n="metrics.gk.long_pass">Long Pass %</label>
+    <input type="number" id="longPassPercentageLow" min="0" max="100" data-i18n-placeholder="search.percentile">
 
-    <label for="shortPassPercentage" data-i18n="metrics.short_pass_percentage">Short Pass %</label>
-    <input type="number" id="shortPassPercentageLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder">
+    <label for="shortPassPercentage" data-i18n="metrics.gk.short_pass">Short Pass %</label>
+    <input type="number" id="shortPassPercentageLow" min="0" max="100" data-i18n-placeholder="search.percentile">
 
-    <label for="psxg" data-i18n="metrics.psxg">PSxG - GA</label>
-    <input type="number" id="psxgLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder">
+    <label for="psxg" data-i18n="metrics.gk.psxg_ga">PSxG - GA</label>
+    <input type="number" id="psxgLow" min="0" max="100" data-i18n-placeholder="search.percentile">
 
-    <label for="ageLow" data-i18n="metrics.age">Age</label>
-    <input type="number" id="ageLow" min="0" data-i18n-placeholder="metrics.age_min">
-    <input type="number" id="ageHigh" min="0" data-i18n-placeholder="metrics.age_max">
+    <label for="ageLow" data-i18n="search.age">Age</label>
+    <input type="number" id="ageLow" min="0" data-i18n-placeholder="search.age_min">
+    <input type="number" id="ageHigh" min="0" data-i18n-placeholder="search.age_max">
 
-    <label for="minutesPlayedLow" data-i18n="metrics.minutes_played">Minutes Played</label>
-    <input type="number" id="minutesPlayedLow" min="0" data-i18n-placeholder="metrics.minutes_min">
-    <input type="number" id="minutesPlayedHigh" min="0" data-i18n-placeholder="metrics.minutes_max">
+    <label for="minutesPlayedLow" data-i18n="search.minutes">Minutes Played</label>
+    <input type="number" id="minutesPlayedLow" min="0" data-i18n-placeholder="search.minutes_min">
+    <input type="number" id="minutesPlayedHigh" min="0" data-i18n-placeholder="search.minutes_max">
 
-    <button type="submit" data-i18n="buttons.search">Search</button>
+    <button type="submit" data-i18n="search.button">Search</button>
   </form>
   </div>
 </div>
