@@ -2078,30 +2078,46 @@ document.getElementById('league').addEventListener('change', function () {
 
     // Function to update metric labels based on the selected dataset
   function updateMetricLabels(dataset) {
-    const labels = document.getElementsByTagName('label');
-    let metricLabels;
+    if (!translationsLoaded || !translations || !translations.metrics) {
+        console.log('Translations not loaded yet, waiting...');
+        return;
+    }
+
+    let metricType;
     switch (dataset) {
-      case 'dataset2':
-        metricLabels = metricNames2;
-        break;
-      case 'dataset3':
-        metricLabels = metricNames3;
-        break;
-      case 'dataset4':
-        metricLabels = metricNames4;
-        break;
-      case 'dataset5':
-        metricLabels = metricNames5;
-        break;
-      case 'dataset6':
-        metricLabels = metricNames6;
-        break;
-      default:
-        metricLabels = metricNames1;
+        case 'dataset2':
+            metricType = 'cb';
+            break;
+        case 'dataset3':
+            metricType = 'fb';
+            break;
+        case 'dataset4':
+            metricType = 'cm';
+            break;
+        case 'dataset5':
+            metricType = 'fw';
+            break;
+        case 'dataset6':
+            metricType = 'st';
+            break;
+        default:
+            metricType = 'gk';
     }
-    for (let i = 0; i < metricLabels.length; i++) {
-      labels[i].textContent = metricLabels[i] + '';
-    }
+
+    // Get all metric labels
+    const labels = document.querySelectorAll('label');
+    const metricKeys = Object.keys(translations.metrics[metricType]);
+    
+    // Update labels with translations
+    labels.forEach((label, index) => {
+        if (index < metricKeys.length) {
+            const translationKey = metricKeys[index];
+            const translation = translations.metrics[metricType][translationKey];
+            if (translation) {
+                label.textContent = translation;
+            }
+        }
+    });
   }
 
 
