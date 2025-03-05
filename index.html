@@ -327,20 +327,20 @@ body.dark-mode #SFctr td {
 <div class="container">
   <div class="inputs">
   <form id="searchForm">
-    <select id="datasetSelector">
-      <option value="dataset1" data-i18n="position.goalkeepers">Goalkeepers</option>
-      <option value="dataset2" data-i18n="position.centre-backs">Centre-backs</option>
-      <option value="dataset3" data-i18n="position.full-backs">Full-backs</option>
-      <option value="dataset4" data-i18n="position.midfielders">Midfielders</option>
-      <option value="dataset5" data-i18n="position.wingers">Wingers</option>
-      <option value="dataset6" data-i18n="position.strikers">Strikers</option>
+    <select id="datasetSelector" data-i18n="selectors.dataset">
+      <option value="dataset1" data-i18n="selectors.positions.goalkeepers">Goalkeepers</option>
+      <option value="dataset2" data-i18n="selectors.positions.centrebacks">Centre-backs</option>
+      <option value="dataset3" data-i18n="selectors.positions.fullbacks">Full-backs</option>
+      <option value="dataset4" data-i18n="selectors.positions.midfielders">Midfielders</option>
+      <option value="dataset5" data-i18n="selectors.positions.wingers">Wingers</option>
+      <option value="dataset6" data-i18n="selectors.positions.strikers">Strikers</option>
       <!-- Add more options for additional datasets if needed -->
     </select>
 
-    <select id="league">
-      <option value="All" data-i18n="league.all">🌎 All Leagues</option>
-	    <option value="Top 5 Leagues" data-i18n="league.top5">🇪🇺 Top 5 Leagues</option>
-<option value="Top 7 Leagues" data-i18n="league.top7">🇪🇺 Top 7 Leagues</option>
+    <select id="league" data-i18n="selectors.league">
+      <option value="All" data-i18n="selectors.leagues.all">🌎 All Leagues</option>
+	    <option value="Top 5 Leagues" data-i18n="selectors.leagues.top5">🇪🇺 Top 5 Leagues</option>
+<option value="Top 7 Leagues" data-i18n="selectors.leagues.top7">🇪🇺 Top 7 Leagues</option>
       <option value="Premier League">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
 <option value="La Liga">🇪🇸 La Liga</option>
 <option value="Bundesliga">🇩🇪 Bundesliga</option>
@@ -388,39 +388,39 @@ body.dark-mode #SFctr td {
     
     </select>
 
-    <label for="defensiveActions" data-i18n="metrics.gk.def_actions">Def actions</label>
-    <input type="number" id="defensiveActionsLow" min="0" max="100" data-i18n-placeholder="search.percentile" placeholder="Percentile 0-100">
+    <label for="defensiveActions" data-i18n="metrics.defensive_actions">Defensive Actions</label>
+    <input type="number" id="defensiveActionsLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder" placeholder="0-100">
 
-    <label for="aerialsContested" data-i18n="metrics.gk.aerials">Aerials</label>
-    <input type="number" id="aerialsContestedLow" min="0" max="100" data-i18n-placeholder="search.percentile" placeholder="Percentile 0-100">
+    <label for="aerialsContested" data-i18n="metrics.aerials_contested">Aerials Contested</label>
+    <input type="number" id="aerialsContestedLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder" placeholder="0-100">
 
-    <label for="exitLine" data-i18n="metrics.gk.exit_line">Exit line</label>
-    <input type="number" id="exitLineLow" min="0" max="100" data-i18n-placeholder="search.percentile" placeholder="Percentile 0-100">
+    <label for="exitLine" data-i18n="metrics.exit_line">Exit Line</label>
+    <input type="number" id="exitLineLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder" placeholder="0-100">
 
-    <label for="passes" data-i18n="metrics.gk.passes">Passes</label>
-    <input type="number" id="passesLow" min="0" max="100" data-i18n-placeholder="search.percentile" placeholder="Percentile 0-100">
+    <label for="passes" data-i18n="metrics.passes">Passes</label>
+    <input type="number" id="passesLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder" placeholder="0-100">
 
-    <label for="longPassPercentage" data-i18n="metrics.gk.long_pass">Long pass%</label>
-    <input type="number" id="longPassPercentageLow" min="0" max="100" data-i18n-placeholder="search.percentile" placeholder="Percentile 0-100">
+    <label for="longPassPercentage" data-i18n="metrics.long_pass_percentage">Long Pass %</label>
+    <input type="number" id="longPassPercentageLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder" placeholder="0-100">
 
-    <label for="shortPassPercentage" data-i18n="metrics.gk.short_pass">Short pass%</label>
-    <input type="number" id="shortPassPercentageLow" min="0" max="100" data-i18n-placeholder="search.percentile" placeholder="Percentile 0-100">
+    <label for="shortPassPercentage" data-i18n="metrics.short_pass_percentage">Short Pass %</label>
+    <input type="number" id="shortPassPercentageLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder" placeholder="0-100">
 
-    <label for="psxg" data-i18n="metrics.gk.psxg_ga">PSxG - GA</label>
-    <input type="number" id="psxgLow" min="0" max="100" data-i18n-placeholder="search.percentile" placeholder="Percentile 0-100">
+    <label for="psxg" data-i18n="metrics.psxg">PSxG - GA</label>
+    <input type="number" id="psxgLow" min="0" max="100" data-i18n-placeholder="metrics.percentile_placeholder" placeholder="0-100"  >
 
  
-    <label for="ageLow" data-i18n="search.age">Age</label>
-    <input type="number" id="ageLow" min="0" placeholder="15">
+    <label for="ageLow" data-i18n="metrics.age">Age</label>
+    <input type="number" id="ageLow" min="0" data-i18n-placeholder="metrics.age_min" placeholder="15">
     <label for="ageHigh"></label>
-    <input type="number" id="ageHigh" min="0" placeholder="45">
+    <input type="number" id="ageHigh" min="0" data-i18n-placeholder="metrics.age_max" placeholder="45">
 
-    <label for="minutesPlayedLow" data-i18n="search.minutes">Minutes Played</label>
-    <input type="number" id="minutesPlayedLow" min="0" placeholder="0">
+    <label for="minutesPlayedLow" data-i18n="metrics.minutes_played">Minutes Played</label>
+    <input type="number" id="minutesPlayedLow" min="0" data-i18n-placeholder="metrics.minutes_min" placeholder="0">
     <label for="minutesPlayedHigh"></label>
-    <input type="number" id="minutesPlayedHigh" min="0" placeholder="10,000">
+    <input type="number" id="minutesPlayedHigh" min="0" data-i18n-placeholder="metrics.minutes_max" placeholder="10,000">
 
-    <button type="submit" data-i18n="search.button">Search</button>
+    <button type="submit" data-i18n="buttons.search">Search</button>
   </form>
   </div>
 </div>
@@ -2078,46 +2078,30 @@ document.getElementById('league').addEventListener('change', function () {
 
     // Function to update metric labels based on the selected dataset
   function updateMetricLabels(dataset) {
-    if (!translationsLoaded || !translations || !translations.metrics) {
-        console.log('Translations not loaded yet, waiting...');
-        return;
-    }
-
-    let metricType;
+    const labels = document.getElementsByTagName('label');
+    let metricLabels;
     switch (dataset) {
-        case 'dataset2':
-            metricType = 'cb';
-            break;
-        case 'dataset3':
-            metricType = 'fb';
-            break;
-        case 'dataset4':
-            metricType = 'cm';
-            break;
-        case 'dataset5':
-            metricType = 'fw';
-            break;
-        case 'dataset6':
-            metricType = 'st';
-            break;
-        default:
-            metricType = 'gk';
+      case 'dataset2':
+        metricLabels = metricNames2;
+        break;
+      case 'dataset3':
+        metricLabels = metricNames3;
+        break;
+      case 'dataset4':
+        metricLabels = metricNames4;
+        break;
+      case 'dataset5':
+        metricLabels = metricNames5;
+        break;
+      case 'dataset6':
+        metricLabels = metricNames6;
+        break;
+      default:
+        metricLabels = metricNames1;
     }
-
-    // Get all metric labels
-    const labels = document.querySelectorAll('label');
-    const metricKeys = Object.keys(translations.metrics[metricType]);
-    
-    // Update labels with translations
-    labels.forEach((label, index) => {
-        if (index < metricKeys.length) {
-            const translationKey = metricKeys[index];
-            const translation = translations.metrics[metricType][translationKey];
-            if (translation) {
-                label.textContent = translation;
-            }
-        }
-    });
+    for (let i = 0; i < metricLabels.length; i++) {
+      labels[i].textContent = metricLabels[i] + '';
+    }
   }
 
 
@@ -2272,42 +2256,12 @@ return true;
 
 
   document.getElementById('datasetSelector').addEventListener('change', function () {
-    // Check if translations are loaded
-    if (!translationsLoaded || !translations || !translations.metrics) {
-        console.log('Translations not loaded yet, waiting...');
-        return;
-    }
-
     const selectedDataset = document.getElementById('datasetSelector').value;
+    updateMetricLabels(selectedDataset); // Call the function with the selected dataset
+  });
 
-    // Call the function with the selected dataset to update the metric labels
-    switch (selectedDataset) {
-      case 'dataset2':
-        updateMetricLabels('dataset2');
-        break;
-      case 'dataset3':
-        updateMetricLabels('dataset3');
-        break;
-      case 'dataset4':
-        updateMetricLabels('dataset4');
-        break;
-      case 'dataset5':
-        updateMetricLabels('dataset5');
-        break;
-      case 'dataset6':
-        updateMetricLabels('dataset6');
-        break;
-      default:
-        updateMetricLabels('dataset1');
-        break;
-    }
-
-    // Clear the search inputs and results when the dataset selector changes
-    clearSearchInputs();
-});
-
-    // Initialize the metric labels based on the default dataset
-    updateMetricLabels('dataset1');
+  // Initialize the metric labels based on the default dataset
+  updateMetricLabels('dataset1');
 
 
 
@@ -2322,133 +2276,127 @@ return true;
     }
 
     document.getElementById('searchForm').addEventListener('submit', function (event) {
-      event.preventDefault();
+  event.preventDefault();
 
-      // Check if translations are loaded
-      if (!translations || !translations.metrics) {
-          console.log('Waiting for translations to load...');
-          return;
-      }
+  // Get the selected dataset and league
+  const selectedDataset = document.getElementById('datasetSelector').value;
+  selectedLeague = document.getElementById('league').value;
 
-      // Get the selected dataset and league
-      const selectedDataset = document.getElementById('datasetSelector').value;
-      selectedLeague = document.getElementById('league').value;
+    // Get the user-entered percentile values from the form
+    const defensiveActionsLow = parseInt(document.getElementById('defensiveActionsLow').value);
+    const aerialsContestedLow = parseInt(document.getElementById('aerialsContestedLow').value);
+    const exitLineLow = parseInt(document.getElementById('exitLineLow').value);
+    const passesLow = parseInt(document.getElementById('passesLow').value);
+    const longPassPercentageLow = parseInt(document.getElementById('longPassPercentageLow').value);
+    const shortPassPercentageLow = parseInt(document.getElementById('shortPassPercentageLow').value);
+    const psxgLow = parseInt(document.getElementById('psxgLow').value);
+    const ageLow = parseInt(document.getElementById('ageLow').value);
+    const ageHigh = parseInt(document.getElementById('ageHigh').value);
+    const minutesPlayedLow = parseInt(document.getElementById('minutesPlayedLow').value);
+    const minutesPlayedHigh = parseInt(document.getElementById('minutesPlayedHigh').value);
 
-      // Get the user-entered percentile values from the form
-      const defensiveActionsLow = parseInt(document.getElementById('defensiveActionsLow').value);
-      const aerialsContestedLow = parseInt(document.getElementById('aerialsContestedLow').value);
-      const exitLineLow = parseInt(document.getElementById('exitLineLow').value);
-      const passesLow = parseInt(document.getElementById('passesLow').value);
-      const longPassPercentageLow = parseInt(document.getElementById('longPassPercentageLow').value);
-      const shortPassPercentageLow = parseInt(document.getElementById('shortPassPercentageLow').value);
-      const psxgLow = parseInt(document.getElementById('psxgLow').value);
-      const ageLow = parseInt(document.getElementById('ageLow').value);
-      const ageHigh = parseInt(document.getElementById('ageHigh').value);
-      const minutesPlayedLow = parseInt(document.getElementById('minutesPlayedLow').value);
-      const minutesPlayedHigh = parseInt(document.getElementById('minutesPlayedHigh').value);
-
-      // Determine the dataArray based on the selected dataset
-      let dataArray;
-      switch (selectedDataset) {
-        case 'dataset2':
-          dataArray = dataArray2;
-          break;
-        case 'dataset3':
-          dataArray = dataArray3;
-          break;
-        case 'dataset4':
-          dataArray = dataArray4;
-          break;
-        case 'dataset5':
-          dataArray = dataArray5;
-          break;
-        case 'dataset6':
-          dataArray = dataArray6;
-          break;
-        default:
-          dataArray = dataArray1;
-      }
-
-      // Filter the dataArray based on user-entered percentiles
-      const restrictedPlayers = reverseSearch(
-    [
-      [defensiveActionsLow],
-      [aerialsContestedLow],
-      [exitLineLow],
-      [passesLow],
-      [longPassPercentageLow],
-      [shortPassPercentageLow],
-      [psxgLow],
-      [ageLow, ageHigh],
-      [minutesPlayedLow, minutesPlayedHigh]
-    ],
-    dataArray, // Pass the dataArray as a parameter
-    selectedLeague // Pass the selected league as a parameter
-  );
-  const resultsContainer = document.getElementById('resultsContainer');
-  resultsContainer.innerHTML = '';
-
-  if (restrictedPlayers.length === 0) {
-    const noResultsMessage = document.createElement('p');
-    noResultsMessage.textContent = 'No players found';
-    noResultsMessage.classList.add('no-results-message'); // Add a class to the element
-    resultsContainer.appendChild(noResultsMessage);
-  } else {
-    // Create the table element
-    const table = document.createElement('table');
-
-    // Create the table header
-    const tableHeader = createTableHeader();
-    table.appendChild(tableHeader);
-
-    // Create the table body
-    const tableBody = document.createElement('tbody');
-
-    // Add the player data rows to the table body
-    restrictedPlayers.forEach(playerData => {
-      const playerRow = document.createElement('tr');
-      tableBody.appendChild(playerRow);
-
-      // Add the player name and other info in the first column
-      const playerNameCell = document.createElement('td');
-      const playerName = playerData[1];
-      const playerData2 = playerData[2];
-      const playerData11 = playerData[11];
-      const playerData10 = playerData[10];
-
-
-      // Create a formatted HTML string
-      const formattedText = `<span>${playerName}</span><br><span class="player-info">${playerData11}, ${playerData2}, ${playerData10} min</span>`;
-
-      // Set the formatted HTML as the content of playerNameCell
-      playerNameCell.innerHTML = formattedText;
-      playerRow.appendChild(playerNameCell);
-
-      // Add the player metric values in the subsequent columns
-   for (let i = 3; i <= 9; i++) {
-    const metricValueCell = document.createElement('td');
-    const numericValue = (parseFloat(playerData[i]) * 100).toFixed(2);
-
-    // Apply the color inline style based on the value range
-    metricValueCell.textContent = numericValue;
-    if (numericValue >= 75 && numericValue <= 100) {
-      metricValueCell.style.color = 'green';
-    } else if (numericValue >= 0 && numericValue <= 25) {
-      metricValueCell.style.color = 'red';
+    // Determine the dataArray based on the selected dataset
+    let dataArray;
+    switch (selectedDataset) {
+      case 'dataset2':
+        dataArray = dataArray2;
+        break;
+      case 'dataset3':
+        dataArray = dataArray3;
+        break;
+      case 'dataset4':
+        dataArray = dataArray4;
+        break;
+      case 'dataset5':
+        dataArray = dataArray5;
+        break;
+      case 'dataset6':
+        dataArray = dataArray6;
+        break;
+      default:
+        dataArray = dataArray1;
     }
-    
-    playerRow.appendChild(metricValueCell);
-  }
-    });
 
-    // Append the table body to the table
-    table.appendChild(tableBody);
+    // Filter the dataArray based on user-entered percentiles
+    const restrictedPlayers = reverseSearch(
+  [
+    [defensiveActionsLow],
+    [aerialsContestedLow],
+    [exitLineLow],
+    [passesLow],
+    [longPassPercentageLow],
+    [shortPassPercentageLow],
+    [psxgLow],
+    [ageLow, ageHigh],
+    [minutesPlayedLow, minutesPlayedHigh]
+  ],
+  dataArray, // Pass the dataArray as a parameter
+  selectedLeague // Pass the selected league as a parameter
+);
+const resultsContainer = document.getElementById('resultsContainer');
+resultsContainer.innerHTML = '';
 
-    // Append the table to the wrapper container
-    const tableWrapper = document.getElementById('tableWrapper');
-    tableWrapper.innerHTML = ''; // Clear any previous content
-    tableWrapper.appendChild(table);
+if (restrictedPlayers.length === 0) {
+  const noResultsMessage = document.createElement('p');
+  noResultsMessage.textContent = 'No players found';
+  noResultsMessage.classList.add('no-results-message'); // Add a class to the element
+  resultsContainer.appendChild(noResultsMessage);
+} else {
+  // Create the table element
+  const table = document.createElement('table');
+
+  // Create the table header
+  const tableHeader = createTableHeader();
+  table.appendChild(tableHeader);
+
+  // Create the table body
+  const tableBody = document.createElement('tbody');
+
+  // Add the player data rows to the table body
+  restrictedPlayers.forEach(playerData => {
+    const playerRow = document.createElement('tr');
+    tableBody.appendChild(playerRow);
+
+    // Add the player name and other info in the first column
+    const playerNameCell = document.createElement('td');
+    const playerName = playerData[1];
+    const playerData2 = playerData[2];
+    const playerData11 = playerData[11];
+    const playerData10 = playerData[10];
+
+
+    // Create a formatted HTML string
+    const formattedText = `<span>${playerName}</span><br><span class="player-info">${playerData11}, ${playerData2}, ${playerData10} min</span>`;
+
+    // Set the formatted HTML as the content of playerNameCell
+    playerNameCell.innerHTML = formattedText;
+    playerRow.appendChild(playerNameCell);
+
+    // Add the player metric values in the subsequent columns
+ for (let i = 3; i <= 9; i++) {
+  const metricValueCell = document.createElement('td');
+  const numericValue = (parseFloat(playerData[i]) * 100).toFixed(2);
+
+  // Apply the color inline style based on the value range
+  metricValueCell.textContent = numericValue;
+  if (numericValue >= 75 && numericValue <= 100) {
+    metricValueCell.style.color = 'green';
+  } else if (numericValue >= 0 && numericValue <= 25) {
+    metricValueCell.style.color = 'red';
   }
+  
+  playerRow.appendChild(metricValueCell);
+}
+  });
+
+  // Append the table body to the table
+  table.appendChild(tableBody);
+
+  // Append the table to the wrapper container
+  const tableWrapper = document.getElementById('tableWrapper');
+  tableWrapper.innerHTML = ''; // Clear any previous content
+  tableWrapper.appendChild(table);
+}
 
     });
 
@@ -2456,58 +2404,50 @@ let sortColumnIndex = -1;
 let ascending = true;
 
 function createTableHeader() {
-    // Check if translations are loaded
-    if (!translationsLoaded || !translations || !translations.metrics) {
-        console.log('Translations not loaded yet, waiting...');
-        return null;
-    }
+  const tableHeader = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  const selectedDataset = document.getElementById('datasetSelector').value;
+  let metricLabels;
+  switch (selectedDataset) {
+    case 'dataset2':
+      metricLabels = metricNames2;
+      break;
+    case 'dataset3':
+      metricLabels = metricNames3;
+      break;
+    case 'dataset4':
+      metricLabels = metricNames4;
+      break;
+    case 'dataset5':
+      metricLabels = metricNames5;
+      break;
+    case 'dataset6':
+      metricLabels = metricNames6;
+      break;
+    default:
+      metricLabels = metricNames1;
+      break;
+  }
 
-    const tableHeader = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    const selectedDataset = document.getElementById('datasetSelector').value;
-    let metricType;
-    
-    switch (selectedDataset) {
-        case 'dataset2':
-            metricType = 'cb';
-            break;
-        case 'dataset3':
-            metricType = 'fb';
-            break;
-        case 'dataset4':
-            metricType = 'cm';
-            break;
-        case 'dataset5':
-            metricType = 'fw';
-            break;
-        case 'dataset6':
-            metricType = 'st';
-            break;
-        default:
-            metricType = 'gk';
-    }
+  const emptyHeaderCell = document.createElement('th');
+  emptyHeaderCell.textContent = '';
+  headerRow.appendChild(emptyHeaderCell);
 
-    const emptyHeaderCell = document.createElement('th');
-    emptyHeaderCell.textContent = '';
-    headerRow.appendChild(emptyHeaderCell);
+  for (let i = 0; i < metricLabels.length; i++) {
+    const headerCell = document.createElement('th');
+    headerCell.textContent = metricLabels[i];
+    headerCell.style.cursor = 'pointer';
 
-    const metricKeys = Object.keys(translations.metrics[metricType]);
-    for (let i = 0; i < metricKeys.length; i++) {
-        const headerCell = document.createElement('th');
-        headerCell.textContent = translations.metrics[metricType][metricKeys[i]];
-        headerCell.style.cursor = 'pointer';
-        headerCell.setAttribute('data-i18n', `metrics.${metricType}.${metricKeys[i]}`);
+    // Add click event listener to the header cell for sorting
+    headerCell.addEventListener('click', () => {
+      sortColumn(i);
+    });
 
-        // Add click event listener to the header cell for sorting
-        headerCell.addEventListener('click', () => {
-            sortColumn(i);
-        });
+    headerRow.appendChild(headerCell);
+  }
 
-        headerRow.appendChild(headerCell);
-    }
-
-    tableHeader.appendChild(headerRow);
-    return tableHeader;
+  tableHeader.appendChild(headerRow);
+  return tableHeader;
 }
 
 
@@ -2575,119 +2515,6 @@ function sortColumn(columnIndex) {
     clearSearchInputs();
 });
 
-function loadTranslations(language) {
-    console.log('Loading translations for language:', language);
-    return fetch(`locales/${language}.json`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Translations loaded successfully:', data);
-            translations = data;
-            translationsLoaded = true;
-            
-            // Update all elements with translations
-            updateAllTranslations(language);
-            
-            // Initialize the table header after translations are loaded
-            const table = document.querySelector('table');
-            if (table) {
-                console.log('Found table, updating header');
-                const oldHeader = table.querySelector('thead');
-                if (oldHeader) {
-                    console.log('Removing old header');
-                    oldHeader.remove();
-                }
-                const newHeader = createTableHeader();
-                if (newHeader) {
-                    console.log('Adding new header');
-                    table.insertBefore(newHeader, table.firstChild);
-                } else {
-                    console.log('Failed to create new header');
-                }
-            } else {
-                console.log('No table found');
-            }
-            
-            // Initialize the metric labels
-            console.log('Updating metric labels');
-            updateMetricLabels('dataset1');
-        })
-        .catch(error => {
-            console.error('Error loading translations:', error);
-            // Load English as fallback
-            if (language !== 'en') {
-                console.log('Falling back to English translations');
-                return loadTranslations('en');
-            }
-        });
-}
-
-function updateAllTranslations(language) {
-    if (!translations) {
-        console.log('No translations available');
-        return;
-    }
-    
-    console.log('Updating translations for language:', language);
-    
-    // Update text content for elements with data-i18n attribute
-    const elements = document.querySelectorAll('[data-i18n]');
-    console.log('Found elements with data-i18n:', elements.length);
-    
-    elements.forEach(element => {
-        const keys = element.getAttribute('data-i18n').split('.');
-        let value = translations;
-        for (const key of keys) {
-            value = value?.[key];
-        }
-        if (value) {
-            console.log('Updating element:', element, 'with value:', value);
-            element.textContent = value;
-        } else {
-            console.log('No translation found for:', keys.join('.'));
-        }
-    });
-
-    // Update placeholders
-    const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
-    console.log('Found elements with data-i18n-placeholder:', placeholderElements.length);
-    
-    placeholderElements.forEach(element => {
-        const keys = element.getAttribute('data-i18n-placeholder').split('.');
-        let value = translations;
-        for (const key of keys) {
-            value = value?.[key];
-        }
-        if (value) {
-            console.log('Updating placeholder:', element, 'with value:', value);
-            element.placeholder = value;
-        } else {
-            console.log('No translation found for placeholder:', keys.join('.'));
-        }
-    });
-
-    // Update meta tags
-    if (translations.meta) {
-        console.log('Updating meta tags');
-        document.title = translations.meta.title;
-        document.querySelector('meta[name="description"]')?.setAttribute('content', translations.meta.description);
-        document.querySelector('meta[name="language"]')?.setAttribute('content', language);
-    } else {
-        console.log('No meta translations found');
-    }
-}
-
-// Initialize translations when the DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    const preferredLanguage = getPreferredLanguage();
-    console.log('Initializing with language:', preferredLanguage);
-    loadTranslations(preferredLanguage);
-});
-
 })}) })}) })}) })}) })}) })}) 
 </script></div>
 
@@ -2713,118 +2540,83 @@ document.addEventListener('DOMContentLoaded', function() {
 
   </script>
 
+<script>
+  // Translation functionality
+  function setLanguage(language) {
+    localStorage.setItem('preferredLanguage', language);
+    // Update URL with language parameter
+    const url = new URL(window.location.href);
+    if (language === 'en') {
+      url.searchParams.delete('lang');
+    } else {
+      url.searchParams.set('lang', language);
+    }
+    window.history.pushState({}, '', url);
+    applyLanguage(language);
+  }
+  
+  function getPreferredLanguage() {
+    // Check URL parameter first
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam) {
+      return langParam;
+    }
+    return localStorage.getItem('preferredLanguage') || getBrowserLanguage() || 'en';
+  }
+  
+  function getBrowserLanguage() {
+    return navigator.language.slice(0, 2);
+  }
+  
+  function applyLanguage(language) {
+    fetch(`locales/${language}.json`)
+      .then(response => response.json())
+      .then(translations => {
+        // Update text content for elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+          const keys = element.getAttribute('data-i18n').split('.');
+          let value = translations;
+          for (const key of keys) {
+            value = value[key];
+          }
+          if (value) {
+            element.textContent = value;
+          }
+        });
+  
+        // Update placeholders for elements with data-i18n-placeholder attribute
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+          const keys = element.getAttribute('data-i18n-placeholder').split('.');
+          let value = translations;
+          for (const key of keys) {
+            value = value[key];
+          }
+          if (value) {
+            element.placeholder = value;
+          }
+        });
+  
+        // Update meta tags
+        document.title = translations.meta.title;
+        document.querySelector('meta[name="description"]').setAttribute('content', translations.meta.description);
+        document.querySelector('meta[name="language"]').setAttribute('content', language);
+      });
+  }
+  
+  // Initialize translations
+  const preferredLanguage = getPreferredLanguage();
+  applyLanguage(preferredLanguage);
+  
+  </script>
 
 <a href="https://datamb.football/prosearch/" target="_self" rel="noopener noreferrer">
-  <button class="button-6" role="button" data-i18n="switch.button">Switch to 2023/24</button></a>
+  <button class="button-6" role="button" data-i18n="buttons.switch">Switch to 2023/24</button></a>
   
 <div class="dark-mode-toggle" onclick="toggleDarkMode()">
     <span class="toggle-icon"></span>
   </div>
 
-  <script>
-    // Global variables for translations
-    let translations = {};
-    let translationsLoaded = false;
 
-    // Translation functionality
-    function setLanguage(language) {
-        localStorage.setItem('preferredLanguage', language);
-        const url = new URL(window.location.href);
-        if (language === 'en') {
-            url.searchParams.delete('lang');
-        } else {
-            url.searchParams.set('lang', language);
-        }
-        window.history.pushState({}, '', url);
-        loadTranslations(language);
-    }
-    
-    function getPreferredLanguage() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const langParam = urlParams.get('lang');
-        if (langParam) {
-            return langParam;
-        }
-        return localStorage.getItem('preferredLanguage') || getBrowserLanguage() || 'en';
-    }
-    
-    
-    function getBrowserLanguage() {
-      return navigator.language.slice(0, 2);
-    }
-    
-    function loadTranslations(language) {
-        return fetch(`locales/${language}.json`)
-            .then(response => response.json())
-            .then(data => {
-                translations = data;
-                translationsLoaded = true;
-                
-                // Update all elements with translations
-                updateAllTranslations(language);
-                
-                // Initialize the table header after translations are loaded
-                const table = document.querySelector('table');
-                if (table) {
-                    const oldHeader = table.querySelector('thead');
-                    if (oldHeader) oldHeader.remove();
-                    const newHeader = createTableHeader();
-                    if (newHeader) {
-                        table.insertBefore(newHeader, table.firstChild);
-                    }
-                }
-                
-                // Initialize the metric labels
-                updateMetricLabels('dataset1');
-            })
-            .catch(error => {
-                console.error('Error loading translations:', error);
-                // Load English as fallback
-                if (language !== 'en') {
-                    return loadTranslations('en');
-                }
-            });
-    }
-
-    function updateAllTranslations(language) {
-        if (!translations) return;
-        
-        // Update text content for elements with data-i18n attribute
-        document.querySelectorAll('[data-i18n]').forEach(element => {
-            const keys = element.getAttribute('data-i18n').split('.');
-            let value = translations;
-            for (const key of keys) {
-                value = value?.[key];
-            }
-            if (value) {
-                element.textContent = value;
-            }
-        });
-
-        // Update placeholders
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
-            const keys = element.getAttribute('data-i18n-placeholder').split('.');
-            let value = translations;
-            for (const key of keys) {
-                value = value?.[key];
-            }
-            if (value) {
-                element.placeholder = value;
-            }
-        });
-
-        // Update meta tags
-        if (translations.meta) {
-            document.title = translations.meta.title;
-            document.querySelector('meta[name="description"]')?.setAttribute('content', translations.meta.description);
-            document.querySelector('meta[name="language"]')?.setAttribute('content', language);
-        }
-    }
-
-    // Initialize translations
-    const preferredLanguage = getPreferredLanguage();
-    loadTranslations(preferredLanguage);
-    
-    </script>
 </body>
 </html>
