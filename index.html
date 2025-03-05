@@ -2073,186 +2073,86 @@ document.getElementById('league').addEventListener('change', function () {
 
     // Function to update metric labels based on the selected dataset
   function updateMetricLabels(dataset) {
-    const labels = document.getElementsByTagName('label');
-    let metricLabels;
-    switch (dataset) {
-      case 'dataset2':
-        metricLabels = metricNames2;
-        break;
-      case 'dataset3':
-        metricLabels = metricNames3;
-        break;
-      case 'dataset4':
-        metricLabels = metricNames4;
-        break;
-      case 'dataset5':
-        metricLabels = metricNames5;
-        break;
-      case 'dataset6':
-        metricLabels = metricNames6;
-        break;
-      default:
-        metricLabels = metricNames1;
+    const labels = document.querySelectorAll('label[for]');
+    const inputs = document.querySelectorAll('input[type="number"]');
+    let position = '';
+    
+    // Determine position code based on dataset
+    switch(dataset) {
+      case 'dataset1': position = 'gk'; break;
+      case 'dataset2': position = 'cb'; break;
+      case 'dataset3': position = 'fb'; break;
+      case 'dataset4': position = 'cm'; break;
+      case 'dataset5': position = 'fw'; break;
+      case 'dataset6': position = 'st'; break;
     }
-    for (let i = 0; i < metricLabels.length; i++) {
-      labels[i].textContent = metricLabels[i] + '';
+
+    // Update metric labels based on position
+    if (position === 'gk') {
+      updateLabel('defensiveActions', 'metrics.gk.def_actions');
+      updateLabel('aerialsContested', 'metrics.gk.aerials');
+      updateLabel('exitLine', 'metrics.gk.exit_line');
+      updateLabel('passes', 'metrics.gk.passes');
+      updateLabel('longPassPercentage', 'metrics.gk.long_pass');
+      updateLabel('shortPassPercentage', 'metrics.gk.short_pass');
+      updateLabel('psxg', 'metrics.gk.psxg_ga');
+    } else if (position === 'cb') {
+      updateLabel('defensiveActions', 'metrics.cb.passes');
+      updateLabel('aerialsContested', 'metrics.cb.forward_pass');
+      updateLabel('exitLine', 'metrics.cb.prog_passes');
+      updateLabel('passes', 'metrics.cb.def_actions');
+      updateLabel('longPassPercentage', 'metrics.cb.def_duel');
+      updateLabel('shortPassPercentage', 'metrics.cb.aerial');
+      updateLabel('psxg', 'metrics.cb.prog_carries');
+    } else if (position === 'fb') {
+      updateLabel('defensiveActions', 'metrics.fb.cross');
+      updateLabel('aerialsContested', 'metrics.fb.xa');
+      updateLabel('exitLine', 'metrics.fb.prog_passes');
+      updateLabel('passes', 'metrics.fb.def_actions');
+      updateLabel('longPassPercentage', 'metrics.fb.def_duel');
+      updateLabel('shortPassPercentage', 'metrics.fb.aerial');
+      updateLabel('psxg', 'metrics.fb.prog_carries');
+    } else if (position === 'cm') {
+      updateLabel('defensiveActions', 'metrics.cm.duel');
+      updateLabel('aerialsContested', 'metrics.cm.def_actions');
+      updateLabel('exitLine', 'metrics.cm.prog_carries');
+      updateLabel('passes', 'metrics.cm.forward_passes');
+      updateLabel('longPassPercentage', 'metrics.cm.forward_pass');
+      updateLabel('shortPassPercentage', 'metrics.cm.key_passes');
+      updateLabel('psxg', 'metrics.cm.prog_passes');
+    } else if (position === 'fw') {
+      updateLabel('defensiveActions', 'metrics.fw.prog_carries');
+      updateLabel('aerialsContested', 'metrics.fw.dribbles');
+      updateLabel('exitLine', 'metrics.fw.npg');
+      updateLabel('passes', 'metrics.fw.xg_xa');
+      updateLabel('longPassPercentage', 'metrics.fw.assists');
+      updateLabel('shortPassPercentage', 'metrics.fw.key_passes');
+      updateLabel('psxg', 'metrics.fw.off_actions');
+    } else if (position === 'st') {
+      updateLabel('defensiveActions', 'metrics.st.pass_received');
+      updateLabel('aerialsContested', 'metrics.st.aerial');
+      updateLabel('exitLine', 'metrics.st.npg');
+      updateLabel('passes', 'metrics.st.xg');
+      updateLabel('longPassPercentage', 'metrics.st.pass_to_pen');
+      updateLabel('shortPassPercentage', 'metrics.st.xa');
+      updateLabel('psxg', 'metrics.st.off_actions');
     }
+
+    // Reapply translations after updating data-i18n attributes
+    applyTranslations();
   }
 
-
-  function reverseSearch(percentiles, dataArray, selectedLeague) {
-  return dataArray.filter(data => {
-    for (let i = 3; i <= 9; i++) {
-      const metricValue = parseFloat(data[i]) * 100;
-      if (metricValue < percentiles[i - 3][0]) {
-        return false;
-      }
-    }
-
-    const age = parseInt(data[11]);
-    if (age < percentiles[7][0] || age > percentiles[7][1]) {
-      return false;
-    }
-
-    const minutesPlayed = parseInt(data[10]);
-    if (minutesPlayed < percentiles[8][0] || (percentiles[8][1] && minutesPlayed > percentiles[8][1])) {
-      return false;
-    }
-
-    if (selectedLeague !== "All") {
-  if (selectedLeague === "Top 7 Leagues") {
-    const topSevenLeagues = [
-      "Premier League",
-      "La Liga",
-      "Bundesliga",
-      "Serie A",
-      "Ligue 1",
-      "Eredivisie",
-      "Liga Portugal"
-    ];
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (!topSevenLeagues.includes(playerLeague)) {
-      return false;
-    }
-  } else if (selectedLeague === "Top 5 Leagues") {
-    const topFiveLeagues = [
-      "Premier League",
-      "La Liga",
-      "Bundesliga",
-      "Serie A",
-      "Ligue 1"
-    ];
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (!topFiveLeagues.includes(playerLeague)) {
-      return false;
-    }
-  } else if (selectedLeague === "Non Top 7 Leagues") {
-    const dataMBProLeagues = [
-      "Scotland Premiership",
-      "Belgium Pro League",
-      "Swiss Super League",
-      "Ukraine",
-      "Poland",
-      "Greece",
-      "Israel",
-      "Russia",
-      "Colombia",
-      "Chile",
-      "Paraguay",
-      "Ecuador",
-      "Austrian Bundesliga",
-      "Süper Lig",
-      "Saudi Pro League",
-      "Brazil Serie A",
-      "Argentina Primera",
-      "Uruguay Primera",
-      "LigaMX",
-      "MLS",
-      "K League 1",
-      "J1 League",
-      "Norway Eliteserien",
-      "Denmark Superliga",
-      "Sweden Allsvenskan",
-      "Czech Fortuna Liga",
-      "Serbia SuperLiga",
-      "Croatia HNL",
-      "Championship",
-      "Segunda Division",
-      "Bundesliga 2",
-      "Serie B",
-      "Ligue 2",
-      "Unknown League"
-    ];
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (!dataMBProLeagues.includes(playerLeague)) {
-      return false;
-    }
-  } else if (selectedLeague === "South America") {
-    const southAmericaLeagues = [
-      "Brazil Serie A",
-      "Argentina Primera",
-      "Uruguay Primera",
-      "Colombia",
-      "Chile",
-      "Paraguay",
-      "Ecuador",
-    ];
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (!southAmericaLeagues.includes(playerLeague)) {
-      return false;
-    }
-  } else if (selectedLeague === "Scandinavia") {
-    const scandinaviaLeagues = [
-      "Norway Eliteserien",
-      "Denmark Superliga",
-      "Sweden Allsvenskan"
-    ];
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (!scandinaviaLeagues.includes(playerLeague)) {
-      return false;
-    }
-  } else if (selectedLeague === "Balkans") {
-    const balkansLeagues = [
-      "Czech Fortuna Liga",
-      "Serbia SuperLiga",
-      "Croatia HNL",
-      "Russia",
-      "Ukraine",
-      "Poland"
-    ];
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (!balkansLeagues.includes(playerLeague)) {
-      return false;
-    }
-  } else if (selectedLeague === "Top 5 Leagues - 2nd Div.") {
-    const secondDivLeagues = [
-      "Championship",
-      "Segunda Division",
-      "Bundesliga 2",
-      "Serie B",
-      "Ligue 2"
-    ];
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (!secondDivLeagues.includes(playerLeague)) {
-      return false;
-    }
-  } else {
-    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
-    if (playerLeague !== selectedLeague) {
-      return false;
+  function updateLabel(forAttribute, translationKey) {
+    const label = document.querySelector(`label[for="${forAttribute}"]`);
+    if (label) {
+      label.setAttribute('data-i18n', translationKey);
     }
   }
-}
-
-return true;
-});
-}
-
-
 
   document.getElementById('datasetSelector').addEventListener('change', function () {
     const selectedDataset = document.getElementById('datasetSelector').value;
-    updateMetricLabels(selectedDataset); // Call the function with the selected dataset
+    updateMetricLabels(selectedDataset);
+    clearSearchInputs();
   });
 
   // Initialize the metric labels based on the default dataset
