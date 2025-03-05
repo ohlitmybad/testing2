@@ -2543,7 +2543,7 @@ function sortColumn(columnIndex) {
   // Load translations
   async function loadTranslations(lang) {
     try {
-      const response = await fetch(`locales/${lang}.json`);
+      const response = await fetch(`./locales/${lang}.json`);
       translations = await response.json();
       applyTranslations();
     } catch (error) {
@@ -2573,13 +2573,15 @@ function sortColumn(columnIndex) {
     // Update dataset selector options
     const datasetSelector = document.getElementById('datasetSelector');
     if (datasetSelector) {
-      const positions = translations.selectors.positions;
-      datasetSelector.options[0].textContent = positions.goalkeepers;
-      datasetSelector.options[1].textContent = positions.centrebacks;
-      datasetSelector.options[2].textContent = positions.fullbacks;
-      datasetSelector.options[3].textContent = positions.midfielders;
-      datasetSelector.options[4].textContent = positions.wingers;
-      datasetSelector.options[5].textContent = positions.strikers;
+      const positions = translations.position;
+      if (positions) {
+        datasetSelector.options[0].textContent = positions.goalkeepers;
+        datasetSelector.options[1].textContent = positions['centre-backs'];
+        datasetSelector.options[2].textContent = positions['full-backs'];
+        datasetSelector.options[3].textContent = positions.midfielders;
+        datasetSelector.options[4].textContent = positions.wingers;
+        datasetSelector.options[5].textContent = positions.strikers;
+      }
     }
   }
 
