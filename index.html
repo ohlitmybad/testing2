@@ -2257,8 +2257,8 @@ return true;
 
   document.getElementById('datasetSelector').addEventListener('change', function () {
     // Check if translations are loaded
-    if (!translations || !translations.metrics) {
-        console.log('Waiting for translations to load...');
+    if (!translationsLoaded || !translations || !translations.metrics) {
+        console.log('Translations not loaded yet, waiting...');
         return;
     }
 
@@ -2440,52 +2440,58 @@ let sortColumnIndex = -1;
 let ascending = true;
 
 function createTableHeader() {
-  const tableHeader = document.createElement('thead');
-  const headerRow = document.createElement('tr');
-  const selectedDataset = document.getElementById('datasetSelector').value;
-  let metricType;
-  
-  switch (selectedDataset) {
-    case 'dataset2':
-      metricType = 'cb';
-      break;
-    case 'dataset3':
-      metricType = 'fb';
-      break;
-    case 'dataset4':
-      metricType = 'cm';
-      break;
-    case 'dataset5':
-      metricType = 'fw';
-      break;
-    case 'dataset6':
-      metricType = 'st';
-      break;
-    default:
-      metricType = 'gk';
-  }
+    // Check if translations are loaded
+    if (!translationsLoaded || !translations || !translations.metrics) {
+        console.log('Translations not loaded yet, waiting...');
+        return null;
+    }
 
-  const emptyHeaderCell = document.createElement('th');
-  emptyHeaderCell.textContent = '';
-  headerRow.appendChild(emptyHeaderCell);
+    const tableHeader = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    const selectedDataset = document.getElementById('datasetSelector').value;
+    let metricType;
+    
+    switch (selectedDataset) {
+        case 'dataset2':
+            metricType = 'cb';
+            break;
+        case 'dataset3':
+            metricType = 'fb';
+            break;
+        case 'dataset4':
+            metricType = 'cm';
+            break;
+        case 'dataset5':
+            metricType = 'fw';
+            break;
+        case 'dataset6':
+            metricType = 'st';
+            break;
+        default:
+            metricType = 'gk';
+    }
 
-  const metricKeys = Object.keys(translations.metrics[metricType]);
-  for (let i = 0; i < metricKeys.length; i++) {
-    const headerCell = document.createElement('th');
-    headerCell.textContent = translations.metrics[metricType][metricKeys[i]];
-    headerCell.style.cursor = 'pointer';
-    headerCell.setAttribute('data-i18n', `metrics.${metricType}.${metricKeys[i]}`);
+    const emptyHeaderCell = document.createElement('th');
+    emptyHeaderCell.textContent = '';
+    headerRow.appendChild(emptyHeaderCell);
 
-    // Add click event listener to the header cell for sorting
-    headerCell.addEventListener('click', () => {
-      sortColumn(i);
-    });
+    const metricKeys = Object.keys(translations.metrics[metricType]);
+    for (let i = 0; i < metricKeys.length; i++) {
+        const headerCell = document.createElement('th');
+        headerCell.textContent = translations.metrics[metricType][metricKeys[i]];
+        headerCell.style.cursor = 'pointer';
+        headerCell.setAttribute('data-i18n', `metrics.${metricType}.${metricKeys[i]}`);
 
-    headerRow.appendChild(headerCell);
-  }
+        // Add click event listener to the header cell for sorting
+        headerCell.addEventListener('click', () => {
+            sortColumn(i);
+        });
 
-  tableHeader.appendChild(headerRow);
-  return tableHeader;
+        headerRow.appendChild(headerCell);
+    }
+
+    tableHeader.appendChild(headerRow);
+    return tableHeader;
 }
 
 
@@ -2553,6 +2559,78 @@ function sortColumn(columnIndex) {
     clearSearchInputs();
 });
 
+function loadTranslations(language) {
+    return fetch(`locales/${language}.json`)
+        .then(response => response.json())
+        .then(data => {
+            translations = data;
+            translationsLoaded = true;
+            
+            // Update all elements with translations
+            updateAllTranslations(language);
+            
+            // Initialize the table header after translations are loaded
+            const table = document.querySelector('table');
+            if (table) {
+                const oldHeader = table.querySelector('thead');
+                if (oldHeader) oldHeader.remove();
+                const newHeader = createTableHeader();
+                if (newHeader) {
+                    table.insertBefore(newHeader, table.firstChild);
+                }
+            }
+            
+            // Initialize the metric labels
+            updateMetricLabels('dataset1');
+        })
+        .catch(error => {
+            console.error('Error loading translations:', error);
+            // Load English as fallback
+            if (language !== 'en') {
+                return loadTranslations('en');
+            }
+        });
+}
+
+function updateAllTranslations(language) {
+    if (!translations) return;
+    
+    // Update text content for elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const keys = element.getAttribute('data-i18n').split('.');
+        let value = translations;
+        for (const key of keys) {
+            value = value?.[key];
+        }
+        if (value) {
+            element.textContent = value;
+        }
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        const keys = element.getAttribute('data-i18n-placeholder').split('.');
+        let value = translations;
+        for (const key of keys) {
+            value = value?.[key];
+        }
+        if (value) {
+            element.placeholder = value;
+        }
+    });
+
+    // Update meta tags
+    if (translations.meta) {
+        document.title = translations.meta.title;
+        document.querySelector('meta[name="description"]')?.setAttribute('content', translations.meta.description);
+        document.querySelector('meta[name="language"]')?.setAttribute('content', language);
+    }
+}
+
+// Initialize translations
+const preferredLanguage = getPreferredLanguage();
+loadTranslations(preferredLanguage);
+
 })}) })}) })}) })}) })}) })}) 
 </script></div>
 
@@ -2588,6 +2666,9 @@ function sortColumn(columnIndex) {
 
   <script>
     // Translation functionality
+    let translations = {};
+    let translationsLoaded = false;
+
     function setLanguage(language) {
       localStorage.setItem('preferredLanguage', language);
       // Update URL with language parameter
@@ -2598,7 +2679,7 @@ function sortColumn(columnIndex) {
         url.searchParams.set('lang', language);
       }
       window.history.pushState({}, '', url);
-      applyLanguage(language);
+      loadTranslations(language);
     }
     
     function getPreferredLanguage() {
@@ -2615,55 +2696,77 @@ function sortColumn(columnIndex) {
       return navigator.language.slice(0, 2);
     }
     
-    let translations = {}; // Add global translations variable
-    
-    function applyLanguage(language) {
-      fetch(`locales/${language}.json`)
-        .then(response => response.json())
-        .then(data => {
-          translations = data; // Store translations globally
-          // Update text content for elements with data-i18n attribute
-          document.querySelectorAll('[data-i18n]').forEach(element => {
+    function loadTranslations(language) {
+        return fetch(`locales/${language}.json`)
+            .then(response => response.json())
+            .then(data => {
+                translations = data;
+                translationsLoaded = true;
+                
+                // Update all elements with translations
+                updateAllTranslations(language);
+                
+                // Initialize the table header after translations are loaded
+                const table = document.querySelector('table');
+                if (table) {
+                    const oldHeader = table.querySelector('thead');
+                    if (oldHeader) oldHeader.remove();
+                    const newHeader = createTableHeader();
+                    if (newHeader) {
+                        table.insertBefore(newHeader, table.firstChild);
+                    }
+                }
+                
+                // Initialize the metric labels
+                updateMetricLabels('dataset1');
+            })
+            .catch(error => {
+                console.error('Error loading translations:', error);
+                // Load English as fallback
+                if (language !== 'en') {
+                    return loadTranslations('en');
+                }
+            });
+    }
+
+    function updateAllTranslations(language) {
+        if (!translations) return;
+        
+        // Update text content for elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(element => {
             const keys = element.getAttribute('data-i18n').split('.');
             let value = translations;
             for (const key of keys) {
-              value = value[key];
+                value = value?.[key];
             }
             if (value) {
-              element.textContent = value;
+                element.textContent = value;
             }
-          });
-    
-          // Update placeholders for elements with data-i18n-placeholder attribute
-          document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        });
+
+        // Update placeholders
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
             const keys = element.getAttribute('data-i18n-placeholder').split('.');
             let value = translations;
             for (const key of keys) {
-              value = value[key];
+                value = value?.[key];
             }
             if (value) {
-              element.placeholder = value;
+                element.placeholder = value;
             }
-          });
-    
-          // Update meta tags
-          document.title = translations.meta.title;
-          document.querySelector('meta[name="description"]').setAttribute('content', translations.meta.description);
-          document.querySelector('meta[name="language"]').setAttribute('content', language);
-
-          // After translations are loaded, initialize the table header
-          const table = document.querySelector('table');
-          if (table) {
-            const oldHeader = table.querySelector('thead');
-            if (oldHeader) oldHeader.remove();
-            table.insertBefore(createTableHeader(), table.firstChild);
-          }
         });
+
+        // Update meta tags
+        if (translations.meta) {
+            document.title = translations.meta.title;
+            document.querySelector('meta[name="description"]')?.setAttribute('content', translations.meta.description);
+            document.querySelector('meta[name="language"]')?.setAttribute('content', language);
+        }
     }
-    
+
     // Initialize translations
     const preferredLanguage = getPreferredLanguage();
-    applyLanguage(preferredLanguage);
+    loadTranslations(preferredLanguage);
     
     </script>
 </body>
