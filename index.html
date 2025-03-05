@@ -2576,9 +2576,16 @@ function sortColumn(columnIndex) {
 });
 
 function loadTranslations(language) {
+    console.log('Loading translations for language:', language);
     return fetch(`locales/${language}.json`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Translations loaded successfully:', data);
             translations = data;
             translationsLoaded = true;
             
@@ -2588,64 +2595,98 @@ function loadTranslations(language) {
             // Initialize the table header after translations are loaded
             const table = document.querySelector('table');
             if (table) {
+                console.log('Found table, updating header');
                 const oldHeader = table.querySelector('thead');
-                if (oldHeader) oldHeader.remove();
+                if (oldHeader) {
+                    console.log('Removing old header');
+                    oldHeader.remove();
+                }
                 const newHeader = createTableHeader();
                 if (newHeader) {
+                    console.log('Adding new header');
                     table.insertBefore(newHeader, table.firstChild);
+                } else {
+                    console.log('Failed to create new header');
                 }
+            } else {
+                console.log('No table found');
             }
             
             // Initialize the metric labels
+            console.log('Updating metric labels');
             updateMetricLabels('dataset1');
         })
         .catch(error => {
             console.error('Error loading translations:', error);
             // Load English as fallback
             if (language !== 'en') {
+                console.log('Falling back to English translations');
                 return loadTranslations('en');
             }
         });
 }
 
 function updateAllTranslations(language) {
-    if (!translations) return;
+    if (!translations) {
+        console.log('No translations available');
+        return;
+    }
+    
+    console.log('Updating translations for language:', language);
     
     // Update text content for elements with data-i18n attribute
-    document.querySelectorAll('[data-i18n]').forEach(element => {
+    const elements = document.querySelectorAll('[data-i18n]');
+    console.log('Found elements with data-i18n:', elements.length);
+    
+    elements.forEach(element => {
         const keys = element.getAttribute('data-i18n').split('.');
         let value = translations;
         for (const key of keys) {
             value = value?.[key];
         }
         if (value) {
+            console.log('Updating element:', element, 'with value:', value);
             element.textContent = value;
+        } else {
+            console.log('No translation found for:', keys.join('.'));
         }
     });
 
     // Update placeholders
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+    const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
+    console.log('Found elements with data-i18n-placeholder:', placeholderElements.length);
+    
+    placeholderElements.forEach(element => {
         const keys = element.getAttribute('data-i18n-placeholder').split('.');
         let value = translations;
         for (const key of keys) {
             value = value?.[key];
         }
         if (value) {
+            console.log('Updating placeholder:', element, 'with value:', value);
             element.placeholder = value;
+        } else {
+            console.log('No translation found for placeholder:', keys.join('.'));
         }
     });
 
     // Update meta tags
     if (translations.meta) {
+        console.log('Updating meta tags');
         document.title = translations.meta.title;
         document.querySelector('meta[name="description"]')?.setAttribute('content', translations.meta.description);
         document.querySelector('meta[name="language"]')?.setAttribute('content', language);
+    } else {
+        console.log('No meta translations found');
     }
 }
 
-// Initialize translations
-const preferredLanguage = getPreferredLanguage();
-loadTranslations(preferredLanguage);
+// Initialize translations when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const preferredLanguage = getPreferredLanguage();
+    console.log('Initializing with language:', preferredLanguage);
+    loadTranslations(preferredLanguage);
+});
 
 })}) })}) })}) })}) })}) })}) 
 </script></div>
@@ -2681,32 +2722,32 @@ loadTranslations(preferredLanguage);
   </div>
 
   <script>
-    // Translation functionality
+    // Global variables for translations
     let translations = {};
     let translationsLoaded = false;
 
+    // Translation functionality
     function setLanguage(language) {
-      localStorage.setItem('preferredLanguage', language);
-      // Update URL with language parameter
-      const url = new URL(window.location.href);
-      if (language === 'en') {
-        url.searchParams.delete('lang');
-      } else {
-        url.searchParams.set('lang', language);
-      }
-      window.history.pushState({}, '', url);
-      loadTranslations(language);
+        localStorage.setItem('preferredLanguage', language);
+        const url = new URL(window.location.href);
+        if (language === 'en') {
+            url.searchParams.delete('lang');
+        } else {
+            url.searchParams.set('lang', language);
+        }
+        window.history.pushState({}, '', url);
+        loadTranslations(language);
     }
     
     function getPreferredLanguage() {
-      // Check URL parameter first
-      const urlParams = new URLSearchParams(window.location.search);
-      const langParam = urlParams.get('lang');
-      if (langParam) {
-        return langParam;
-      }
-      return localStorage.getItem('preferredLanguage') || getBrowserLanguage() || 'en';
+        const urlParams = new URLSearchParams(window.location.search);
+        const langParam = urlParams.get('lang');
+        if (langParam) {
+            return langParam;
+        }
+        return localStorage.getItem('preferredLanguage') || getBrowserLanguage() || 'en';
     }
+    
     
     function getBrowserLanguage() {
       return navigator.language.slice(0, 2);
