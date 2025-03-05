@@ -2410,6 +2410,39 @@ function sortColumn(columnIndex) {
     clearSearchInputs();
 });
 
+function reverseSearch(percentileArrays) {
+  // Filter players that meet all percentile criteria
+  return dataArray.filter(player => {
+    // Skip players that don't match the selected league
+    const selectedLeague = document.getElementById('league').value;
+    if (selectedLeague !== 'All' && 
+        selectedLeague !== 'Top 5 Leagues' && 
+        selectedLeague !== 'Top 7 Leagues' && 
+        player[2] !== selectedLeague) {
+      return false;
+    }
+
+    // Check if player meets all percentile requirements
+    for (let i = 0; i < percentileArrays.length; i++) {
+      const [percentile] = percentileArrays[i];
+      if (percentile && !isNaN(percentile)) {
+        // The stats start at index 6 in the player array
+        const statIndex = i + 6;
+        if (parseFloat(player[statIndex]) < parseFloat(percentile)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  });
+}
+
+  // Initialize with preferred or default language
+  document.addEventListener('DOMContentLoaded', () => {
+    const preferredLanguage = getPreferredLanguage();
+    loadTranslations(preferredLanguage);
+  });
+
 })}) })}) })}) })}) })}) })}) 
 </script></div>
 
