@@ -2410,58 +2410,152 @@ function sortColumn(columnIndex) {
     clearSearchInputs();
 });
 
-function reverseSearch(percentileArrays) {
-  // Get the selected dataset and determine which data array to use
-  const selectedDataset = document.getElementById('datasetSelector').value;
-  let dataArray;
-  
-  switch (selectedDataset) {
-    case 'dataset1':
-      dataArray = [...allData1];
-      break;
-    case 'dataset2':
-      dataArray = [...allData2];
-      break;
-    case 'dataset3':
-      dataArray = [...allData3];
-      break;
-    case 'dataset4':
-      dataArray = [...allData4];
-      break;
-    case 'dataset5':
-      dataArray = [...allData5];
-      break;
-    case 'dataset6':
-      dataArray = [...allData6];
-      break;
-    default:
-      dataArray = [...allData1];
-  }
+function reverseSearch(percentiles, dataArray, selectedLeague) {
+  return dataArray.filter(data => {
+    for (let i = 3; i <= 9; i++) {
+      const metricValue = parseFloat(data[i]) * 100;
+      if (metricValue < percentiles[i - 3][0]) {
+        return false;
+      }
+    }
 
-  // Filter players that meet all percentile criteria
-  return dataArray.filter(player => {
-    // Skip players that don't match the selected league
-    const selectedLeague = document.getElementById('league').value;
-    if (selectedLeague !== 'All' && 
-        selectedLeague !== 'Top 5 Leagues' && 
-        selectedLeague !== 'Top 7 Leagues' && 
-        player[2] !== selectedLeague) {
+    const age = parseInt(data[11]);
+    if (age < percentiles[7][0] || age > percentiles[7][1]) {
       return false;
     }
 
-    // Check if player meets all percentile requirements
-    for (let i = 0; i < percentileArrays.length; i++) {
-      const [percentile] = percentileArrays[i];
-      if (percentile && !isNaN(percentile)) {
-        // The stats start at index 6 in the player array
-        const statIndex = i + 6;
-        if (parseFloat(player[statIndex]) < parseFloat(percentile)) {
-          return false;
-        }
-      }
+    const minutesPlayed = parseInt(data[10]);
+    if (minutesPlayed < percentiles[8][0] || (percentiles[8][1] && minutesPlayed > percentiles[8][1])) {
+      return false;
     }
-    return true;
-  });
+
+    if (selectedLeague !== "All") {
+  if (selectedLeague === "Top 7 Leagues") {
+    const topSevenLeagues = [
+      "Premier League",
+      "La Liga",
+      "Bundesliga",
+      "Serie A",
+      "Ligue 1",
+      "Eredivisie",
+      "Liga Portugal"
+    ];
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (!topSevenLeagues.includes(playerLeague)) {
+      return false;
+    }
+  } else if (selectedLeague === "Top 5 Leagues") {
+    const topFiveLeagues = [
+      "Premier League",
+      "La Liga",
+      "Bundesliga",
+      "Serie A",
+      "Ligue 1"
+    ];
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (!topFiveLeagues.includes(playerLeague)) {
+      return false;
+    }
+  } else if (selectedLeague === "Non Top 7 Leagues") {
+    const dataMBProLeagues = [
+      "Scotland Premiership",
+      "Belgium Pro League",
+      "Swiss Super League",
+      "Ukraine",
+      "Poland",
+      "Greece",
+      "Israel",
+      "Russia",
+      "Colombia",
+      "Chile",
+      "Paraguay",
+      "Ecuador",
+      "Austrian Bundesliga",
+      "Süper Lig",
+      "Saudi Pro League",
+      "Brazil Serie A",
+      "Argentina Primera",
+      "Uruguay Primera",
+      "LigaMX",
+      "MLS",
+      "K League 1",
+      "J1 League",
+      "Norway Eliteserien",
+      "Denmark Superliga",
+      "Sweden Allsvenskan",
+      "Czech Fortuna Liga",
+      "Serbia SuperLiga",
+      "Croatia HNL",
+      "Championship",
+      "Segunda Division",
+      "Bundesliga 2",
+      "Serie B",
+      "Ligue 2",
+      "Unknown League"
+    ];
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (!dataMBProLeagues.includes(playerLeague)) {
+      return false;
+    }
+  } else if (selectedLeague === "South America") {
+    const southAmericaLeagues = [
+      "Brazil Serie A",
+      "Argentina Primera",
+      "Uruguay Primera",
+      "Colombia",
+      "Chile",
+      "Paraguay",
+      "Ecuador",
+    ];
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (!southAmericaLeagues.includes(playerLeague)) {
+      return false;
+    }
+  } else if (selectedLeague === "Scandinavia") {
+    const scandinaviaLeagues = [
+      "Norway Eliteserien",
+      "Denmark Superliga",
+      "Sweden Allsvenskan"
+    ];
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (!scandinaviaLeagues.includes(playerLeague)) {
+      return false;
+    }
+  } else if (selectedLeague === "Balkans") {
+    const balkansLeagues = [
+      "Czech Fortuna Liga",
+      "Serbia SuperLiga",
+      "Croatia HNL",
+      "Russia",
+      "Ukraine",
+      "Poland"
+    ];
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (!balkansLeagues.includes(playerLeague)) {
+      return false;
+    }
+  } else if (selectedLeague === "Top 5 Leagues - 2nd Div.") {
+    const secondDivLeagues = [
+      "Championship",
+      "Segunda Division",
+      "Bundesliga 2",
+      "Serie B",
+      "Ligue 2"
+    ];
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (!secondDivLeagues.includes(playerLeague)) {
+      return false;
+    }
+  } else {
+    const playerLeague = data[12]; // Assuming the league is in the 12th column (index 11)
+    if (playerLeague !== selectedLeague) {
+      return false;
+    }
+  }
+}
+
+return true;
+});
 }
 
   // Initialize with preferred or default language
