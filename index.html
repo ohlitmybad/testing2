@@ -2268,7 +2268,7 @@ if (restrictedPlayers.length === 0) {
     playerRow.appendChild(playerNameCell);
 
     // Add the player metric values in the subsequent columns
- for (let i = 3; i <= 9; i++) {
+      for (let i = 3; i <= 9; i++) {
   const metricValueCell = document.createElement('td');
   const numericValue = (parseFloat(playerData[i]) * 100).toFixed(2);
 
@@ -2498,10 +2498,34 @@ function sortColumn(columnIndex) {
     localStorage.setItem('preferredLanguage', lang);
   }
 
+function setLanguage(language) {
+  localStorage.setItem('preferredLanguage', language);
+  const url = new URL(window.location.href);
+  if (language === 'en') {
+    url.searchParams.delete('lang');
+  } else {
+    url.searchParams.set('lang', language);
+  }
+  window.history.pushState({}, '', url);
+  applyLanguage(language);
+}
+
+function getPreferredLanguage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const langParam = urlParams.get('lang');
+  if (langParam) {
+    return langParam;
+  }
+  return localStorage.getItem('preferredLanguage') || getBrowserLanguage() || 'en';
+}
+
+function getBrowserLanguage() {
+  return navigator.language.slice(0, 2);
+}
 
   // Initialize with preferred or default language
   document.addEventListener('DOMContentLoaded', () => {
-    const preferredLanguage = localStorage.getItem('preferredLanguage') || 'en';
+  const preferredLanguage = getPreferredLanguage();
     loadTranslations(preferredLanguage);
   });
 </script>
