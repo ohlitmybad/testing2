@@ -1,0 +1,50 @@
+{
+  "header": {
+    "teams": "Équipes",
+    "pro": "Pro",
+    "guide": "Guide"
+  },
+  "meta": {
+    "title": "DataMB | Comparaison de joueurs",
+    "description": "Comparez les statistiques des joueurs de football des 7 grands championnats européens. Utilise notre outil de comparaison radar et d'autres outils pour visualiser les données de Premier League, La Liga, Bundesliga, Serie A, Ligue 1, Eredivisie, Primeira Liga et plus encore."
+  },
+  "search": {
+    "placeholder": "Entrez un nom d'équipe ou de joueur..."
+  },
+  "positions": {
+    "title": "7 Grands Championnats — 2023/24, 2024/25",
+    "goalkeepers": {
+      "title": "GARDIENS",
+      "description": "Comparaisons de gardiens de but"
+    },
+    "centrebacks": {
+      "title": "DÉFENSEURS",
+      "description": "Comparaisons de défenseurs centraux"
+    },
+    "fullbacks": {
+      "title": "LATÉRAUX",
+      "description": "Comparaisons d'arrières latéraux et pistons"
+    },
+    "midfielders": {
+      "title": "MILIEUX",
+      "description": "Comparaisons de milieux défensifs, centraux et offensifs"
+    },
+    "wingers": {
+      "title": "AILIERS",
+      "description": "Comparaisons d'ailiers et milieux offensifs"
+    },
+    "strikers": {
+      "title": "BUTEURS",
+      "description": "Comparaisons de buteurs (avant-centres)"
+    }
+  },
+  "pro": {
+    "title": "PRO — Plus de ligues, Plus de saisons"
+  },
+  "footer": {
+    "rights": "© Tous droits réservés",
+    "privacy": "Confidentialité",
+    "contact": "Contact",
+    "about": "À propos"
+  }
+} 
