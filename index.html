@@ -2302,27 +2302,34 @@ function createTableHeader() {
   const tableHeader = document.createElement('thead');
   const headerRow = document.createElement('tr');
   const selectedDataset = document.getElementById('datasetSelector').value;
-  let position;
+  let metricLabels;
+  let position = '';
   
-  // Determine position based on selected dataset
-  switch (selectedDataset) {
+  // Determine position code based on dataset
+  switch(selectedDataset) {
     case 'dataset2':
       position = 'cb';
+      metricLabels = metricNames2;
       break;
     case 'dataset3':
       position = 'fb';
+      metricLabels = metricNames3;
       break;
     case 'dataset4':
       position = 'cm';
+      metricLabels = metricNames4;
       break;
     case 'dataset5':
       position = 'fw';
+      metricLabels = metricNames5;
       break;
     case 'dataset6':
       position = 'st';
+      metricLabels = metricNames6;
       break;
     default:
       position = 'gk';
+      metricLabels = metricNames1;
       break;
   }
 
@@ -2330,13 +2337,24 @@ function createTableHeader() {
   emptyHeaderCell.textContent = '';
   headerRow.appendChild(emptyHeaderCell);
 
-  // Get all metric keys for the selected position
-  const metricKeys = Object.keys(i18next.t(`metrics.${position}`, { returnObjects: true }));
-  
-  metricKeys.forEach((key, i) => {
+  // Create array of metric keys based on position
+  const metricKeys = position === 'gk' ? 
+    ['def_actions', 'aerials', 'exit_line', 'passes', 'long_pass', 'short_pass', 'psxg_ga'] :
+    position === 'cb' ?
+    ['passes', 'forward_pass', 'prog_passes', 'def_actions', 'def_duel', 'aerial', 'prog_carries'] :
+    position === 'fb' ?
+    ['cross', 'xa', 'prog_passes', 'def_actions', 'def_duel', 'aerial', 'prog_carries'] :
+    position === 'cm' ?
+    ['duel', 'def_actions', 'prog_carries', 'forward_passes', 'forward_pass', 'key_passes', 'prog_passes'] :
+    position === 'fw' ?
+    ['prog_carries', 'dribbles', 'npg', 'xg_xa', 'assists', 'key_passes', 'off_actions'] :
+    ['pass_received', 'aerial', 'npg', 'xg', 'pass_to_pen', 'xa', 'off_actions'];
+
+  for (let i = 0; i < metricLabels.length; i++) {
     const headerCell = document.createElement('th');
-    headerCell.setAttribute('data-i18n', `metrics.${position}.${key}`);
-    headerCell.textContent = i18next.t(`metrics.${position}.${key}`);
+    const translationKey = `metrics.${position}.${metricKeys[i]}`;
+    const translation = getNestedTranslation(translations, translationKey);
+    headerCell.textContent = translation || metricLabels[i]; // Fallback to original label if translation not found
     headerCell.style.cursor = 'pointer';
 
     // Add click event listener to the header cell for sorting
@@ -2345,7 +2363,7 @@ function createTableHeader() {
     });
 
     headerRow.appendChild(headerCell);
-  });
+  }
 
   tableHeader.appendChild(headerRow);
   return tableHeader;
