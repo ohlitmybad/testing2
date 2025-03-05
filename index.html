@@ -2411,6 +2411,33 @@ function sortColumn(columnIndex) {
 });
 
 function reverseSearch(percentileArrays) {
+  // Get the selected dataset and determine which data array to use
+  const selectedDataset = document.getElementById('datasetSelector').value;
+  let dataArray;
+  
+  switch (selectedDataset) {
+    case 'dataset1':
+      dataArray = [...allData1];
+      break;
+    case 'dataset2':
+      dataArray = [...allData2];
+      break;
+    case 'dataset3':
+      dataArray = [...allData3];
+      break;
+    case 'dataset4':
+      dataArray = [...allData4];
+      break;
+    case 'dataset5':
+      dataArray = [...allData5];
+      break;
+    case 'dataset6':
+      dataArray = [...allData6];
+      break;
+    default:
+      dataArray = [...allData1];
+  }
+
   // Filter players that meet all percentile criteria
   return dataArray.filter(player => {
     // Skip players that don't match the selected league
