@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>	
@@ -7,14 +6,29 @@
 <link rel="alternate" hreflang="x-default" href="https://datamb.football/Éder Militão_Centre-back_stats/" />
 <link rel="alternate" hreflang="en" href="https://datamb.football/Éder Militão_Centre-back_stats/?lang=en" /> 
   <meta name="viewport" content="width=device-width, user-scalable=no">
-  <title>Éder Militão<span data-i18n="meta.title"> Football Stats and Visuals | DataMB</span></title>
+  <title data-i18n="meta.title" data-template="prefix-name">Éder Militão Football Stats and Visuals | DataMB</title>
   <link rel="shortcut icon" type="image/x-icon" href="https://datamb.football/favicon.ico">
-  <meta name="description" content="Éder Militão" data-i18n="meta.description" data-i18n-content=" 2024/25 data profile compared to centre-backs in Europe's Top 7 Leagues. Check out his statistics with our radar chart and plots, or compare Éder Militão to other players using our data comparison tool.">
+  <meta name="description" data-i18n="meta.description" data-template="prefix-name" content="Éder Militão 2024/25 data profile compared to centre-backs in Europe's Top 7 Leagues. Check out his statistics with our radar chart and plots, or compare Éder Militão to other players using our data comparison tool.">
   <meta property="og:image" content="https://datamb.football/vignettes/profile.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@DataMB_">
   <meta name="twitter:title" content="Éder Militão | DataMB">
   <meta name="twitter:image" content="https://datamb.football/vignettes/profile.png">
+  <script>
+    // Store template information before player names are replaced
+    document.addEventListener('DOMContentLoaded', function() {
+      // Store template information for elements with data-template attribute
+      document.querySelectorAll('[data-template]').forEach(element => {
+        const templateType = element.getAttribute('data-template');
+        
+        // Store the template pattern
+        if (templateType === 'prefix-name') {
+          // For elements where player name is at the beginning
+          element.setAttribute('data-name-position', 'prefix');
+        }
+      });
+    });
+  </script>
   <script>
     (function() {
         var width = window.innerWidth;
@@ -918,12 +932,14 @@ const _0x5a5c2d=_0x5142;(function(_0x4ae5e2,_0x171055){const _0x1f5ab4=_0x5142,_
           if (i === 5) {
             const link = document.createElement('a');
             link.textContent = value;
+            const positionKey = value.toLowerCase().replace(/[^a-z]/g, '');
+            link.setAttribute('data-i18n', `positions.${positionKey}`);
             link.href = 'https://datamb.football/centrebacks'; // Replace with the URL you want to link to for cell 5
             td2.appendChild(link);
           } else if (i === 2) {
             const link = document.createElement('a');
             link.textContent = value;
-            link.href = 'https://datamb.football/Real_Madrid_Team_stats'; // Replace with the URL you want to link to for cell 2
+            link.href = 'https://datamb.football/[TEAM_NAME]_Team_stats'; // Replace with the URL you want to link to for cell 2
             td2.appendChild(link);
           } else {
             if (i >= 7 && i <= 13) {
@@ -2350,13 +2366,67 @@ defaultSearchDot.each(circleClick);
               value = value[key];
             }
             if (value) {
+              // Check if this element has template information
+              const namePosition = element.getAttribute('data-name-position');
+              
+              // Get current content which now has the actual player name
+              let currentContent = '';
               if (element.tagName === 'META') {
-              element.setAttribute('content', value);
-          } else if (value.includes('<')) {
-              element.innerHTML = value;
-          } else {
-              element.textContent = value;
-          }          }
+                currentContent = element.getAttribute('content');
+              } else {
+                currentContent = element.textContent || element.innerHTML;
+              }
+              
+              // Apply translation with player name handling
+              if (namePosition) {
+                let translatedContent = '';
+                
+                // Extract the actual player name from the current content
+                let playerName = '';
+                
+                if (namePosition === 'prefix') {
+                  const footballIndex = currentContent.indexOf('Football');
+                  const seasonIndex = currentContent.indexOf('2024/25');
+                  
+                  // Find the earliest occurrence of either delimiter
+                  let delimiterIndex = -1;
+                  if (footballIndex > 0 && seasonIndex > 0) {
+                    delimiterIndex = Math.min(footballIndex, seasonIndex);
+                  } else if (footballIndex > 0) {
+                    delimiterIndex = footballIndex;
+                  } else if (seasonIndex > 0) {
+                    delimiterIndex = seasonIndex;
+                  }
+                  
+                  if (delimiterIndex > 0) {
+                    // Extract everything before the delimiter
+                    playerName = currentContent.substring(0, delimiterIndex).trim();
+                  }
+                  
+                  // Apply translation with player name at beginning
+                  translatedContent = playerName + ' ' + value;
+                } 
+                
+                // Apply the modified translation
+                if (element.tagName === 'META') {
+                  element.setAttribute('content', translatedContent);
+                } else if (value.includes('<')) {
+                  element.innerHTML = translatedContent;
+                } else {
+                  element.textContent = translatedContent;
+                }
+              } 
+              // Normal translation without player name
+              else {
+                if (element.tagName === 'META') {
+                  element.setAttribute('content', value);
+                } else if (value.includes('<')) {
+                  element.innerHTML = value;
+                } else {
+                  element.textContent = value;
+                }
+              }
+            }
           });
           // REMOVE FOR PAGES WITH NO METADATA
           document.querySelector('meta[name="language"]').setAttribute('content', language);
